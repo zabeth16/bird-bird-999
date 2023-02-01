@@ -1,13 +1,64 @@
 import { NavLink } from 'react-router-dom';
 import React from "react";
+import { useState, useEffect, useMemo, memo,setState }  from "react";
+import { getFirestore, Firestore ,collection, addDoc, doc, getDoc ,getDocs, onSnapshot
+    , querySnapshot , getApp, getApps,  getDocFromCache} from "firebase/firestore";
 import { MapPageSCSS } from '../css/MapPage.scss'
 import Base from '../pages/Base.jsx'
-import { MapLocal } from './page_control/MapLocal.jsx';
+import db from './../../firebase-servise.js';
+import { requestOptions } from './page_control/eBird.jsx';
+// import { MapLocal } from './page_control/MapLocal.jsx';
 
 const myRef = React.createRef();
 
 const MapPage = () =>{
-    return (
+    // 熱門景點
+    const [hotspot, setHotspot] = useState([]);
+    // 用MapLocal(myRef) 拿到該區域，再串API
+    const MapLocal= async (myRef) =>{
+        const pathId = myRef.current.getAttribute('id');
+        console.log(pathId);
+        const locationDoc = await getDocs(collection(db, "TW"));
+        locationDoc.forEach(async document =>{
+            // console.log(document.id)
+            if (pathId === document.id){    
+                console.log("OK")     
+                try {
+                    const docSnap = await getDoc(doc(db, "TW", pathId));
+                    // console.log(docSnap.data().hotspot[0].locId)
+                    const regionCode = docSnap.data().hotspot[0].regionCode
+                    const locId = docSnap.data().hotspot[0].locId
+                    // 串API囉各位           
+                    fetch("https://api.ebird.org/v2/ref/hotspot/" + regionCode  , requestOptions)
+                    .then(response => response.text())
+                    .then(result =>               
+                        // console.log(result)
+                        {
+                        const arr = result.split("\n").map(row => {
+                            const newRow = row.replace(/"([^"]*)"/g, (_, match) => match.replace(/,/g, ' '));
+                            const [localId, country, code, , lat, long, name, date, num] = newRow.split(",");                        
+                            return { localId, country, code, lat, long, name, date, num: parseInt(num) };
+                        })
+                            
+                            const sorted = arr.sort((a, b) => b.num - a.num);                        
+                            // console.log(sorted[0],sorted[1],sorted[2]);
+                            const hotspot1 = sorted[0].name
+                            const hotspot2 = sorted[1].name
+                            const hotspot3 = sorted[2].name
+                            setHotspot([hotspot1, hotspot2, hotspot3]);         
+                        }
+                        
+                    ).catch(error => console.log('error', error))
+                    
+                } catch (e) {
+                    console.log("Error getting cached document:", e);
+                }             
+            }         
+        })
+    }
+
+
+    return (        
         <div>
         <Base></Base>
         <div className='main'>
@@ -337,7 +388,12 @@ const MapPage = () =>{
         ></path>
         </NavLink>
         
-        <NavLink to='/map' onClick={() => MapLocal(myRef) } className='local'>
+        <NavLink to='/map' 
+            onClick={async() => 
+                // setHotspot([...hotspot])
+            MapLocal(myRef)
+            } className='local'>
+        
         <path ref={myRef} className="st0" id ="澎湖縣景點" transform="scale(5) translate(-65, -340)"
         d="M77.44,422.09l-2,1.71-.79.24h-.92l.43.79v.92l-.18.85-1.22,1-.12.92.67.37,1.65-.73.67-.49,1,.06.61.43.55.61-1.83,2-.92.12-1.83-.31,
         1,1.16,1.4.61,1.1-.12.79-.49,2.74.06.55.73.3.79-.91,1.46-.12.49.79.55-.06.67-.73.73-.79-.06-.55-.49L78,436.3l-.91.12L76,438.74l-1,1.1.43.73,
@@ -347,7 +403,11 @@ const MapPage = () =>{
     {/* </NavLink> */}
     </svg>
     </div>
-    </div>
+        <div className='local-info-box'>
+            {/* 放我的熱門景點R */}
+            {hotspot}
+        </div>
+    </div>{/* map-box */}
     </div>
     
     )

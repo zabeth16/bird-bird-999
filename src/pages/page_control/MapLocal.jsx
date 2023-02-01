@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import React from "react";
+import { useState, useEffect, useMemo, memo, setState }  from "react";
 import db from '../../../firebase-servise.js';
 import "firebase/compat/firestore"; 
 import { getFirestore, Firestore ,collection, addDoc, doc, getDoc ,getDocs, onSnapshot
@@ -8,7 +9,11 @@ import { async } from '@firebase/util';
 import { requestOptions } from './eBird.jsx';
 
 
+
+
 export async function  MapLocal(myRef){
+
+    const [hotspot, setHotspot] = useState([]);
     const pathId = myRef.current.getAttribute('id');
     console.log(pathId);
     const locationDoc = await getDocs(collection(db, "TW"));
@@ -24,8 +29,7 @@ export async function  MapLocal(myRef){
                 // 串API囉各位           
                 fetch("https://api.ebird.org/v2/ref/hotspot/" + regionCode  , requestOptions)
                 .then(response => response.text())
-                .then(result =>                
-                    
+                .then(result =>               
                     // console.log(result)
                     {
                     const arr = result.split("\n").map(row => {
@@ -35,34 +39,23 @@ export async function  MapLocal(myRef){
                     })
                         
                         const sorted = arr.sort((a, b) => b.num - a.num);                        
-                        console.log(sorted[0],sorted[1],sorted[2]);
-
+                        // console.log(sorted[0],sorted[1],sorted[2]);
+                        const hotspot1 = sorted[0].name
+                        const hotspot2 = sorted[1].name
+                        const hotspot3 = sorted[2].name
+                        
+                                         
                     }
+                  
                     
                     
                 ).catch(error => console.log('error', error))
-                
+                // setHotspot(dataHotspot)
               } catch (e) {
                 console.log("Error getting cached document:", e);
-              }
-                
-            // const docSnap = await getDocs(doc(db, "TW", pathId));
-            // docSnap.forEach(docHot =>{
-            //     console.log(docHot)
-            // })
-            
+              }             
         }         
     })
 }
-// const ref = collection(db, "users");
-// const q = query(ref, where("web", "==", "Let's Write"));
-// const querySnapshot = await getDocs(q);
-// querySnapshot.forEach((doc) => {
-//   console.log(doc.id, doc.data());
-// });
 
 
-// async function locationHotspot(){
-//     const docSnap = await getDoc(doc(db, "TW", pathId));
-//     console.log(docSnap.data()[0]) 
-// }

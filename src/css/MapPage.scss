@@ -1,0 +1,13 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family:  'Noto Sans TC';
+}
+.local:hover {
+    transform: translate(-3px, -3px);
+    filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
+}
+
+.season-1{
+background-color: rgb(253, 219, 178);
+}

@@ -1,19 +1,31 @@
 import { NavLink } from 'react-router-dom';
 import React from "react";
-import { useState, useEffect, useMemo, memo,setState }  from "react";
+import { useState, useEffect, useMemo, memo,setState, useRef }  from "react";
 import { getFirestore, Firestore ,collection, addDoc, doc, getDoc ,getDocs, onSnapshot
     , querySnapshot , getApp, getApps,  getDocFromCache} from "firebase/firestore";
 import { MapPageSCSS } from '../css/MapPage.scss'
 import Base from '../pages/Base.jsx'
 import db from './../../firebase-servise.js';
 import { requestOptions } from './page_control/eBird.jsx';
-// import { MapLocal } from './page_control/MapLocal.jsx';
+// import MapLocalComponent, { MapLocal } from './page_control/MapLocal.jsx'
+// import  hotspot  from './page_control/MapLocal.jsx';
 
 const myRef = React.createRef();
 
 const MapPage = () =>{
+
+    // 各季節渲染
+    const [season, setSeason] = useState('春');
+    const handleSeasonClick = (event) => {
+      setSeason(event.target.textContent);
+    };
+
     // 熱門景點
     const [hotspot, setHotspot] = useState([]);
+    // 該區熱門鳥種name
+    const [birdTWname, setbirdTWname] = useState([])
+    // 該區熱門鳥種photo
+    const [birdTWphoto, setbirdTWphoto] = useState([])
     // 用MapLocal(myRef) 拿到該區域，再串API
     const MapLocal= async (myRef) =>{
         const pathId = myRef.current.getAttribute('id');
@@ -40,12 +52,62 @@ const MapPage = () =>{
                             return { localId, country, code, lat, long, name, date, num: parseInt(num) };
                         })
                             
-                            const sorted = arr.sort((a, b) => b.num - a.num);                        
+                            const sorted = arr.sort((a, b) => b.num - a.num);                                                     
                             // console.log(sorted[0],sorted[1],sorted[2]);
                             const hotspot1 = sorted[0].name
                             const hotspot2 = sorted[1].name
                             const hotspot3 = sorted[2].name
-                            setHotspot([hotspot1, hotspot2, hotspot3]);         
+                            setHotspot([hotspot1, hotspot2, hotspot3]);
+                            // 進階搜尋各季節鳥類，且要拿出台灣特有種
+                            if (season === '春') {
+                                // fetch春季的API
+                                // Historic observations on a date                               
+                                fetch("https://api.ebird.org/v2/data/obs/" +
+                                regionCode + "/historic/2022/4/16" , requestOptions)
+                                .then(response => response.text())
+                                .then(async result => {
+                                    // console.log(result)
+                                    const parsedData = JSON.parse(result);
+                                    // 下方 item 是可以隨意命名的
+                                    const speciesCodes = parsedData.map(item => item.speciesCode);
+                                    // speciesCodes 是陣列
+                                    // console.log(speciesCodes);
+                                    const compareBird = await getDoc(doc(db, "bird", "bird_info"));
+                                    const allSpp = compareBird.data().bird_data[0].spp_code
+                                    // console.log(compareBird.data().bird_data[0].spp_code)
+                                    const birdSpecial = 
+                                    compareBird.data().bird_data.filter(
+                                        bird => speciesCodes.includes(bird.spp_code) );
+                                    // console.log(birdSpecial)
+                                    const threeBirdSpecial = birdSpecial.slice(0, 3);
+                                    // console.log(threeBirdSpecial);
+                                    const threeBirdName = threeBirdSpecial.map(name => name.ch_name)
+                                    const threeBirdPhoto = threeBirdSpecial.map(photo =>photo.img)
+                                    const newBirdPhotos = threeBirdPhoto.map(photo => photo.replace("'", "\""));
+                                    // console.log("鳥名", threeBirdName,"鳥照", newBirdPhotos)
+                                    const birdName1 = threeBirdName[0]
+                                    const birdName2 = threeBirdName[1]
+                                    const birdName3 = threeBirdName[2]
+                                    const birdPhoto1 = `${newBirdPhotos[0]}`;
+                                    const birdPhoto2 = `${newBirdPhotos[1]}`;
+                                    const birdPhoto3 = `${newBirdPhotos[2]}`;
+                                    setbirdTWname([
+                                        birdName1, birdName2 , birdName3,                                
+                                    ])
+                                    setbirdTWphoto([
+                                        birdPhoto1, birdPhoto2 , birdPhoto3
+                                    ])
+
+                                })
+
+                              } else if (season === '夏') {
+                                // fetch夏季的API
+                              } else if (season === '秋') {
+                                // fetch秋季的API
+                              } else if (season === '冬') {
+                                // fetch冬季的API
+                              }
+
                         }
                         
                     ).catch(error => console.log('error', error))
@@ -64,10 +126,10 @@ const MapPage = () =>{
         <div className='main'>
     <div className='map-box'>
         <div className='season-box'>
-            <button className='season-1'>春</button>
-            <button className='season-2'>夏</button>
-            <button className='season-3'>秋</button>
-            <button className='season-4'>冬</button>
+            <button className='season-1' onClick={handleSeasonClick}>春</button>
+            <button className='season-2' onClick={handleSeasonClick}>夏</button>
+            <button className='season-3' onClick={handleSeasonClick}>秋</button>
+            <button className='season-4' onClick={handleSeasonClick}>冬</button>
         </div>
     <svg version="1.1" id="map" xmlns="http://www.w3.org/2000/svg" 
     x="0px" y="0px" viewBox="0 0 800 800" >
@@ -405,7 +467,18 @@ const MapPage = () =>{
     </div>
         <div className='local-info-box'>
             {/* 放我的熱門景點R */}
-            {hotspot}
+            <p>{hotspot[0]}</p>
+            <p>{hotspot[1]}</p>
+            <p>{hotspot[2]}</p> 
+            {birdTWname.map((birdName, index) => (
+                <div key={index}>
+                    <div>{birdName}</div>
+                    <div>
+                        <img className='bird-photo' src={birdTWphoto[index]} />
+                    </div>
+                    {/* 記得在這下方要製作更多景點連結Navlink */}
+                </div>                
+            ))}            
         </div>
     </div>{/* map-box */}
     </div>

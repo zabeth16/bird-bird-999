@@ -7,10 +7,96 @@ body{
     transform: translate(-3px, -3px);
     filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
 }
-
-.season-1{
-background-color: rgb(253, 219, 178);
+// season button
+.season-box{
+    display: flex;
+    justify-content: center;
 }
+.selected {
+    background-color: rgb(250, 205, 24);
+}
+.season-1{
+    // background-color: rgb(253, 219, 178);
+    cursor: pointer;
+    border-radius: 999em;
+    height: 50px;
+    width: 50px;
+    margin-right: 10px;
+}
+.season-2{
+    cursor: pointer;
+    border-radius: 999em;
+    height: 50px;
+    width: 50px;
+    // background-color: rgb(124, 139, 139);
+    margin-right: 10px;
+}
+.season-3{
+    cursor: pointer;
+    border-radius: 999em;
+    height: 50px;
+    width: 50px;
+    // background-color: rgb(124, 139, 139);
+    margin-right: 10px;
+}
+.season-4{
+    cursor: pointer;
+    border-radius: 999em;
+    height: 50px;
+    width: 50px;
+    // background-color: rgb(124, 139, 139);
+}
+
+// map 背景
+.map-box.season-春 {
+    background-color: rgb(200, 225, 159);
+}
+
+.map-box.season-夏 {
+background-color: rgb(253, 190, 175);
+}
+
+.map-box.season-秋 {
+background-color: rgb(248, 224, 140);
+}
+
+.map-box.season-冬 {
+background-color: rgb(144, 187, 209);
+}
+
 .bird-photo{
+    width: 150px;
+    height: 100px;
+    aspect-ratio: 1;
+    object-fit: cover;
+}
+.more-hotspot{
+    text-decoration: none;
     width: 100px;
+    background-color: rgb(16, 27, 78);
+    color:aliceblue;
+    border-radius: 10px;
+    text-align: center;
+}
+.guide-title{
+    text-align: center;
+    line-height: 50px;
+    height: 50px;
+}
+.local-info-box{
+    opacity: 0;
+    transition-duration: .3s;
+    transition-timing-function: ease-out;
+}
+.local-info-box.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+.info-hr{
+    width: 100%;
+    border: 0;
+    height: 1px;
+    // 這是很酷的前後半透明的線，是用於置中文字段落
+    // background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+    background-color: black;
 }

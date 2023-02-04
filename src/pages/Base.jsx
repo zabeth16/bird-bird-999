@@ -8,7 +8,7 @@ const Base = () =>{
     <div>{/* 純包裹用的父元素 */}
         <div className='top'>
         <nav className='nav-bar'>
-            <div className='logo'>鳥鳥啾啾啾</div>
+            <NavLink className='logo' to='/'>鳥鳥啾啾啾</NavLink>
             <div className='nav-right-box'>
                 <NavLink className='explore' to="/explore">鳥種查詢</NavLink>
                 <NavLink className='sos' to='/sos'>鳥類救傷</NavLink>

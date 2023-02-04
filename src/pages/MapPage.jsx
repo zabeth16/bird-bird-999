@@ -10,16 +10,65 @@ import { requestOptions } from './page_control/eBird.jsx';
 // import MapLocalComponent, { MapLocal } from './page_control/MapLocal.jsx'
 // import  hotspot  from './page_control/MapLocal.jsx';
 
+// 每個地區 ref 點擊用
 const myRef = React.createRef();
+const myRefKin = React.createRef();
+const myRefLie = React.createRef();
+const myRefTnn = React.createRef();
+const myRefCyq = React.createRef();
+const myRefCyi = React.createRef();
+const myRefYun = React.createRef();
+const myRefKhh = React.createRef();
+const myRefPif = React.createRef();
+const myRefCha = React.createRef();
+const myRefTxg = React.createRef();
+const myRefNan = React.createRef();
+const myRefMia = React.createRef();
+const myRefTtt = React.createRef();
+const myRefHsz = React.createRef();
+const myRefHsq = React.createRef();
+const myRefTao = React.createRef();
+const myRefHua = React.createRef();
+const myRefTpq = React.createRef();
+const myRefIla = React.createRef();
+const myRefTpe = React.createRef();
+const myRefKee = React.createRef();
+
+
 
 const MapPage = () =>{
 
     // 各季節渲染
     const [season, setSeason] = useState('春');
+    const [seasonBackground , setSeasonBackground] = useState('春')
     const handleSeasonClick = (event) => {
       setSeason(event.target.textContent);
+      setSeasonBackground(event.target.textContent)
+    
     };
 
+    // Local 資訊BOX
+    const [isVisible, setIsVisible] = useState(false);       
+    useEffect(() => {
+        // hide info-box           
+        setIsVisible(false); 
+    }, []);
+    const showInfoBox = () => {
+        setIsVisible(true);
+        const infoBox = document.querySelector('.local-info-box');
+        infoBox.classList.add('show');       
+    };    
+
+    // 前三景點title上方大標
+    const [showHotTitle, setShowHotTitle] = useState(false);
+    // Loading
+    const [isLoading, setIsLoading] = useState(true);
+    useEffect(() => {           
+        setIsLoading(false);
+    }, []);
+    // 每個地區 ref 點擊用
+    // const refs = Array.from({ length: 22 }, () => useRef(null));
+    
     // 熱門景點
     const [hotspot, setHotspot] = useState([]);
     // 該區熱門鳥種name
@@ -27,14 +76,17 @@ const MapPage = () =>{
     // 該區熱門鳥種photo
     const [birdTWphoto, setbirdTWphoto] = useState([])
     // 用MapLocal(myRef) 拿到該區域，再串API
+
     const MapLocal= async (myRef) =>{
+        // Loading動畫
+        setIsLoading(true)        
         const pathId = myRef.current.getAttribute('id');
         console.log(pathId);
         const locationDoc = await getDocs(collection(db, "TW"));
         locationDoc.forEach(async document =>{
             // console.log(document.id)
             if (pathId === document.id){    
-                console.log("OK")     
+                // console.log("OK")     
                 try {
                     const docSnap = await getDoc(doc(db, "TW", pathId));
                     // console.log(docSnap.data().hotspot[0].locId)
@@ -66,6 +118,7 @@ const MapPage = () =>{
                                 regionCode + "/historic/2022/4/16" , requestOptions)
                                 .then(response => response.text())
                                 .then(async result => {
+                                    console.log("春")
                                     // console.log(result)
                                     const parsedData = JSON.parse(result);
                                     // 下方 item 是可以隨意命名的
@@ -85,6 +138,14 @@ const MapPage = () =>{
                                     const threeBirdPhoto = threeBirdSpecial.map(photo =>photo.img)
                                     const newBirdPhotos = threeBirdPhoto.map(photo => photo.replace("'", "\""));
                                     // console.log("鳥名", threeBirdName,"鳥照", newBirdPhotos)
+                                    if (! newBirdPhotos[1]){
+                                        newBirdPhotos[1] = "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/251151871/1200"
+                                        threeBirdName[1] = "喜鵲"
+                                    }
+                                    if (! newBirdPhotos[2]){
+                                        newBirdPhotos[2] = "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/254741801/1200"
+                                        threeBirdName[2] = "蒼鷺"
+                                    }
                                     const birdName1 = threeBirdName[0]
                                     const birdName2 = threeBirdName[1]
                                     const birdName3 = threeBirdName[2]
@@ -97,15 +158,173 @@ const MapPage = () =>{
                                     setbirdTWphoto([
                                         birdPhoto1, birdPhoto2 , birdPhoto3
                                     ])
-
+                                    setIsLoading(false)
+                                    showInfoBox();                              
                                 })
 
                               } else if (season === '夏') {
                                 // fetch夏季的API
+                                // Historic observations on a date                               
+                                fetch("https://api.ebird.org/v2/data/obs/" +
+                                regionCode + "/historic/2022/8/6" , requestOptions)
+                                .then(response => response.text())
+                                .then(async result => {
+                                    console.log("夏")
+                                    // console.log(result)
+                                    const parsedData = JSON.parse(result);
+                                    // 下方 item 是可以隨意命名的
+                                    const speciesCodes = parsedData.map(item => item.speciesCode);
+                                    // speciesCodes 是陣列
+                                    // console.log(speciesCodes);
+                                    const compareBird = await getDoc(doc(db, "bird", "bird_info"));
+                                    const allSpp = compareBird.data().bird_data[0].spp_code
+                                    // console.log(compareBird.data().bird_data[0].spp_code)
+                                    const birdSpecial = 
+                                    compareBird.data().bird_data.filter(
+                                        bird => speciesCodes.includes(bird.spp_code) );
+                                    // console.log(birdSpecial)
+                                    const threeBirdSpecial = birdSpecial.slice(0, 3);
+                                    // console.log(threeBirdSpecial);
+                                    const threeBirdName = threeBirdSpecial.map(name => name.ch_name)
+                                    const threeBirdPhoto = threeBirdSpecial.map(photo =>photo.img)
+                                    const newBirdPhotos = threeBirdPhoto.map(photo => photo.replace("'", "\""));
+                                    // console.log("鳥名", threeBirdName,"鳥照", newBirdPhotos)
+                                    if (! newBirdPhotos[0]){
+                                        newBirdPhotos[0] = "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/254741801/1200"
+                                        threeBirdName[0] = "蒼鷺"
+                                    }
+                                    if (! newBirdPhotos[1]){
+                                        newBirdPhotos[1] = "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/158684261/1200"
+                                        threeBirdName[1] = "白頭翁"
+                                    }
+                                    if (! newBirdPhotos[2]){
+                                        newBirdPhotos[2] = "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/158482801/1800"
+                                        threeBirdName[2] = "山麻雀"
+                                    }
+                                    const birdName1 = threeBirdName[0]
+                                    const birdName2 = threeBirdName[1]
+                                    const birdName3 = threeBirdName[2]
+                                    const birdPhoto1 = `${newBirdPhotos[0]}`;
+                                    const birdPhoto2 = `${newBirdPhotos[1]}`;
+                                    const birdPhoto3 = `${newBirdPhotos[2]}`;
+                                    setbirdTWname([
+                                        birdName1, birdName2 , birdName3,                                
+                                    ])
+                                    setbirdTWphoto([
+                                        birdPhoto1, birdPhoto2 , birdPhoto3
+                                    ])
+                                    setIsLoading(false)
+                                    showInfoBox();
+                                })
+
                               } else if (season === '秋') {
                                 // fetch秋季的API
+                                // Historic observations on a date                               
+                                fetch("https://api.ebird.org/v2/data/obs/" +
+                                regionCode + "/historic/2022/10/16" , requestOptions)
+                                .then(response => response.text())
+                                .then(async result => {
+                                    console.log("秋")
+                                    // console.log(result)
+                                    const parsedData = JSON.parse(result);
+                                    // 下方 item 是可以隨意命名的
+                                    const speciesCodes = parsedData.map(item => item.speciesCode);
+                                    // speciesCodes 是陣列
+                                    // console.log(speciesCodes);
+                                    const compareBird = await getDoc(doc(db, "bird", "bird_info"));
+                                    const allSpp = compareBird.data().bird_data[0].spp_code
+                                    // console.log(compareBird.data().bird_data[0].spp_code)
+                                    const birdSpecial = 
+                                    compareBird.data().bird_data.filter(
+                                        bird => speciesCodes.includes(bird.spp_code) );
+                                    // console.log(birdSpecial)
+                                    const threeBirdSpecial = birdSpecial.slice(0, 3);
+                                    // console.log(threeBirdSpecial);
+                                    const threeBirdName = threeBirdSpecial.map(name => name.ch_name)
+                                    const threeBirdPhoto = threeBirdSpecial.map(photo =>photo.img)
+                                    const newBirdPhotos = threeBirdPhoto.map(photo => photo.replace("'", "\""));
+                                    // console.log("鳥名", threeBirdName,"鳥照", newBirdPhotos)
+                                    if (! newBirdPhotos[0]){
+                                        newBirdPhotos[0] = "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/251151871/1200"
+                                        threeBirdName[0] = "喜鵲"
+                                    }
+                                    if (! newBirdPhotos[1]){
+                                        newBirdPhotos[1] = "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/158483201/1200"
+                                        threeBirdName[1] = "赤翡翠"
+                                    }
+                                    if (! newBirdPhotos[2]){
+                                        newBirdPhotos[2] = "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/158505701/1200"
+                                        threeBirdName[2] = "東方毛腳燕"
+                                    }                              
+                                    const birdName1 = threeBirdName[0]
+                                    const birdName2 = threeBirdName[1]
+                                    const birdName3 = threeBirdName[2]
+                                    const birdPhoto1 = `${newBirdPhotos[0]}`;
+                                    const birdPhoto2 = `${newBirdPhotos[1]}`;
+                                    const birdPhoto3 = `${newBirdPhotos[2]}`;
+                                    setbirdTWname([
+                                        birdName1, birdName2 , birdName3,                                
+                                    ])
+                                    setbirdTWphoto([
+                                        birdPhoto1, birdPhoto2 , birdPhoto3
+                                    ])
+                                    setIsLoading(false)
+                                    showInfoBox();
+                                })
                               } else if (season === '冬') {
                                 // fetch冬季的API
+                                // Historic observations on a date                               
+                                fetch("https://api.ebird.org/v2/data/obs/" +
+                                regionCode + "/historic/2023/1/31" , requestOptions)
+                                .then(response => response.text())
+                                .then(async result => {
+                                    console.log("冬")
+
+                                    const parsedData = JSON.parse(result);
+                                    // 下方 item 是可以隨意命名的
+                                    const speciesCodes = parsedData.map(item => item.speciesCode);
+                                    // speciesCodes 是陣列
+                                    // console.log(speciesCodes);
+                                    const compareBird = await getDoc(doc(db, "bird", "bird_info"));
+                                    const allSpp = compareBird.data().bird_data[0].spp_code
+                                    // console.log(compareBird.data().bird_data[0].spp_code)
+                                    const birdSpecial = 
+                                    compareBird.data().bird_data.filter(
+                                        bird => speciesCodes.includes(bird.spp_code) );
+                                    // console.log(birdSpecial)
+                                    const threeBirdSpecial = birdSpecial.slice(0, 3);
+                                    // console.log(threeBirdSpecial);
+                                    const threeBirdName = threeBirdSpecial.map(name => name.ch_name)
+                                    const threeBirdPhoto = threeBirdSpecial.map(photo =>photo.img)
+                                    const newBirdPhotos = threeBirdPhoto.map(photo => photo.replace("'", "\""));
+                                    // console.log("鳥名", threeBirdName,"鳥照", newBirdPhotos)
+                                    if (! newBirdPhotos[0]){
+                                        newBirdPhotos[0] = "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/133755601/1200"
+                                        threeBirdName[0] = "棕背伯勞"
+                                    }
+                                    if (! newBirdPhotos[1]){
+                                        newBirdPhotos[1] = "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/144184611/1200"
+                                        threeBirdName[1] = "八哥(冠八哥)"
+                                    }
+                                    if (! newBirdPhotos[2]){
+                                        newBirdPhotos[2] = "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/254741801/1200"
+                                        threeBirdName[2] = "蒼鷺"
+                                    }
+                                    const birdName1 = threeBirdName[0]
+                                    const birdName2 = threeBirdName[1]
+                                    const birdName3 = threeBirdName[2]
+                                    const birdPhoto1 = `${newBirdPhotos[0]}`;
+                                    const birdPhoto2 = `${newBirdPhotos[1]}`;
+                                    const birdPhoto3 = `${newBirdPhotos[2]}`;
+                                    setbirdTWname([
+                                        birdName1, birdName2 , birdName3,                                
+                                    ])
+                                    setbirdTWphoto([
+                                        birdPhoto1, birdPhoto2 , birdPhoto3
+                                    ])
+                                    setIsLoading(false)
+                                    showInfoBox();
+                                })
                               }
 
                         }
@@ -123,27 +342,41 @@ const MapPage = () =>{
     return (        
         <div>
         <Base></Base>
-        <div className='main'>
-    <div className='map-box'>
+        <div className='guide-title'>點擊區域查看熱門景點&鳥種吧 !</div>
+        <div className='main'>            
+    <div className={`map-box season-${seasonBackground}`}>
         <div className='season-box'>
-            <button className='season-1' onClick={handleSeasonClick}>春</button>
-            <button className='season-2' onClick={handleSeasonClick}>夏</button>
-            <button className='season-3' onClick={handleSeasonClick}>秋</button>
-            <button className='season-4' onClick={handleSeasonClick}>冬</button>
+            <button className={`season-1 ${season === "春" ? "selected" : ""}`} onClick={handleSeasonClick} >春</button>
+            <button className={`season-2 ${season === "夏" ? "selected" : ""}`} onClick={handleSeasonClick} >夏</button>
+            <button className={`season-3 ${season === "秋" ? "selected" : ""}`} onClick={handleSeasonClick} >秋</button>
+            <button className={`season-4 ${season === "冬" ? "selected" : ""}`} onClick={handleSeasonClick} >冬</button>
         </div>
     <svg version="1.1" id="map" xmlns="http://www.w3.org/2000/svg" 
     x="0px" y="0px" viewBox="0 0 800 800" >
     {/*  style="enable-background:new 0 0 800 800;"  */}
     {/* <NavLink to='/map' id="基隆市">Keelung City 基隆市 */}
-    <NavLink to='/map' className='local'>
-        <path className="st0" id="基隆市景點" d="M535.22,62.51c2.79-1.1,7.33-0.06,8.1,4.02c0.71,3.8,2.12,2.24,3.56,1.13c1.47-1.17,2.61-2.98,4.72-1.38
+
+    <NavLink to='/map'
+        onClick={async() => {
+            await MapLocal(myRefKee);
+            setShowHotTitle(!showHotTitle);
+            }          
+        } 
+    className='local'>
+        <path ref={myRefKee} className="st0" id="基隆市景點" d="M535.22,62.51c2.79-1.1,7.33-0.06,8.1,4.02c0.71,3.8,2.12,2.24,3.56,1.13c1.47-1.17,2.61-2.98,4.72-1.38
         c1.13,0.83,3.4,0.52,3.22,2.7c-0.18,1.99-1.93,1.99-3.47,2.36c-5.4,1.23-7.15,3.9-4.51,8.31c3.13,5.31-1.53,3.93-3.13,4.94
         c-6.69-0.18-19.11-10.67-19.72-16.26c-0.12-0.89,0.31-1.26,0.95-1.47C528.5,65.64,531.81,63.89,535.22,62.51z" />
     </NavLink>
     {/* </NavLink> */}
     {/* <NavLink to='/map' id="台北市">Taipei City 台北市 */}
-    <NavLink to='/map' className='local'>
-        <path className="st0" id="台北市景點" d="M497.73,92.67c-0.89,0.28-1.87,1.35-2.64,0.06c-0.55-0.95-0.12-2.06,0.58-2.85c2.18-2.36,2.24-5.25,2.18-8.19
+    <NavLink to='/map' 
+              onClick={async() => {
+                await MapLocal(myRefTpe);
+                setShowHotTitle(!showHotTitle);
+                }          
+            } 
+            className='local'>
+        <path ref={myRefTpe} className="st0" id="台北市景點" d="M497.73,92.67c-0.89,0.28-1.87,1.35-2.64,0.06c-0.55-0.95-0.12-2.06,0.58-2.85c2.18-2.36,2.24-5.25,2.18-8.19
         c-0.09-3.1-1.35-5.55-4.42-6.13c-4.51-0.86-3.74-3.56-1.99-5.89c2.36-3.22,4.48-6.75,8.56-8.53c2.09-0.89,3.53-3.16,5.43-4.6
         c2.48-1.87,4.85-0.86,5.25,1.75c0.77,5.06,4.72,9.02,4.48,14.36c-0.03,0.71,1.17,1.6,1.96,2.18c2.42,1.75,3.16,3.68,1.78,6.59
         c-1.69,3.56-0.8,6.93,2.52,10.03c-6.53,1.38-7.12,2.39-6.59,8.77c0.12,1.26,2.18,3.1-0.15,3.9c-1.93,0.71-4.69,0.61-5.64-1.26
@@ -151,8 +384,14 @@ const MapPage = () =>{
     </NavLink>
     {/* </NavLink> */}
     {/* <NavLink to='/map' id="宜蘭縣">Yilan County 宜蘭縣 */}
-    <NavLink to='/map' className='local'>
-        <path className="st0" id="宜蘭縣景點" d="M475.25,231.43c-2.02,1.07-2.98,1.01-4.05-0.92c-0.46-0.86-1.35-2.15-2.06-2.18c-6.32-0.03-4.88-4.94-5.83-8.62
+    <NavLink to='/map'
+          onClick={async() => {
+            await MapLocal(myRefIla);
+            setShowHotTitle(!showHotTitle);
+            }          
+        }  
+    className='local'>
+        <path ref={myRefIla} className="st0" id="宜蘭縣景點" d="M475.25,231.43c-2.02,1.07-2.98,1.01-4.05-0.92c-0.46-0.86-1.35-2.15-2.06-2.18c-6.32-0.03-4.88-4.94-5.83-8.62
         c-1.29-5,2.27-6.99,4.97-9.75c4.32-4.42,8.74-8.1,9.54-15.55c0.67-6.5,6.01-12.39,8.44-18.89c1.63-4.36,4.2-6.01,8.44-6.66
         c7.7-1.17,12.97-7.12,19.63-10.4c2.82-1.41,1.96-4.36,1.84-6.93c-0.15-3.44-0.43-5.95,4.14-8.28c6.87-3.56,15.4-4.69,20.31-11.72
         c1.38-1.96,3.5-2.02,5.61-1.44c3.8,1.07,5.98-0.34,6.56-4.2c0.67-4.2,2.45-6.47,7.3-6.84c4.91-0.4,6.53-3.8,4.97-8.47
@@ -165,8 +404,14 @@ const MapPage = () =>{
     </NavLink>
     {/* </NavLink> */}
     {/* <NavLink to='/map' id="新北市">New Taipei City 新北市 */}
-    <NavLink to='/map' className='local'>
-        <path className="st0" id="新北市景點" d="M592.06,95.58c-0.43-1.9-2.06-3.01-4.42-2.27c-2.48,0.74-5.74,0.31-6.41-1.93c-1.47-4.91-5.15-9.54-4.08-14.82
+    <NavLink to='/map'
+            onClick={async() => {
+                await MapLocal(myRefTpq);
+                setShowHotTitle(!showHotTitle);
+                }          
+            }  
+    className='local'>
+        <path ref={myRefTpq} className="st0" id="新北市景點" d="M592.06,95.58c-0.43-1.9-2.06-3.01-4.42-2.27c-2.48,0.74-5.74,0.31-6.41-1.93c-1.47-4.91-5.15-9.54-4.08-14.82
         c0.8-4.02-0.8-4.82-3.74-4.57c-4.45,0.34-8.9-0.49-13.19-0.77s-6.26,3.93-10.37,3.1c-1.23-0.28-1.81,2.67-0.74,4.32
         c1.2,1.81,3.5,3.77,0.98,5.71c-2.33,1.78-5.18,4.02-8.44,2.64c-8.31-3.56-15.86-8.07-20.06-16.41c-0.28-0.55-0.55-1.13-0.8-1.72
         c-0.92-2.18-0.15-3.19,1.9-3.77c2.3-0.67,4.63-1.35,6.84-2.3c4.17-1.78,4.94-6.47,0.98-8.07c-6.13-2.48-8.1-7.36-10.06-12.79
@@ -188,8 +433,14 @@ const MapPage = () =>{
     </NavLink>
     {/* </NavLink> */}
     {/* <NavLink to='/map' id="花蓮縣">Hualien County 花蓮縣 */}
-    <NavLink to='/map' className='local'>
-        <path className="st0" id="花蓮縣景點" d="M478.38,454.8c-5.83,9.23-9.51,19.45-13.25,29.6c-0.4,1.13-0.71,2.61-1.53,3.22
+    <NavLink to='/map'
+               onClick={async() => {
+                await MapLocal(myRefHua);
+                setShowHotTitle(!showHotTitle);
+                }          
+            }  
+    className='local'>
+        <path ref={myRefHua} className="st0" id="花蓮縣景點" d="M478.38,454.8c-5.83,9.23-9.51,19.45-13.25,29.6c-0.4,1.13-0.71,2.61-1.53,3.22
         c-4.02,2.88-3.59,7.02-3.56,11.13c0.03,2.09,0.71,4.63-2.67,5.21c-2.42,0.4-5,2.15-6.35-1.66c-0.21-0.58-0.86-1.26-1.44-1.41
         c-7.15-1.9-9.91-7.36-12.05-13.83c-1.04-3.04-3.8-5.46-7.85-3.65c-1.1,0.49-2.48,1.1-3.31-0.12c-1.78-2.64-4.69-3.53-7.33-4.39
         c-7.61-2.42-8.44-9.57-9.39-15.28c-0.98-5.71-4.11-8.37-8.16-10.83c-3.01-1.84-5.37-2.76-1.1-6.23c2.79-2.24,6.17-5.18,3.99-10.06
@@ -208,8 +459,14 @@ const MapPage = () =>{
     </NavLink>
     {/* </NavLink>
     <NavLink to='/map' id="桃園市"> */}
-    <NavLink to='/map' className='local'>
-        <path className="st0" id="桃園市景點" d="M471.54,133.68c6.63-2.36,8.59,2.82,11.26,6.78c1.44,2.15,2.06,4.32-0.71,6.2c-1.63,1.13-1.44,2.98-0.95,4.72
+    <NavLink to='/map'
+               onClick={async() => {
+                await MapLocal(myRefTao);
+                setShowHotTitle(!showHotTitle);
+                }          
+            }  
+    className='local'>
+        <path ref={myRefTao} className="st0" id="桃園市景點" d="M471.54,133.68c6.63-2.36,8.59,2.82,11.26,6.78c1.44,2.15,2.06,4.32-0.71,6.2c-1.63,1.13-1.44,2.98-0.95,4.72
         c1.26,4.36,3.04,8.44,6.78,11.26c1.53,1.13,3.07,2.94,1.32,4.11c-4.32,2.98-4.39,7.98-6.69,11.87c-0.8,1.32-1.44,2.98-2.64,3.74
         c-1.75,1.17-3.56,3.4-5.98,2.12c-2.09-1.07-2.76-3.04-3.4-5.64c-1.6-6.35-2.61-13.25-9.78-16.9c-2.85-1.44-1.13-5.8-1.87-8.77
         c-0.18-0.74,0.43-1.66,0.34-2.48c-0.12-1.32-12.82-11.72-14.14-11.56c-6.53,0.8-9.45-5.18-14.32-7.45c1.2-7.21-3.71-8.65-9.02-10.46
@@ -222,8 +479,14 @@ const MapPage = () =>{
     {/* </NavLink>
     <NavLink to='/map' id="新竹縣"> */}
     
-        <g> <NavLink to='/map' className='local'>
-            <path className="st0" id="新竹縣景點" d="M475.43,187.63c-7.42-0.83-7.91-7.42-8.77-12.21c-1.04-5.61-2.55-9.48-8.37-10.86
+        <g> <NavLink to='/map'
+                onClick={async() => {
+                    await MapLocal(myRefHsq);
+                    setShowHotTitle(!showHotTitle);
+                    }          
+                } 
+            className='local'>
+            <path ref={myRefHsq} className="st0" id="新竹縣景點" d="M475.43,187.63c-7.42-0.83-7.91-7.42-8.77-12.21c-1.04-5.61-2.55-9.48-8.37-10.86
             c-2.24-0.52-1.99-2.24-1.9-4.11c0.18-3.31,1.29-8.22-0.43-9.72c-3.5-3.01-6.72-7.7-11.1-8.44c-6.29-1.1-10.03-5.52-14.97-8.34
             c-2.06-1.2-3.28-2.82-2.3-5.55c0.86-2.3-0.31-3.83-2.7-3.74c-4.66,0.18-8.28-2.7-12.45-3.96c-2.09-0.64-4.08-1.81-3.93-4.72
             c0.21-4.45-2.39-5.15-6.72-4.23c-2.52,0.18-6.72-0.61-7.64,3.31c-0.89,3.86-3.5,6.56-4.85,10.03c-2.36,5.95-2.21,6.47,3.93,8.1
@@ -233,16 +496,28 @@ const MapPage = () =>{
             c3.8,0.74,7.48,1.01,11.07-0.67c1.38-0.64,2.91-0.71,3.8,0.52c3.04,4.05,6.26,8.07,8.71,12.51c1.9,3.37,5.74,5.18,8.65,2.76
             c1.26-1.04,1.99-2.7,2.91-4.11c5.06-7.55,14.85-11.99,14.82-22.97C476.51,189.38,477.92,187.91,475.43,187.63z" />
             </NavLink>
-            <NavLink to='/map' className='local'>
-            <path className="st0" id="新竹市景點" d="M393.26,147.2c2.94-2.7,5.34-3.53,8.5-0.06c-0.15-8.01-4.79-10.74-10.74-12.21c-1.13-0.28-2.33-0.64-3.34-1.2
+            <NavLink to='/map'
+                onClick={async() => {
+                    await MapLocal(myRefHsz);
+                    setShowHotTitle(!showHotTitle);
+                    }          
+                } 
+            className='local'>
+            <path ref={myRefHsz} className="st0" id="新竹市景點" d="M393.26,147.2c2.94-2.7,5.34-3.53,8.5-0.06c-0.15-8.01-4.79-10.74-10.74-12.21c-1.13-0.28-2.33-0.64-3.34-1.2
             c-3.04-1.75-6.41-0.58-5.92,2.67c0.8,5.67-1.07,10.71-1.93,16.01c-0.37,2.39,2.3,3.31,3.4,5c0.55,0.86,2.02-0.21,2.27-1.26
             C386.48,151.71,390.25,149.9,393.26,147.2z" />
             </NavLink>
         </g>
     {/* </NavLink>
-    <NavLink to='/map' id="臺東縣"> */}
-    <NavLink to='/map' className='local'>
-        <path className="st0" id="臺東縣景點" d="M469.64,479.28c4.48-8.25,5.86-18.07,12.45-25.24c1.69-1.81,0.64-2.98-0.77-4.26c-4.32-3.9,0-6.9,1.41-9.91
+    <NavLink to='/map' id="台東縣"> */}
+    <NavLink to='/map' 
+            onClick={async() => {
+                await MapLocal(myRefTtt);
+                setShowHotTitle(!showHotTitle);
+                }          
+            } 
+    className='local'>
+        <path ref={myRefTtt} className="st0" id="台東縣景點" d="M469.64,479.28c4.48-8.25,5.86-18.07,12.45-25.24c1.69-1.81,0.64-2.98-0.77-4.26c-4.32-3.9,0-6.9,1.41-9.91
         c1.53-3.25,4.42-5.43,8.44-4.26c2.36,0.67,3.16,2.36,2.12,4.82c-2.21,5.31-2.88,10.92-3.31,16.56c-0.09,1.23-0.12,2.58-1.38,3.13
         c-4.66,2.09-5.67,6.5-7.12,10.71c-1.29,3.77-1.29,7.98-4.63,11.07c-1.53,1.44-1.96,4.32-1.13,6.38c1.75,4.36-0.8,8.77,0.64,13.13
         c0.71,2.15-1.78,3.68-3.07,4.23c-6.56,2.82-6.5,9.45-9.17,14.57c-3.16,6.07-3.77,13.31-9.45,18.34c-3.1,2.7-3.56,7.61-5.83,11.26
@@ -262,8 +537,14 @@ const MapPage = () =>{
     </NavLink>
     {/* </NavLink>
     <NavLink to='/map' id="苗栗縣"> */}
-    <NavLink to='/map' className='local'>
-        <path className="st0" id="苗栗縣景點" d="M342.13,188.8c1.04-2.52,0.83-6.56,6.04-4.32c1.53,0.67,4.69-1.75,4.69-4.66c-0.03-6.78,5.77-11.04,12.36-8.74
+    <NavLink to='/map'
+        onClick={async() => {
+            await MapLocal(myRefMia);
+            setShowHotTitle(!showHotTitle);
+            }          
+        } 
+    className='local'>
+        <path ref={myRefMia} className="st0" id="苗栗縣景點" d="M342.13,188.8c1.04-2.52,0.83-6.56,6.04-4.32c1.53,0.67,4.69-1.75,4.69-4.66c-0.03-6.78,5.77-11.04,12.36-8.74
         c1.44,0.52,3.04,1.69,4.17,0.06c1.13-1.6-0.58-2.3-1.66-3.1c-0.28-0.25-0.55-1.04-0.55-1.17c3.74-2.36,4.05-7.12,6.9-9.91
         c1.29-1.26,3.93-0.77,5.74,0.49c0.43,0.28,0.67,0.77,0.98,1.17c3.19,3.96,10.15,1.96,11.96,9.05c1.35,5.28,7.73,7.79,11.99,11.38
         c0.77,0.67,1.53,1.44,2.45,1.84c5.89,2.45,6.53,3.56,4.14,9.26c-0.89,2.18-1.96,3.96,0.18,5.98c0.77,0.74,0.52,1.78,0.21,2.88
@@ -276,8 +557,14 @@ const MapPage = () =>{
     </NavLink>
     {/* </NavLink>
     <NavLink to='/map' id="南投縣"> */}
-    <NavLink to='/map' className='local'>
-        <path className="st0" id="南投縣景點" d="M330.84,395.14c-0.95-2.67-5.34-3.71-3.8-7.12c1.93-4.32,2.45-8.47,0.64-12.85c-0.12-0.31-0.18-0.8-0.03-1.01
+    <NavLink to='/map'
+            onClick={async() => {
+                await MapLocal(myRefNan);
+                setShowHotTitle(!showHotTitle);
+                }          
+            } 
+    className='local'>
+        <path ref={myRefNan} className="st0" id="南投縣景點" d="M330.84,395.14c-0.95-2.67-5.34-3.71-3.8-7.12c1.93-4.32,2.45-8.47,0.64-12.85c-0.12-0.31-0.18-0.8-0.03-1.01
         c3.01-3.93,3.96-7.94,1.41-12.61c-0.67-1.2,1.41-1.6,2.42-2.12c1.87-0.95,3.74-1.96,4.11-4.23c0.31-2.02,0.18-3.74-2.76-3.68
         c-6.44,0.09-9.54-3.62-7.82-10.09c1.13-4.23,1.5-8.4,1.69-12.7c0.12-2.7,0.37-5.34,2.02-7.76c1.9-2.76,0.52-5.46-1.32-8.34
         c7.12-0.43,13.47-0.37,19.97,1.26c5,1.29,7.73-3.07,9.91-6.63c2.06-3.31,2.82-7.3,7.15-8.9c1.81-0.67,1.2-3.01,1.32-4.66
@@ -294,14 +581,20 @@ const MapPage = () =>{
         C333.57,395.84,331.55,397.1,330.84,395.14z" />
     </NavLink>
     {/* </NavLink>
-    <NavLink to='/map' id="臺中市"> */}
-    <NavLink to='/map' className='local'>
+    <NavLink to='/map' id="台中市"> */}
+    <NavLink to='/map'
+        onClick={async() => {
+            await MapLocal(myRefTxg);
+            setShowHotTitle(!showHotTitle);
+            }          
+        } 
+    className='local'>
         <g>
             <path className="st0" d="M353.05,268.52c-2.09-1.72-2.82,0.03-4.17,1.07c-3.77,2.94-7.7,5.12-12.55,1.84c-1.32-0.89-3.28-0.8-4.94-1.07
             c-10.89-1.99-11.17-1.84-14.78,8.01c-0.4,1.13-0.92,2.12,0,3.34c4.2,5.83,15,8.01,20.98,4.23c1.41-0.89,1.75-1.75,1.13-3.37
             c-1.78-4.6-1.2-5.21,3.56-4.36c1.35,0.25,2.7,0.49,4.02,0.74c2.61,0.18,4.63-1.41,6.96-1.96c1.87-0.46,3.68-0.55,3.93-3.19
             C357.46,270.6,354.83,270.02,353.05,268.52z" />
-            <path className="st0" id="臺中市景點" d="M481.32,232.17c-5.83,2.27-10.37,2.48-15.58-1.99c-2.52-2.15-4.97-3.13-4.42-6.84
+            <path ref={myRefTxg} className="st0" id="台中市景點" d="M481.32,232.17c-5.83,2.27-10.37,2.48-15.58-1.99c-2.52-2.15-4.97-3.13-4.42-6.84
             c0.15-1.13,0.71-2.45-1.29-2.64c-6.38-0.64-11.35,2.02-14.51,8.16c-1.07,2.06-2.7,4.05-4.66,2.79c-3.62-2.27-5.21,0.28-6.96,2.21
             c-1.56,1.72-3.77,2.3-5.31,3.5c-5.37,4.2-10.55,8.44-17.45,9.85c-0.52,0.09-0.8,1.07-1.29,1.53c-2.61,2.55-5.98,2.67-7.48-0.28
             c-3.34-6.56-9.63-5.67-15.03-7.09c-2.73-0.67-4.57,0.58-3.83,3.65c1.26,5.18-1.72,5.74-5.83,6.66
@@ -322,8 +615,14 @@ const MapPage = () =>{
     </NavLink>
     {/* </NavLink>
     <NavLink to='/map' id="彰化縣"> */}
-    <NavLink to='/map' className='local'>
-        <path className="st0" id="彰化縣景點" d="M322.19,343.94c-0.58,5.71,3.62,9.82,10.83,11.38c-1.6,2.39-3.74,2.55-6.23,2.39
+    <NavLink to='/map'
+        onClick={async() => {
+            await MapLocal(myRefCha);
+            setShowHotTitle(!showHotTitle);
+            }          
+        } 
+    className='local'>
+        <path ref={myRefCha} className="st0" id="彰化縣景點" d="M322.19,343.94c-0.58,5.71,3.62,9.82,10.83,11.38c-1.6,2.39-3.74,2.55-6.23,2.39
         c-8.16-0.52-16.04-3.31-24.39-2.73c-4.11,0.31-7.98-1.99-11.59-3.9c-6.01-3.13-12.3-1.78-18.4-1.26c-5.92,0.52-11.63,0.15-17.33-1.1
         c-1.32-0.31-3.9-0.83-1.44-3.34c6.29-6.5,8.62-15.4,13.56-22.76c0.18-0.28,0.58-0.71,0.49-0.86c-3.22-5.67,4.79-7.3,4.36-12.09
         c-0.18-1.96,1.78-3.62,3.37-4.26c5.09-2.02,7.21-6.93,10.61-10.55c2.67-2.85,1.44-7.48,2.94-11.2c1.78-4.39,5.83-6.53,8.13-10.28
@@ -333,8 +632,14 @@ const MapPage = () =>{
     </NavLink>
     {/* </NavLink>
     <NavLink to='/map' id="屏東縣"> */}
-    <NavLink to='/map' className='local'>
-        <path className="st0" id="屏東縣景點" d="M328.82,557.22c1.78,4.88,5.21,3.19,7.98,1.75c6.32-3.34,9.23-3.31,13.19,2.3c3.1,4.36,5.34,4.51,9.36,1.1
+    <NavLink to='/map'
+        onClick={async() => {
+            await MapLocal(myRefPif);
+            setShowHotTitle(!showHotTitle);
+            }          
+        } 
+    className='local'>
+        <path ref={myRefPif} className="st0" id="屏東縣景點" d="M328.82,557.22c1.78,4.88,5.21,3.19,7.98,1.75c6.32-3.34,9.23-3.31,13.19,2.3c3.1,4.36,5.34,4.51,9.36,1.1
         c5.15-4.39,9.45-2.48,11.1,4.2c0.46,1.9,1.2,3.59,3.44,3.99c3.74,0.67,3.93,3.22,3.37,6.26c-0.4,1.99-0.49,4.08-0.89,6.07
         c-0.64,3.19-1.66,6.07-5.86,5.71c-2.3-0.21-3.9,0.92-5.15,2.82c-0.52,0.83-1.32,1.9-2.12,2.02c-11.13,1.87-11.35,12.42-15.49,19.66
         c-1.53,2.7-1.29,6.35-2.27,9.45c-1.5,4.75,1.9,8.13,3.1,12.09c0.55,1.81,1.07,3.07-0.34,4.6c-2.52,2.73-1.04,5.34,0.98,7.18
@@ -351,7 +656,13 @@ const MapPage = () =>{
     </NavLink>
     {/* </NavLink>
     <NavLink to='/map' id="高雄市"> */}
-    <NavLink to='/map' className='local'>
+    <NavLink to='/map'
+        onClick={async() => {
+            await MapLocal(myRefKhh);
+            setShowHotTitle(!showHotTitle);
+            }          
+        } 
+    className='local'>
         <g>
             <path   
             d="M275.75,625.62c0.58-3.1-1.53-5.89-5.21-6.41c-2.18-0.31-4.42-0.37-6.63-0.52c-2.61-0.15-3.01-1.29-2.21-3.74
@@ -360,7 +671,7 @@ const MapPage = () =>{
             c-1.66,1.44-2.52,3.1-1.66,5.46c3.71,10.15,10.24,18.37,17.88,25.83c0.49,0.46,1.29,1.26,1.59,1.13
             C272.07,630.77,275.17,628.72,275.75,625.62z"            
             />
-            <path id="高雄市景點" className="st0" d="M398.75,453.91c-5.12-3.31-4.85-2.91-1.38-8.28c1.47-2.24,4.94-2.76,4.85-6.2
+            <path ref={myRefKhh} id="高雄市景點" className="st0" d="M398.75,453.91c-5.12-3.31-4.85-2.91-1.38-8.28c1.47-2.24,4.94-2.76,4.85-6.2
             c-0.12-6.35-5.89-11.17-12.18-9.88c-10.8,2.21-19.85,6.96-24.6,17.67c-0.34,0.77-0.83,1.66-1.5,2.02
             c-6.81,3.59-12.55,8.53-18.47,13.34c-3.9,3.16-7.7,8.9-14.32,4.08c-1.44-1.01-2.91,0.58-3.31,2.27c-0.46,2.06-0.06,3.93,0.83,5.95
             c1.75,3.96,2.02,7.52-0.21,12.05c-3.93,7.94-12.42,13.07-13.56,22.58c-0.09,0.71-0.95,1.44-1.63,1.93
@@ -381,8 +692,14 @@ const MapPage = () =>{
     </NavLink>
     {/* </NavLink>
     <NavLink to='/map' id="雲林縣"> */}
-    <NavLink to='/map' className='local'>
-        <path className="st0" id="雲林縣景點" d="M343.08,403.73c-4.23,0.86-9.36,1.01-13.25-1.6c-2.18-1.5-4.05-1.69-6.13-1.07
+    <NavLink to='/map'
+        onClick={async() => {
+            await MapLocal(myRefYun);
+            setShowHotTitle(!showHotTitle);
+            }          
+        }    
+    className='local'>
+        <path ref={myRefYun} className="st0" id="雲林縣景點" d="M343.08,403.73c-4.23,0.86-9.36,1.01-13.25-1.6c-2.18-1.5-4.05-1.69-6.13-1.07
             c-7.24,2.09-18.28,0.09-22.36-7.67c-1.35-2.48-3.59-3.19-6.59-2.27c-4.63,1.44-9.36,3.19-14.29,0.71c-1.93-0.98-3.13,0.74-4.42,1.81
             c-5.03,4.17-10.21,8.16-16.1,11.1c-1.5,0.77-2.61,1.9-3.5,3.53c-1.01,1.84-2.33,4.08-5.61,2.24c-2.58-1.44-4.2,0.55-4.29,3.25
             c-0.12,4.17-2.02,5.15-5.67,3.59c-0.61-0.28-1.35-0.55-1.99-0.46c-2.98,0.46-7.88-0.03-8.04-1.41c-0.52-4.02-2.79-7.48-2.7-11.69
@@ -396,13 +713,27 @@ const MapPage = () =>{
     <NavLink to='/map' id="嘉義縣"> */}
     
         <g> 
-            <NavLink to='/map' className='local'>
-            <path className="st0" id="嘉義市景點" d="M287.53,418.85c-1.93-0.92-4.94,2.98-8.16,3.47c-1.32,0.18-0.03,1.6,0.15,2.52c0.95,4.11,5.64,3.9,7.85,6.81
+            <NavLink to='/map'
+                // key={myRefCyi}
+                onClick={async() => {
+                    await MapLocal(myRefCyi);
+                    setShowHotTitle(!showHotTitle);
+                    }          
+                }
+            className='local'>
+            <path ref={myRefCyi} className="st0" id="嘉義市景點" d="M287.53,418.85c-1.93-0.92-4.94,2.98-8.16,3.47c-1.32,0.18-0.03,1.6,0.15,2.52c0.95,4.11,5.64,3.9,7.85,6.81
             c1.07,1.38,2.55-1.99,4.08-2.91c1.41-0.83,2.48-0.55,3.83,0c2.06,0.83,2.7-0.64,3.13-2.15c-0.15-0.46-0.18-0.83-0.34-1.1
             C295.75,421.49,291.15,420.6,287.53,418.85z" />
             </NavLink>
-            <NavLink to='/map' className='local'>
-            <path className="st0" id="嘉義縣景點" d="M375.75,427.84c-7.48,2.91-12.15,0.06-13.83-7.91c-0.18-0.83-0.37-1.78-0.86-2.39
+            <NavLink to='/map'
+                // key={myRefCyq}
+                onClick={async() => {
+                    await MapLocal(myRefCyq);
+                    setShowHotTitle(!showHotTitle);
+                    }          
+                }                  
+            className='local'>
+            <path ref={myRefCyq} className="st0" id="嘉義縣景點" d="M375.75,427.84c-7.48,2.91-12.15,0.06-13.83-7.91c-0.18-0.83-0.37-1.78-0.86-2.39
             c-2.27-2.88-2.42-5.55-0.74-9.02c2.36-4.85,0.58-7.45-4.69-8.37c-1.69-0.31-3.28-1.07-4.94-1.5c-2.94-0.77-5.61-1.26-4.66,3.53
             c0.43,2.18-0.31,5.86-2.79,4.82c-5.58-2.33-12.97,3.34-17.18-4.08c-0.49-0.86-1.5,0.15-2.3,0.4c-8.5,2.58-16.72,0.89-21.99-5.67
             c-3.86-4.82-7.55-4.02-11.81-3.4c-3.25,0.49-6.35,2.85-9.75,0.4c-0.34-0.25-1.5,0.15-1.81,0.61c-3.4,4.63-10.49,4.97-12.7,10.98
@@ -420,15 +751,22 @@ const MapPage = () =>{
             C289.46,415.14,301.64,422.38,301.24,426.67z" />
             </NavLink>
         </g>
-    {/* </NavLink>
-    <NavLink to='/map' id="臺南市"> */}
-    <NavLink to='/map' className='local'>
+     
+        <NavLink to='/map'
+            // key={myRefTnn}
+            onClick={async() => {
+                await MapLocal(myRefTnn);
+                setShowHotTitle(!showHotTitle);
+                }          
+            }  
+            className='local'
+        >
         <g>
             <path className="st0" d="M242.16,536.36c5.18-2.09,5.12-4.6,1.6-7.85c-4.39-4.05-4.05-7.61,0.58-11.04c0.71-0.52,1.63-1.01,1.04-1.93
             c-0.4-0.64-1.41-1.35-2.09-1.29c-4.36,0.49-7.73-1.84-11.41-3.47c-4.82-2.15-13.31,0.64-16.13,4.72c-1.5,2.15-1.63,3.65,0.98,4.85
             c3.04,1.38,5.09,4.08,7.76,5.89c3.19,2.18,4.23,7.91,10.03,6.13c1.1-0.34,0.52,1.69,0.92,2.48c1.47,3.13-2.39,6.13,0.15,9.69
             C237.93,541.54,239.03,537.62,242.16,536.36z" />
-            <path className="st0" id="臺南市景點" d="M326.36,481.55c-3.22-0.4-7.48-1.78-9.57-0.31c-3.86,2.73-6.41,0.92-9.88,0.09c-5.18-1.26-5.28-3.83-3.59-7.82
+            <path ref={myRefTnn} className="st0" id="台南市景點" d="M326.36,481.55c-3.22-0.4-7.48-1.78-9.57-0.31c-3.86,2.73-6.41,0.92-9.88,0.09c-5.18-1.26-5.28-3.83-3.59-7.82
             c0.18-0.43-0.58-1.23-0.64-1.87c-0.52-3.9-1.35-7.85,0.67-11.56c1.07-2.02,0.18-2.79-1.53-3.4c-3.77-1.38-4.29-5.55-6.44-8.25
             c-2.76-3.47-6.2-6.29-10.58-6.44c-7.85-0.25-15.18,0.55-21.47,5.77c-0.37,0.34-0.92,0.55-1.41,0.61c-2.55,0.25-4.05,1.44-5.55,3.71
             c-3.53,5.25-9.66,8.04-13.37,13.25c-0.74,1.04-2.27,0.64-3.34,1.01c-5.15,1.75-7.3-3.44-11.17-4.72c-1.9-0.61-3.8-2.64-5.31-0.15
@@ -440,22 +778,44 @@ const MapPage = () =>{
             c10.49-7.76,13.25-20.4,21.81-29.02c0.92-0.92,1.23-2.45,1.9-3.62C327.68,482.9,327.5,481.7,326.36,481.55z" />
         </g>
         </NavLink>
-        <NavLink to='/map' className='local'>
-        <path id="連江縣景點" transform="scale(5) translate(-20, -90)"
+        
+
+        
+        <NavLink to='/map'
+            // key={myRefLie}
+            onClick={async() => {
+                await MapLocal(myRefLie);
+                setShowHotTitle(!showHotTitle);
+                }          
+            }  
+            className='local'
+        >
+        <path ref={myRefLie} className="st0" id='連江縣景點'  transform="scale(5) translate(-20, -90)"
         d="M45.79,102l-.27,3,.54,3.26-.54,1.9,4.34.54,3.26-.81,4.34-3.53-1.9-2.44-2.17,1.9-3,.54-1.63-2.17-3-2.17Z" ></path>
-        </NavLink>
-        <NavLink to='/map' className='local'>
-        <path className="st0" id ="金門縣景點" transform="scale(5) translate(-50, -190)"
+        </NavLink>       
+        
+        <NavLink to='/map'
+            // key={myRefKin}
+            onClick={async() => {
+                await MapLocal(myRefKin);
+                setShowHotTitle(!showHotTitle);
+                }          
+            }  
+            className='local'
+        >
+        <path ref={myRefKin}  className="st0" id='金門縣景點' transform="scale(5) translate(-50, -190)"
         d="M65.59,235.62,65,236l-.44.5-1.69-.25-.63.31-.31.69v1.88l-.31.63-.06.88-.56.44h-.94l-.63.31.19.94.44.63-.31.69-.56.56-.69.25h-.25l.44.75,1.76.13.31.82.88-.06L63,244.28l.75-.19.82.19.38.56.69-.31.38-.63L66,243l.38-.63,1.82-.06.82-.25.44-.5,1-2.89-.13-.82-2.07-1.26-.5-.56-.63-.31-.88-.19-.63.06Z"
         ></path>
         </NavLink>
-        
-        <NavLink to='/map' 
-            onClick={async() => 
-                // setHotspot([...hotspot])
-            MapLocal(myRef)
-            } className='local'>
-        
+
+        <NavLink to='/map'
+            key={myRef}
+            onClick={async() => {
+                await MapLocal(myRef);
+                setShowHotTitle(!showHotTitle);
+                }          
+            } 
+            className='local'>        
         <path ref={myRef} className="st0" id ="澎湖縣景點" transform="scale(5) translate(-65, -340)"
         d="M77.44,422.09l-2,1.71-.79.24h-.92l.43.79v.92l-.18.85-1.22,1-.12.92.67.37,1.65-.73.67-.49,1,.06.61.43.55.61-1.83,2-.92.12-1.83-.31,
         1,1.16,1.4.61,1.1-.12.79-.49,2.74.06.55.73.3.79-.91,1.46-.12.49.79.55-.06.67-.73.73-.79-.06-.55-.49L78,436.3l-.91.12L76,438.74l-1,1.1.43.73,
@@ -465,11 +825,15 @@ const MapPage = () =>{
     {/* </NavLink> */}
     </svg>
     </div>
-        <div className='local-info-box'>
+    <div style={{ display: isLoading ? 'block' : 'none' }}>Loading...</div>
+        <div className='local-info-box' >
             {/* 放我的熱門景點R */}
+            <h3 className='h3-hotspot' style={{ display: showHotTitle ? 'block' : 'none' }}>前三熱門景點</h3>
             <p>{hotspot[0]}</p>
             <p>{hotspot[1]}</p>
-            <p>{hotspot[2]}</p> 
+            <p>{hotspot[2]}</p>
+            <hr className='info-hr' style={{ display: showHotTitle ? 'block' : 'none' }}/>
+            <h3 style={{ display: showHotTitle ? 'block' : 'none' }}>該區當季可見鳥種</h3>
             {birdTWname.map((birdName, index) => (
                 <div key={index}>
                     <div>{birdName}</div>
@@ -478,7 +842,11 @@ const MapPage = () =>{
                     </div>
                     {/* 記得在這下方要製作更多景點連結Navlink */}
                 </div>                
-            ))}            
+            ))}
+            <NavLink to='\regionList' className='more-hotspot'                
+                style={{ display: showHotTitle ? 'block' : 'none' }}>
+                更多景點
+            </NavLink>            
         </div>
     </div>{/* map-box */}
     </div>

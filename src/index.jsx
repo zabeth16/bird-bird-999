@@ -4,6 +4,8 @@ import { createRoot } from "react-dom/client";
 import React from "react";
 import   HomePage    from "./pages/HomePage.jsx"
 import MapPage from './pages/MapPage.jsx';
+import RegionListPage from './pages/RegionListPage.jsx';
+import HotspotPage from "./pages/HotspotPage.jsx";
 
 function App(){
     return (
@@ -12,6 +14,8 @@ function App(){
         <Routes>
             <Route path="/"  element={<HomePage />} />
             <Route path="/map"  element={<MapPage />}/>
+            <Route path="/regionList/:code"  element={<RegionListPage />}/>
+            <Route path="/hotspot/:code" element={<HotspotPage />} />
             {/* <Route path="/list" element={<ListPage />} /> */}
         </Routes>
         </Router>

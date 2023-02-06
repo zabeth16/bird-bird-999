@@ -65,18 +65,17 @@ const MapPage = () =>{
     const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {           
         setIsLoading(false);
-    }, []);
-    // 每個地區 ref 點擊用
-    // const refs = Array.from({ length: 22 }, () => useRef(null));
-    
+    }, []);    
     // 熱門景點
     const [hotspot, setHotspot] = useState([]);
     // 該區熱門鳥種name
     const [birdTWname, setbirdTWname] = useState([])
     // 該區熱門鳥種photo
     const [birdTWphoto, setbirdTWphoto] = useState([])
-    // 用MapLocal(myRef) 拿到該區域，再串API
+    // 該區代碼，往景點列表用
+    const [regionCode, setRegionCode] = useState('');
 
+    // 用MapLocal(myRef) 拿到該區域，再串API
     const MapLocal= async (myRef) =>{
         // Loading動畫
         setIsLoading(true)        
@@ -90,7 +89,7 @@ const MapPage = () =>{
                 try {
                     const docSnap = await getDoc(doc(db, "TW", pathId));
                     // console.log(docSnap.data().hotspot[0].locId)
-                    const regionCode = docSnap.data().hotspot[0].regionCode
+                    const regionCode = docSnap.data().hotspot[0].regionCode                    
                     const locId = docSnap.data().hotspot[0].locId
                     // 串API囉各位           
                     fetch("https://api.ebird.org/v2/ref/hotspot/" + regionCode  , requestOptions)
@@ -158,8 +157,10 @@ const MapPage = () =>{
                                     setbirdTWphoto([
                                         birdPhoto1, birdPhoto2 , birdPhoto3
                                     ])
-                                    setIsLoading(false)
-                                    showInfoBox();                              
+                                    setIsLoading(false);
+                                    showInfoBox();
+                                    setShowHotTitle(true);
+                                    setRegionCode(regionCode)                              
                                 })
 
                               } else if (season === '夏') {
@@ -213,8 +214,10 @@ const MapPage = () =>{
                                     setbirdTWphoto([
                                         birdPhoto1, birdPhoto2 , birdPhoto3
                                     ])
-                                    setIsLoading(false)
+                                    setIsLoading(false);
                                     showInfoBox();
+                                    setShowHotTitle(true);
+                                    setRegionCode(regionCode);
                                 })
 
                               } else if (season === '秋') {
@@ -268,8 +271,10 @@ const MapPage = () =>{
                                     setbirdTWphoto([
                                         birdPhoto1, birdPhoto2 , birdPhoto3
                                     ])
-                                    setIsLoading(false)
+                                    setIsLoading(false);
                                     showInfoBox();
+                                    setShowHotTitle(true);
+                                    setRegionCode(regionCode);
                                 })
                               } else if (season === '冬') {
                                 // fetch冬季的API
@@ -322,8 +327,10 @@ const MapPage = () =>{
                                     setbirdTWphoto([
                                         birdPhoto1, birdPhoto2 , birdPhoto3
                                     ])
-                                    setIsLoading(false)
+                                    setIsLoading(false);
                                     showInfoBox();
+                                    setShowHotTitle(true);
+                                    setRegionCode(regionCode);                                    
                                 })
                               }
 
@@ -843,7 +850,7 @@ const MapPage = () =>{
                     {/* 記得在這下方要製作更多景點連結Navlink */}
                 </div>                
             ))}
-            <NavLink to='\regionList' className='more-hotspot'                
+            <NavLink to={`/regionList/${regionCode}`} className='more-hotspot'                
                 style={{ display: showHotTitle ? 'block' : 'none' }}>
                 更多景點
             </NavLink>            

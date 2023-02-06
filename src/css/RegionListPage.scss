@@ -1,0 +1,26 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family:  'Noto Sans TC';
+}
+#map {
+    height: 400px;
+    width: 100%;
+}
+
+.main{
+    // width: 1200px;
+    display: flex;
+    justify-content: center;
+}
+.bar-box{
+    background-color: rgb(199, 199, 168);
+}
+.bar{
+    background-color: rgb(249, 216, 50);
+}
+.hotspot-link{
+    text-decoration: none;
+    cursor: pointer;
+    color: rgb(36, 146, 71);
+}

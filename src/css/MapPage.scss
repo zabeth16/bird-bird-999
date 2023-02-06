@@ -3,6 +3,10 @@ body{
     padding: 0;
     font-family:  'Noto Sans TC';
 }
+.main{
+    display: flex;
+    justify-content: center;
+}
 .local:hover {
     transform: translate(-3px, -3px);
     filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));

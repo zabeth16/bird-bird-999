@@ -68,6 +68,7 @@ const MapPage = () =>{
     }, []);    
     // 熱門景點
     const [hotspot, setHotspot] = useState([]);
+    const [hotspotId, setHotspotId] = useState([])
     // 該區熱門鳥種name
     const [birdTWname, setbirdTWname] = useState([])
     // 該區熱門鳥種photo
@@ -105,10 +106,15 @@ const MapPage = () =>{
                             
                             const sorted = arr.sort((a, b) => b.num - a.num);                                                     
                             // console.log(sorted[0],sorted[1],sorted[2]);
-                            const hotspot1 = sorted[0].name
-                            const hotspot2 = sorted[1].name
-                            const hotspot3 = sorted[2].name
+                            const filterNan = sorted.filter(item => !isNaN(item.num));
+                            const hotspot1 = filterNan[0].name
+                            const hotspot2 = filterNan[1].name
+                            const hotspot3 = filterNan[2].name
+                            const hotspot1ID = filterNan[0].localId
+                            const hotspot2ID = filterNan[1].localId
+                            const hotspot3ID = filterNan[2].localId
                             setHotspot([hotspot1, hotspot2, hotspot3]);
+                            setHotspotId([hotspot1ID, hotspot2ID, hotspot3ID])
                             // 進階搜尋各季節鳥類，且要拿出台灣特有種
                             if (season === '春') {
                                 // fetch春季的API
@@ -132,7 +138,7 @@ const MapPage = () =>{
                                         bird => speciesCodes.includes(bird.spp_code) );
                                     // console.log(birdSpecial)
                                     const threeBirdSpecial = birdSpecial.slice(0, 3);
-                                    // console.log(threeBirdSpecial);
+                                    // console.log(threeBirdSpecial);                                
                                     const threeBirdName = threeBirdSpecial.map(name => name.ch_name)
                                     const threeBirdPhoto = threeBirdSpecial.map(photo =>photo.img)
                                     const newBirdPhotos = threeBirdPhoto.map(photo => photo.replace("'", "\""));
@@ -836,9 +842,15 @@ const MapPage = () =>{
         <div className='local-info-box' >
             {/* 放我的熱門景點R */}
             <h3 className='h3-hotspot' style={{ display: showHotTitle ? 'block' : 'none' }}>前三熱門景點</h3>
-            <p>{hotspot[0]}</p>
-            <p>{hotspot[1]}</p>
-            <p>{hotspot[2]}</p>
+            <p>
+                <NavLink to={`/hotspot/${hotspotId[0]}`} className='hotspot-link'>{hotspot[0]}</NavLink>
+            </p>
+            <p>
+                <NavLink to={`/hotspot/${hotspotId[1]}`} className='hotspot-link'>{hotspot[1]}</NavLink>
+            </p>
+            <p>
+                <NavLink to={`/hotspot/${hotspotId[2]}`} className='hotspot-link'>{hotspot[2]}</NavLink>
+            </p>
             <hr className='info-hr' style={{ display: showHotTitle ? 'block' : 'none' }}/>
             <h3 style={{ display: showHotTitle ? 'block' : 'none' }}>該區當季可見鳥種</h3>
             {birdTWname.map((birdName, index) => (

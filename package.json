@@ -24,7 +24,9 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
+    "@googlemaps/js-api-loader": "^1.15.1",
     "babel-loader": "^9.1.2",
+    "dotenv": "^16.0.3",
     "firebase": "^9.16.0",
     "firestore": "^1.1.6",
     "html-webpack-plugin": "^5.5.0",

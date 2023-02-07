@@ -8,6 +8,7 @@ import Base from '../pages/Base.jsx'
 import db from './../../firebase-servise.js';
 import { requestOptions } from './page_control/eBird.jsx';
 import { async } from '@firebase/util';
+import loader from './page_control/googleMap.jsx';
 
 
 const HotspotPage = ()=>{
@@ -16,6 +17,8 @@ const HotspotPage = ()=>{
     const [hotspotLat, setHotspotLat] = useState("");
     const [hotspotLng, setHotspotLng] = useState("");
     const [birds, setBirds] = useState([]);
+    // 只顯示前五個鳥種
+    const [showCount, setShowCount] = useState(5);
     useEffect(() => {
         const getHotspotInfo = async() =>{           
             // 該區詳細
@@ -29,8 +32,22 @@ const HotspotPage = ()=>{
                 setHotspotName(data.name)
                 setHotspotLat(data.lat)
                 setHotspotLng(data.lng)
+                // 該區google map
+                loader.load().then(() => {
+                    const target = { lat: data.lat, lng: data.lng }
+                    const map = new google.maps.Map(document.getElementById("map"), {
+                    center: target,
+                    zoom: 18,
+                    });
+                    // The marker, positioned at center
+                    const marker = new google.maps.Marker({
+                        position: target,
+                        map: map,
+                        icon: 'https://images.plurk.com/1WrhkGlC1xDtqnFEPkz6sA.png',
+                        animation: google.maps.Animation.BOUNCE
+                    });
                 })
-                // 該區spplist
+            })
             .catch(error => console.log('error', error));
         }
         getHotspotInfo();
@@ -48,14 +65,9 @@ const HotspotPage = ()=>{
                         bird => data.includes(bird.spp_code) );
                 // console.log(birdData)
                 const birdName = birdData.map(name => name.ch_name)
+                const birdCode = birdData.map(item => item.spp_code)
                 // console.log(birdName)
-                // // const birdNameArray = birdName.split(",")
-                // console.log(birdNameArray)
-             
-                setBirds(birdName)     
-                
-                // console.log("篩選出來的鳥名" , birdName)
-                
+                setBirds(birdName)                    
             })
             .catch(error => console.log('error', error));
         }
@@ -74,11 +86,27 @@ const HotspotPage = ()=>{
             <div className='bird-title'>
                 該地區的可見鳥鳥
             </div>
-            {birds.map((bird) => (
+            {/* {birds.map((bird) => (
                     <div key={bird} className='bird'>{bird}</div>
+            ))} */}
+            {/* 前五個鳥鳥 */}
+            {birds.slice(0, showCount).map((bird) => (
+                <div key={bird} className='bird'>{bird}</div>
             ))}
+            {/* 點擊則顯示後續的鳥鳥 */}
+            {showCount < birds.length && (
+                <button onClick={() => setShowCount(birds.length)}>Show More </button>
+            )}
+            {/* 收合回到一開始的五個鳥鳥 */}
+            {showCount === birds.length ? (
+                <button onClick={() => setShowCount(5)}> Show Less </button>
+            ) : null}
+
+            <div id='map'></div>    
+                    
+
         </div>    
-       
+       <div>鳥友照片展示區</div>
         
                 
         

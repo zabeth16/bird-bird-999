@@ -3,3 +3,5 @@ node_modules/
 /data/bird-bird-999-firebase-adminsdk-dholn-8396958ff1.json
 
 data/
+.env
+page_control/

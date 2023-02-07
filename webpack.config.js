@@ -8,7 +8,8 @@ module.exports = {
   entry: "./src/index.jsx",
   output: {
     filename: "main.js", // 編譯後的檔名
-    path: path.resolve(__dirname, "dist") // 編譯後要放在哪個資料夾
+    path: path.resolve(__dirname, "dist"), // 編譯後要放在哪個資料夾
+    publicPath: "/", // required for font loading on historyApiFallback
   },
   plugins: [
     new HtmlWebpackPlugin({

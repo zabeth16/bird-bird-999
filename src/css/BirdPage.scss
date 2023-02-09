@@ -1,0 +1,97 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family:  'Noto Sans TC';
+    
+}
+
+.content{
+    width: 1200px;
+    height: 550px;
+    position: relative;
+    // background-image: url("https://memeprod.ap-south-1.linodeobjects.com/user-template/e5351bdbfe1d096a5eb9438d7dcae3e4.png");
+    background-image: url( "https://png.pngtree.com/thumb_back/fh260/background/20210916/pngtree-noise-texture-black-background-image_901302.jpg");
+    // mix-blend-mode: exclusion;
+    object-fit: contain;
+    filter:brightness(1) blur(5);
+    // opacity: 0.5;
+    z-index: 10;
+    // display: flex;
+    // justify-content: center;
+    
+    
+}
+.big-sci-box{
+    width: 1000px;
+}
+.big-sci-name {
+    position: absolute;
+    top: 20px;
+    left: 150px;
+    font-size: 100px;
+    color: rgb(255, 255, 255);
+    font-weight: 1000;
+    z-index: 5;
+    opacity: 0.8;
+    // transition: height 1s ease-in-out;
+    // height: 0;
+    
+}
+// 有要做動畫再說
+// .big-sci-name.expanded {
+//     height: auto;
+// }
+
+.bird-img-backgound{
+    width: 1200px;
+    height: 550px;
+    object-fit: cover;
+    filter: brightness(0.7) grayscale(0.3);
+    z-index: -1;
+    // mix-blend-mode: overlay;
+    mix-blend-mode: exclusion;
+}
+
+.img-box{
+    width: 500px;
+    height: 300px;
+}
+.bird-img{
+    object-fit: cover;
+    width: 500px;
+    height: 300px;
+    position: absolute;
+    top: 100px;
+    left: 20%;
+    // z-index: 6;
+}
+
+.bird-name-card{
+    position: absolute;
+    background-color: rgb(255, 255, 255);
+    width: 200px;
+    height: auto;
+    top: 350px;
+    left: 150px;
+    opacity: 0.8;
+    padding: 10px;
+}
+.bird-name{
+    font-weight: 1000;
+    font-size: 20px;
+}
+.audio{
+    position: absolute;
+    top: 145px;
+    right: 50px;
+
+}
+.call-audio{
+    position: absolute;
+    top: 380px;
+    right: 200px;
+    width: 100px;
+    height: 100px;
+    border-radius: 999em;
+    cursor: pointer;
+}

@@ -6,6 +6,9 @@ import   HomePage    from "./pages/HomePage.jsx"
 import MapPage from './pages/MapPage.jsx';
 import RegionListPage from './pages/RegionListPage.jsx';
 import HotspotPage from "./pages/HotspotPage.jsx";
+import BirdPage from "./pages/BirdPage.jsx";
+import ExplorePage from "./pages/ExplorePage.jsx";
+
 
 function App(){
     return (
@@ -16,6 +19,8 @@ function App(){
             <Route path="/map"  element={<MapPage />}/>
             <Route path="/regionList/:code"  element={<RegionListPage />}/>
             <Route path="/hotspot/:code" element={<HotspotPage />} />
+            <Route path="/bird/:code" element={<BirdPage />} />
+            <Route path="/explore" element={< ExplorePage/>} />
             {/* <Route path="/list" element={<ListPage />} /> */}
         </Routes>
         </Router>

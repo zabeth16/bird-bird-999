@@ -17,6 +17,7 @@ const HotspotPage = ()=>{
     const [hotspotLat, setHotspotLat] = useState("");
     const [hotspotLng, setHotspotLng] = useState("");
     const [birds, setBirds] = useState([]);
+    const [birdCode, setBirdCode] = useState([]);
     // 只顯示前五個鳥種
     const [showCount, setShowCount] = useState(5);
     useEffect(() => {
@@ -37,7 +38,7 @@ const HotspotPage = ()=>{
                     const target = { lat: data.lat, lng: data.lng }
                     const map = new google.maps.Map(document.getElementById("map"), {
                     center: target,
-                    zoom: 18,
+                    zoom: 15,
                     });
                     // The marker, positioned at center
                     const marker = new google.maps.Marker({
@@ -67,7 +68,8 @@ const HotspotPage = ()=>{
                 const birdName = birdData.map(name => name.ch_name)
                 const birdCode = birdData.map(item => item.spp_code)
                 // console.log(birdName)
-                setBirds(birdName)                    
+                setBirds(birdName)
+                setBirdCode(birdCode)                    
             })
             .catch(error => console.log('error', error));
         }
@@ -90,8 +92,10 @@ const HotspotPage = ()=>{
                     <div key={bird} className='bird'>{bird}</div>
             ))} */}
             {/* 前五個鳥鳥 */}
-            {birds.slice(0, showCount).map((bird) => (
-                <div key={bird} className='bird'>{bird}</div>
+            {birds.slice(0, showCount).map((bird , index) => (
+                <div key={bird} >
+                <NavLink to={`/bird/${birdCode[index]}`} className='bird'>{bird}</NavLink>    
+                </div>
             ))}
             {/* 點擊則顯示後續的鳥鳥 */}
             {showCount < birds.length && (

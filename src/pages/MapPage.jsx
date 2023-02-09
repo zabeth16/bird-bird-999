@@ -75,6 +75,8 @@ const MapPage = () =>{
     const [birdTWphoto, setbirdTWphoto] = useState([])
     // 該區代碼，往景點列表用
     const [regionCode, setRegionCode] = useState('');
+    // 鳥種代碼，往鳥類圖鑑頁面用
+    const [birdCode, setBirdCode] = useState([]);
 
     // 用MapLocal(myRef) 拿到該區域，再串API
     const MapLocal= async (myRef) =>{
@@ -143,13 +145,17 @@ const MapPage = () =>{
                                     const threeBirdPhoto = threeBirdSpecial.map(photo =>photo.img)
                                     const newBirdPhotos = threeBirdPhoto.map(photo => photo.replace("'", "\""));
                                     // console.log("鳥名", threeBirdName,"鳥照", newBirdPhotos)
+                                    const threeBirdCode = threeBirdSpecial.map(name => name.spp_code)
+
                                     if (! newBirdPhotos[1]){
                                         newBirdPhotos[1] = "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/251151871/1200"
                                         threeBirdName[1] = "喜鵲"
+                                        threeBirdCode[1] = "orimag1"
                                     }
                                     if (! newBirdPhotos[2]){
                                         newBirdPhotos[2] = "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/254741801/1200"
                                         threeBirdName[2] = "蒼鷺"
+                                        threeBirdCode[2] = "graher1"
                                     }
                                     const birdName1 = threeBirdName[0]
                                     const birdName2 = threeBirdName[1]
@@ -157,11 +163,17 @@ const MapPage = () =>{
                                     const birdPhoto1 = `${newBirdPhotos[0]}`;
                                     const birdPhoto2 = `${newBirdPhotos[1]}`;
                                     const birdPhoto3 = `${newBirdPhotos[2]}`;
+                                    const birdCode1 = threeBirdCode[0];
+                                    const birdCode2 = threeBirdCode[1];
+                                    const birdCode3 = threeBirdCode[2];
                                     setbirdTWname([
                                         birdName1, birdName2 , birdName3,                                
                                     ])
                                     setbirdTWphoto([
                                         birdPhoto1, birdPhoto2 , birdPhoto3
+                                    ])
+                                    setBirdCode([
+                                        birdCode1 , birdCode2, birdCode3
                                     ])
                                     setIsLoading(false);
                                     showInfoBox();
@@ -195,18 +207,22 @@ const MapPage = () =>{
                                     const threeBirdName = threeBirdSpecial.map(name => name.ch_name)
                                     const threeBirdPhoto = threeBirdSpecial.map(photo =>photo.img)
                                     const newBirdPhotos = threeBirdPhoto.map(photo => photo.replace("'", "\""));
+                                    const threeBirdCode = threeBirdSpecial.map(name => name.spp_code)
                                     // console.log("鳥名", threeBirdName,"鳥照", newBirdPhotos)
                                     if (! newBirdPhotos[0]){
                                         newBirdPhotos[0] = "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/254741801/1200"
                                         threeBirdName[0] = "蒼鷺"
+                                        threeBirdCode[0] = "graher1"
                                     }
                                     if (! newBirdPhotos[1]){
                                         newBirdPhotos[1] = "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/158684261/1200"
                                         threeBirdName[1] = "白頭翁"
+                                        threeBirdCode[1] = "livbul1"
                                     }
                                     if (! newBirdPhotos[2]){
                                         newBirdPhotos[2] = "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/158482801/1800"
                                         threeBirdName[2] = "山麻雀"
+                                        threeBirdCode[2] = "russpa2"
                                     }
                                     const birdName1 = threeBirdName[0]
                                     const birdName2 = threeBirdName[1]
@@ -214,11 +230,17 @@ const MapPage = () =>{
                                     const birdPhoto1 = `${newBirdPhotos[0]}`;
                                     const birdPhoto2 = `${newBirdPhotos[1]}`;
                                     const birdPhoto3 = `${newBirdPhotos[2]}`;
+                                    const birdCode1 = threeBirdCode[0];
+                                    const birdCode2 = threeBirdCode[1];
+                                    const birdCode3 = threeBirdCode[2];
                                     setbirdTWname([
                                         birdName1, birdName2 , birdName3,                                
                                     ])
                                     setbirdTWphoto([
                                         birdPhoto1, birdPhoto2 , birdPhoto3
+                                    ])
+                                    setBirdCode([
+                                        birdCode1 , birdCode2, birdCode3
                                     ])
                                     setIsLoading(false);
                                     showInfoBox();
@@ -252,18 +274,23 @@ const MapPage = () =>{
                                     const threeBirdName = threeBirdSpecial.map(name => name.ch_name)
                                     const threeBirdPhoto = threeBirdSpecial.map(photo =>photo.img)
                                     const newBirdPhotos = threeBirdPhoto.map(photo => photo.replace("'", "\""));
+                                    const threeBirdCode = threeBirdSpecial.map(name => name.spp_code)
                                     // console.log("鳥名", threeBirdName,"鳥照", newBirdPhotos)
                                     if (! newBirdPhotos[0]){
                                         newBirdPhotos[0] = "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/251151871/1200"
                                         threeBirdName[0] = "喜鵲"
+                                        threeBirdCode[0] = "orimag1"
+
                                     }
                                     if (! newBirdPhotos[1]){
                                         newBirdPhotos[1] = "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/158483201/1200"
                                         threeBirdName[1] = "赤翡翠"
+                                        threeBirdCode[1] = "rudkin1"
                                     }
                                     if (! newBirdPhotos[2]){
                                         newBirdPhotos[2] = "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/158505701/1200"
                                         threeBirdName[2] = "東方毛腳燕"
+                                        threeBirdCode[2] = "ashmar1"
                                     }                              
                                     const birdName1 = threeBirdName[0]
                                     const birdName2 = threeBirdName[1]
@@ -271,11 +298,17 @@ const MapPage = () =>{
                                     const birdPhoto1 = `${newBirdPhotos[0]}`;
                                     const birdPhoto2 = `${newBirdPhotos[1]}`;
                                     const birdPhoto3 = `${newBirdPhotos[2]}`;
+                                    const birdCode1 = threeBirdCode[0];
+                                    const birdCode2 = threeBirdCode[1];
+                                    const birdCode3 = threeBirdCode[2];
                                     setbirdTWname([
                                         birdName1, birdName2 , birdName3,                                
                                     ])
                                     setbirdTWphoto([
                                         birdPhoto1, birdPhoto2 , birdPhoto3
+                                    ])
+                                    setBirdCode([
+                                        birdCode1 , birdCode2, birdCode3
                                     ])
                                     setIsLoading(false);
                                     showInfoBox();
@@ -308,18 +341,22 @@ const MapPage = () =>{
                                     const threeBirdName = threeBirdSpecial.map(name => name.ch_name)
                                     const threeBirdPhoto = threeBirdSpecial.map(photo =>photo.img)
                                     const newBirdPhotos = threeBirdPhoto.map(photo => photo.replace("'", "\""));
+                                    const threeBirdCode = threeBirdSpecial.map(name => name.spp_code)
                                     // console.log("鳥名", threeBirdName,"鳥照", newBirdPhotos)
                                     if (! newBirdPhotos[0]){
                                         newBirdPhotos[0] = "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/133755601/1200"
                                         threeBirdName[0] = "棕背伯勞"
+                                        threeBirdCode[0] = "lotshr1"
                                     }
                                     if (! newBirdPhotos[1]){
                                         newBirdPhotos[1] = "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/144184611/1200"
                                         threeBirdName[1] = "八哥(冠八哥)"
+                                        threeBirdCode[1] = "cremyn"
                                     }
                                     if (! newBirdPhotos[2]){
                                         newBirdPhotos[2] = "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/254741801/1200"
                                         threeBirdName[2] = "蒼鷺"
+                                        threeBirdCode[2] = "graher1"
                                     }
                                     const birdName1 = threeBirdName[0]
                                     const birdName2 = threeBirdName[1]
@@ -327,11 +364,17 @@ const MapPage = () =>{
                                     const birdPhoto1 = `${newBirdPhotos[0]}`;
                                     const birdPhoto2 = `${newBirdPhotos[1]}`;
                                     const birdPhoto3 = `${newBirdPhotos[2]}`;
+                                    const birdCode1 = threeBirdCode[0];
+                                    const birdCode2 = threeBirdCode[1];
+                                    const birdCode3 = threeBirdCode[2];
                                     setbirdTWname([
                                         birdName1, birdName2 , birdName3,                                
                                     ])
                                     setbirdTWphoto([
                                         birdPhoto1, birdPhoto2 , birdPhoto3
+                                    ])
+                                    setBirdCode([
+                                        birdCode1 , birdCode2, birdCode3
                                     ])
                                     setIsLoading(false);
                                     showInfoBox();
@@ -854,13 +897,16 @@ const MapPage = () =>{
             <hr className='info-hr' style={{ display: showHotTitle ? 'block' : 'none' }}/>
             <h3 style={{ display: showHotTitle ? 'block' : 'none' }}>該區當季可見鳥種</h3>
             {birdTWname.map((birdName, index) => (
-                <div key={index}>
-                    <div>{birdName}</div>
+                <div key={index} className='bird-box'>
+                    <NavLink to={`/bird/${birdCode[index]}`} className='bird-link' >
+                    <div className='bird'>{birdName}</div>
                     <div>
                         <img className='bird-photo' src={birdTWphoto[index]} />
                     </div>
                     {/* 記得在這下方要製作更多景點連結Navlink */}
-                </div>                
+                    </NavLink>
+                </div>
+                                
             ))}
             <NavLink to={`/regionList/${regionCode}`} className='more-hotspot'                
                 style={{ display: showHotTitle ? 'block' : 'none' }}>

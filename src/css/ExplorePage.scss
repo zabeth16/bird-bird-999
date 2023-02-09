@@ -1,0 +1,68 @@
+.main-explore{
+    width: 1200px;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    margin-top: 50px;
+}
+
+.explore-bird{
+    width: 50%;
+    background-color: rgb(163, 193, 193);
+    height: 300px;
+    padding: 50px;
+    background-image: url("https://images.plurk.com/5q9gSYVTB0FqWmW4NUpztp.jpg");
+    background-position: right bottom;
+    background-repeat: no-repeat;
+}
+
+.explore-bird .surprise {
+    position: absolute;
+    text-decoration: none;
+    top: 300px;
+    
+}
+  
+.explore-bird .input-bird {
+    position: relative;
+    
+}
+.explore-hotspot{
+    width: 50%;
+    background-color: rgb(232, 157, 110);
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Taichung_County_Gaomei_Wetlands_Wildlife_Refuge%2C_Buslion_Liu.jpg/1280px-Taichung_County_Gaomei_Wetlands_Wildlife_Refuge%2C_Buslion_Liu.jpg");
+    background-position: center ;
+    object-fit: cover;
+    height: 300px;
+    padding: 50px;
+}
+
+.explore-title{
+    // background-color: rgb(241, 142, 142);
+    font-weight: 700;
+    font-size: 50px;
+    color: rgb(255, 255, 255);
+    text-shadow: 2px 2px 2px #333; /* 灰色陰影 */
+
+}
+input{
+    padding: 10px;
+    width: 500px;
+    height: 50px;
+    margin-top: 80px;
+    border-radius: 10px;
+    border: none;
+    // background-color: black;
+    // color: white;
+}
+.bird-search{
+    margin-top: 5px;
+    background-color: rgba($color: #000000, $alpha: 0.8) ;
+    color: rgb(163, 193, 193);
+    border-radius: 5px;
+    height: 20px;
+    line-height: 20px;
+    padding: 5px;
+
+}
+

@@ -20,7 +20,7 @@ const BirdPage = () =>{
     const [TWspecial , setTWspecial] = useState("")
     const [showAudio, setShowAudio] = useState(false);
     const handleClick = () => {
-        if (audioCode) {
+        if (audioCode !== "Not found") {
           setShowAudio(true);
         }
     }  
@@ -82,17 +82,7 @@ const BirdPage = () =>{
                                 allowFullScreen
                         ></iframe>
                         )}             
-                </div>
-                {/* <iframe src={`https://macaulaylibrary.org/asset/${audioCode}/embed`}
-                    height="450" 
-                    width="300"                     
-                    allowFullScreen
-                ></iframe>
-                 */}
-            
-
-
-                
+                </div>    
               
             </div>
             

@@ -20,6 +20,7 @@
     position: absolute;
     text-decoration: none;
     top: 300px;
+    color: white;
     
 }
   
@@ -55,6 +56,10 @@ input{
     // background-color: black;
     // color: white;
 }
+.input-location{
+    margin-top: 10px
+}
+
 .bird-search{
     margin-top: 5px;
     background-color: rgba($color: #000000, $alpha: 0.8) ;
@@ -65,4 +70,37 @@ input{
     padding: 5px;
 
 }
+.region-search{
+    color: white;
+    cursor: pointer;
+    margin-top: 5px;
+    background-color: rgba($color: #000000, $alpha: 0.8) ;
+    border-radius: 5px;
+    height: 20px;
+    line-height: 20px;
+    padding: 5px;
+}
 
+.scroll-box {
+    overflow-x: hidden;
+    overflow-y:  '${scroll}';
+    max-height: 150px;
+}
+.local-search{
+    color: white;
+    cursor: pointer;
+    margin-top: 5px;
+    background-color: rgba($color: #000000, $alpha: 0.8) ;
+    border-radius: 5px;
+    line-height: 20px;
+    padding: 5px;
+    text-decoration: none;
+}
+.top20-recommend{
+    position: absolute;
+    text-decoration: none;
+    top: 300px;
+    font-weight: 700;
+    color: rgb(132, 53, 53);
+    text-shadow: 1px 1px 1px #b69292; /* 灰色陰影 */
+}

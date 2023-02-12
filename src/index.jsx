@@ -21,7 +21,6 @@ function App(){
             <Route path="/hotspot/:code" element={<HotspotPage />} />
             <Route path="/bird/:code" element={<BirdPage />} />
             <Route path="/explore" element={< ExplorePage/>} />
-            {/* <Route path="/list" element={<ListPage />} /> */}
         </Routes>
         </Router>
         

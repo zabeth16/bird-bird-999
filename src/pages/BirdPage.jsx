@@ -19,9 +19,11 @@ const BirdPage = () =>{
     const [nativeness, setNetiveness] = useState("")
     const [TWspecial , setTWspecial] = useState("")
     const [showAudio, setShowAudio] = useState(false);
+    const [showButton , setShowButton] = useState(true);
     const handleClick = () => {
         if (audioCode !== "Not found") {
           setShowAudio(true);
+          setShowButton(false);
         }
     }  
 
@@ -73,7 +75,9 @@ const BirdPage = () =>{
                        
                         <NavLink to='/distributed'>記得改成該鳥種分布連結</NavLink>
                     </div> 
+                    {showButton && (
                     <button onClick={handleClick} className='call-audio'>啾啾叫</button>
+                    )}
                         {showAudio && (
                         <iframe src={`https://macaulaylibrary.org/asset/${audioCode}/embed`}
                                 className='audio'

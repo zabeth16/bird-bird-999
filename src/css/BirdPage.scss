@@ -48,7 +48,7 @@ body{
     object-fit: cover;
     filter: brightness(0.7) grayscale(0.3);
     z-index: -1;
-    // mix-blend-mode: overlay;
+    // mix-blend-mode: screen;
     mix-blend-mode: exclusion;
 }
 
@@ -95,4 +95,9 @@ body{
     height: 100px;
     border-radius: 999em;
     cursor: pointer;
+}
+.message{
+    position: absolute;
+    top: 350px;
+    right: 200px;
 }

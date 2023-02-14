@@ -20,10 +20,14 @@ const BirdPage = () =>{
     const [TWspecial , setTWspecial] = useState("")
     const [showAudio, setShowAudio] = useState(false);
     const [showButton , setShowButton] = useState(true);
+    const [showMessage, setShowMessage] = useState(false);
     const handleClick = () => {
         if (audioCode !== "Not found") {
           setShowAudio(true);
           setShowButton(false);
+        }
+        else{
+            setShowMessage(true);
         }
     }  
 
@@ -75,6 +79,9 @@ const BirdPage = () =>{
                        
                         <NavLink to='/distributed'>記得改成該鳥種分布連結</NavLink>
                     </div> 
+                    {showMessage && (
+                    <div className="message">目前未收錄此鳥種錄音喔 !</div>
+                    )}
                     {showButton && (
                     <button onClick={handleClick} className='call-audio'>啾啾叫</button>
                     )}

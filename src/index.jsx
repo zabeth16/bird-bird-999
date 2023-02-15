@@ -8,6 +8,8 @@ import RegionListPage from './pages/RegionListPage.jsx';
 import HotspotPage from "./pages/HotspotPage.jsx";
 import BirdPage from "./pages/BirdPage.jsx";
 import ExplorePage from "./pages/ExplorePage.jsx";
+import MemberPage from "./pages/MemberPage.jsx";
+import LoginPage from "./pages/LoginPage.jsx";
 
 
 function App(){
@@ -21,6 +23,8 @@ function App(){
             <Route path="/hotspot/:code" element={<HotspotPage />} />
             <Route path="/bird/:code" element={<BirdPage />} />
             <Route path="/explore" element={< ExplorePage/>} />
+            <Route path="/member" element={<MemberPage />} />
+            <Route path="/login" element={<LoginPage />} />
         </Routes>
         </Router>
         

@@ -21,17 +21,6 @@ const ExplorePage = () =>{
         const birdData = docSnap.data().bird_data         
         const birdTarget = 
             birdData.filter( bird => bird.ch_name.includes(inputValue));
-        // // 隨機撈鳥
-        // function getRandomBird(birdTarget) {
-        //     let getBird = birdTarget[Math.floor(Math.random() * birdTarget.length)]
-        //     let getBirdCode = getBird.spp_code
-        //     console.log(getBird , "鳥代碼: ", getBirdCode)
-        //     return getBirdCode;
-        // }
-        // // console.log(getRandomBird(birdTarget))
-        // setRandomBird(getRandomBird(birdTarget))
-
-
         // 輸入找鳥
         if (inputValue !== ""){
             // console.log(birdTarget)
@@ -68,10 +57,8 @@ const ExplorePage = () =>{
             setRandomBird(getBirdCode)
         }
         catch (e){
-
+            console.log(e)
         }
-        
-
     }
     useEffect(() => {
         getRandomBird();

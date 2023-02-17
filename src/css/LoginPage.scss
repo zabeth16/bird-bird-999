@@ -7,7 +7,8 @@
     background: radial-gradient(circle, #b6a739, #0b081f);
     flex-direction: column;
     height: auto;
-    transform: translateX(0%);
+    transform: width 0.5s ease-in-out;
+    transform: translateX(100%);
 }
 .login-box{
     margin-top: 5%;
@@ -18,9 +19,39 @@
     background: radial-gradient(circle, #b6a739, #0f5397);
     flex-direction: column;
     height: auto;
+    transform: width 0.5s ease-in-out;
     transform: translateX(0%);
 }
+// .main-reversed {
+//     flex-direction: row-reverse;
+// }   
+.login-box, .register-box {
+    // position: absolute;
+    // top: 0;
+    // left: 0;
+    // width: 100%;
+    // height: 100%;
+    transition: transform 0.3s ease-in-out;
+}
+  .main-reversed .login-box {
+    transform: translateX(-100%);
+    transform: translate3d(50%, 0px, 0px);
+    transition-duration: 300ms;
+    transition-timing-function: ease-out;
+}
+  .main-reversed .register-box {
+    transform: translateX(0%);
+    transform: translate3d(-50%, 0px, 0px);
+    transition-duration: 300ms;
+    transition-timing-function: ease-out;
+}
+.slide-right {
+    transform: translate3d(220%, 0, 0);
+}
 
+.slide-left {
+    transform: translate3d(-100%, 0, 0);
+}
 .login-title{
     font-weight: 500;
     margin-top: 5%;
@@ -59,6 +90,7 @@
     background-color: #76969f4c;
     cursor: pointer;
     color: white;
+    font-weight: 500;
 }
 .switch{
     margin-top: 5%;
@@ -66,10 +98,12 @@
     width: 20%;
     background-color: rgb(254, 255, 199); 
     cursor: pointer;
-    
+    transition: all 0.5s ease-in-out;
+   
 }
 .switch:hover{
     background-color:rgb(198, 199, 135);
+    
 }
 
 .login-box.hide {
@@ -109,4 +143,20 @@
     margin-top: 0px;
     text-shadow: 1px 1px 10px #f38c24;
     color: #ffffff;
+}
+
+.login-line{
+    width: 85%;
+}
+
+.google-login{
+    width: 50%;
+    height: 5%;
+    border-radius: 10px;
+    border: white 2px solid;
+    background: linear-gradient(to right, rgba(7, 107, 107, 0.5), rgba(109, 109, 0, 0.5));
+    cursor: pointer;
+    color: white;
+    margin-top: 5%;
+
 }

@@ -1,13 +1,17 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import firebase from 'firebase/compat/app';
 import 'firebaseui/dist/firebaseui.css';
 import { getAuth, createUserWithEmailAndPassword , signInWithEmailAndPassword,
-        updateProfile} from "firebase/auth";
+        updateProfile , GoogleAuthProvider , signInWithPopup } from "firebase/auth";
 import { LoginPageCSS } from "../css/LoginPage.scss"
 import db from './../../firebase-servise.js';
 import { auth } from './../../firebase-servise.js';
+import { async } from "@firebase/util";
+import  { GOOGLE_CLIENT_ID } from './page_control/googleAPI.js'
 
 const LoginPage = () =>{
+    const navigate = useNavigate();//取得 navigate
     const [inputEmail , setInputEmail] = useState("");
     const [inputName , setInputName] = useState("");
     const [inputPassword , setInputPassword] = useState("");
@@ -43,11 +47,18 @@ const LoginPage = () =>{
             setErrorMessage(e.message)
         }
     }
-        
-    const handleSwitchClick = () => {
+    // switch動畫
+    const [switchWidth, setSwitchWidth] = useState('20%');
+    const [boxWidth, setBoxWidth] = useState("0%");
+    
+    const handleSwitchClick = () => {        
         setIsLoginFormVisible(!isLoginFormVisible);
+        setSwitchWidth(isLoginFormVisible ? '50%' : '20%' );
+        setBoxWidth(isLoginFormVisible ? '0%' : '50%')        
     }
-    // 登入
+
+
+    // 登入    
     const [loginSuccess, setLoginSuccess] = useState(false);
     const login = async(inputEmail , inputPassword) =>{
         const email = inputEmail;
@@ -55,9 +66,9 @@ const LoginPage = () =>{
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password)
             const loginUser = userCredential.user
-            setLoginSuccess(true)
-            setErrorMessage("")
-
+            setLoginSuccess(true);
+            setErrorMessage("");
+            navigate(-1 , { state: { test: "hello", }, } ); // 回使用者的上一頁
         }
         catch (e) {
             if(e.message == "Firebase: Error (auth/invalid-email)."){
@@ -72,21 +83,52 @@ const LoginPage = () =>{
             setErrorMessage(e.message)
         }
     }
-    
+    // 第三方登入
+    const googleLogin = async() =>{
+        try {
+            const provider = new GoogleAuthProvider();
+            provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+          
+            const result = await signInWithPopup(auth, provider)
+            const credential = GoogleAuthProvider.credentialFromResult(result);
+            const loginUser = result.user;
+            const token = credential.accessToken;
+            // console.log(loginUser) 
+            const googleDisplayName = loginUser.displayName
+            const googleEmail = loginUser.email
+            const googleImg = loginUser.photoURL.replace(" '' ")
+            const googleUid = loginUser.uid
+            setLoginSuccess(true);
+            navigate(-1); // 回使用者的上一頁
+           
+        } catch (error) {
+            if (error.message == "Firebase: Error (auth/popup-closed-by-user)."){
+                error.message = "GOOGLE登入視窗被關掉了。"
+            }
+            else if (error.message == "Firebase: Error (auth/cancelled-popup-request)."){
+                error.message = "取消了GOOGLE登入"
+            }
+            else if (error.message == "Firebase: IdP denied access. This usually happens when user refuses to grant permission. (auth/user-cancelled)."){
+                error.message = "拒絕了GOOGLE註冊流程"
+            }
+            setErrorMessage(error.message)
+        }
+    }
 
     return (
         <div>
          
-            <div className="main">
-                <div className="switch">
-                    <div className="switch-word" onClick={handleSwitchClick}>
-                    切至{isLoginFormVisible ? "註冊" : "登入"}
-                    </div>
+            <div className={`main ${isLoginFormVisible ? "" : "main-reversed"}`}> {/* {`main ${isLoginFormVisible ? "" : "main-reversed"}`} */}
+            <div className={`switch ${isLoginFormVisible ? "" : "slide-right"}`} onClick={handleSwitchClick} >{/* style={{width : isLoginFormVisible ? `${switchWidth}` : `${switchWidth}`}} */}
+                <div className="switch-word" >
+                切至{isLoginFormVisible ? "註冊" : "登入"}
                 </div>
-            <div className={isLoginFormVisible ? "login-box" : "register-box"}>
+            </div>
+            <div className={isLoginFormVisible ? "login-box" : "register-box"} style={{width : isLoginFormVisible ? `50%`: `50%`}}>
             {isLoginFormVisible ? (
             <>
-                <div className="login-title">登入鳥友會員</div>
+
+                <div className="login-title" >登入鳥友會員</div>
                 {/* 登入表單元素 */}
                 <input className="email" value={inputEmail} type={'text'} 
                 onChange={e => {
@@ -101,9 +143,18 @@ const LoginPage = () =>{
                 <div className="error-message">{errorMessage}</div>
                 {loginSuccess && <div className="success-message">登入成功</div>}
                 <button onClick={() => login(inputEmail , inputPassword)} className='login'>登入鳥友</button>
+                <hr className="login-line"/>
+                <button className="google-login" onClick={googleLogin}>使用GOOGLE帳號快速登入</button>
+                <div id="g_id_onload"
+                    data-client_id={ GOOGLE_CLIENT_ID }
+                    data-login_uri="http://localhost:8080/login"
+                    data-auto_prompt="false">
+                </div>
+      
             </>
             ) : (
             <>
+      
                 <div className="login-title">註冊鳥友會員</div>
                 {/* 註冊表單元素 */}
 
@@ -125,7 +176,7 @@ const LoginPage = () =>{
                 <div className="error-message">{errorMessage}</div>
                 {registerSuccess && <div className="success-message">註冊成功</div>}
                 <button onClick={() => signUp(inputEmail , inputName, inputPassword)} className='signin'>加入鳥友</button>
-                
+
             </>
             )}
                 

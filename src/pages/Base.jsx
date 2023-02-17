@@ -1,9 +1,13 @@
-import { NavLink } from 'react-router-dom';
-import React from "react";
+import { NavLink , useNavigate,useLocation } from 'react-router-dom';
+import React ,{ useState } from "react";
 import { BaseSCSS } from '../css/Base.scss'
 
 
 const Base = () =>{
+    const navigate = useNavigate();
+    // const [loginSuccess, setLoginSuccess] = useState(false);
+    const location = useLocation()
+    console.log(location)
     return(
     <div>{/* 純包裹用的父元素 */}
         <div className='top'>

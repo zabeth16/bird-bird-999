@@ -27,6 +27,7 @@
     "@googlemaps/js-api-loader": "^1.15.1",
     "babel-loader": "^9.1.2",
     "dotenv": "^16.0.3",
+    "fabric": "^5.3.0",
     "firebase": "^9.17.1",
     "firebaseui": "^6.0.2",
     "firestore": "^1.1.6",

@@ -22,15 +22,8 @@
     transform: width 0.5s ease-in-out;
     transform: translateX(0%);
 }
-// .main-reversed {
-//     flex-direction: row-reverse;
-// }   
+  
 .login-box, .register-box {
-    // position: absolute;
-    // top: 0;
-    // left: 0;
-    // width: 100%;
-    // height: 100%;
     transition: transform 0.3s ease-in-out;
 }
   .main-reversed .login-box {
@@ -99,11 +92,9 @@
     background-color: rgb(254, 255, 199); 
     cursor: pointer;
     transition: all 0.5s ease-in-out;
-   
 }
 .switch:hover{
     background-color:rgb(198, 199, 135);
-    
 }
 
 .login-box.hide {
@@ -116,7 +107,6 @@
     color: black;
     text-align: center;
     font-weight: 800;
-
 }
 
 .error-message{
@@ -125,7 +115,6 @@
     text-shadow: 1px 1px 10px #000000;
     color: #ffffff;
     animation: shake 0.5s 7;
-   
 }
 @keyframes shake {
     0% {

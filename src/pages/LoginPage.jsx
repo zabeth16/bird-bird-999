@@ -68,7 +68,7 @@ const LoginPage = () =>{
             const loginUser = userCredential.user
             setLoginSuccess(true);
             setErrorMessage("");
-            navigate(-1 , { state: { test: "hello", }, } ); // 回使用者的上一頁
+            navigate(-1 ); // 回使用者的上一頁
         }
         catch (e) {
             if(e.message == "Firebase: Error (auth/invalid-email)."){

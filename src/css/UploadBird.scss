@@ -1,0 +1,95 @@
+.white-background{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-color: rgba(40, 40, 40, 0.591);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+}
+.upload-box{
+    width: 90%;
+    height: 75%;
+    background-color: rgb(234, 179, 120);
+    margin-top: 2%;
+    border-radius: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.2);
+}
+.bird-photo-box{
+    width: 50%;
+    height: 80%;
+    background-color: rgb(184, 180, 111);
+    margin: 2%;
+    text-align: center;
+    cursor: pointer;
+    font-weight: 500;
+}
+input[type='file'] {
+    position: absolute;
+    top: -25%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    background-color: black;
+}
+.photo-detail{
+    width: 40%;
+    height: 80%;
+    background-color: rgb(123, 102, 102);
+    margin: 2%;
+    display: flex;
+    flex-wrap: wrap;
+    font-weight: 900;
+    font-size: 140%;
+    box-sizing: border-box;
+    
+}
+.name-detail{
+    width: 100%;
+    margin-top: 5px;
+    height: 10%;    
+}
+.region-detail{
+    width: 100%;
+    margin-top: 5px;
+    height: 10%; 
+}
+.local-detail{
+    width: 100%;
+    margin-top: 5px;
+    height: 10%; 
+}
+.choose-date{
+    width: 100%;
+    margin-top: 5px;
+    height: 10%; 
+    padding: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.upload{
+    width: 40%;
+    height: 10%;
+    margin-left: 56%;
+    margin-bottom: 2%;
+    background-color: rgb(253, 131, 97);
+    border: sandybrown;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    color: white;
+}
+.upload:hover{
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    background-color: rgb(212, 85, 61);
+}
+.previous-bird-photo{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: 1;
+}

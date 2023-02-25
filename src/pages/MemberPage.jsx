@@ -6,7 +6,7 @@ import Base from '../pages/Base.jsx'
 import UploadBird from './page_control/UploadBird.jsx';
 import { MemberPageCSS } from '../css/MemberPage.scss'
 import { getAuth, onAuthStateChanged ,signOut , updateProfile} from "firebase/auth";
-import { getFirestore, doc, setDoc , getDoc , getDocs } from "firebase/firestore"
+import { getFirestore, doc, setDoc , getDoc , getDocs , collection , addDoc , query, where } from "firebase/firestore"
 import { useNavigate } from "react-router-dom";
 import db from './../../firebase-servise.js';
 import { auth } from './../../firebase-servise.js';
@@ -34,11 +34,13 @@ const MemberPage = () =>{
     const callUpload = () =>{
       setShowUpload(true);
     }
+
     // 會員基本資料
     const [userName , setUserName] = useState("")
     const [userId , setUserId ] = useState("")
     const [userPhoto , setUserPhoto] = useState("https://www.doujin.com.tw/uploads/books/74/b8/74b84631e39a6f502ee1ccc1c59c9089_raw.jpg")
     const [userEmail , setUserEmail] = useState("")
+    const [getUser , setGetUser] = useState(false)
     useEffect(() => {
         const auth = getAuth();
         onAuthStateChanged(auth, (user) => {
@@ -53,19 +55,66 @@ const MemberPage = () =>{
                 setUserEmail(email)
                 setUserPhoto(photoURL)
                 console.log("userName: " , userName , "email: " , email)
-                // setLoginSuccess(true) 
-
+                // setLoginSuccess(true)   
+                setGetUser(true)           
             } else {
                 // User is signed out
                 // setLoginSuccess(false)
             }
         });
+       
     }, []);
+    const [getPhoto , setGetPhoto] = useState([]);
+    const [selectedDate , setSelectedDate] = useState("");
+    const [birdName , setBirdName] = useState([]);
+    const [birdCode , setBirdCode] = useState([]);
+    const [birdTime , setBirdTime] = useState([]);
+    const [birdLocal , setBirdLocal]= useState([]);
+    const handleDateChange = (event) => {
+      setSelectedDate(event.target.value);
+    };
+    // 展示鳥照
+    useEffect(() => {
+      const getBirdPhoto = async()=>{
+        try{
+          // const docSnap = await getDoc(doc(db, "Upload_bird_photo", userEmail+"#"+selectedDate));
+          // console.log("中文資料", docSnap.id)
+          const ref = collection(db, "Upload_bird_photo");
+          const q = query(ref, where("email", "==", userEmail));
+          const querySnapshot = await getDocs(q);
+          const userShotImgList = []
+          const birdNameList = []
+          const birdCodeList = []
+          const birdTimeList = []
+          const birdLocalList = []
+          querySnapshot.forEach((doc) => {
+            // 可以再拿其他代碼做利用，用where即可
+            // console.log(doc.id, doc.data().img);
+            const userShotImg = doc.data().img           
+            userShotImgList.push(userShotImg)
+            birdNameList.push(doc.data().ch_name)
+            birdCodeList.push(doc.data().spp_code)
+            birdTimeList.push(doc.data().date)
+            birdLocalList.push(doc.data().locationName)
+
+          });
+          setGetPhoto(userShotImgList)
+          setBirdName(birdNameList)
+          setBirdCode(birdCodeList)
+          setBirdTime(birdTimeList)
+          setBirdLocal(birdLocalList)
+        }
+        catch(e){
+          console.log("拿鳥照", e)
+        }
+      }
+      getBirdPhoto();
+    }, [getUser]);
     // 拿取會員頭貼style設定
     useEffect(() => {
       const getStyle = async()=>{
         try{
-          const docSnap = await getDoc(doc(db, "Profile","user"));
+          const docSnap = await getDoc(doc(db, "Profile",userEmail));
           if(docSnap) {
             const left = docSnap.data().user.profileStyle.left
             const top = docSnap.data().user.profileStyle.top
@@ -83,11 +132,11 @@ const MemberPage = () =>{
           }
         }
         catch(e){
-          console.log(e.message)
+          // console.log(e.message)
         }
       }
       getStyle();
-    }, []);
+    }, [getUser]);
 
     // Create a storage reference from our storage service
     const storageRef = ref(storage);  
@@ -277,13 +326,17 @@ const MemberPage = () =>{
           try {
             // 把最終大頭照設定上傳到database
 
-            await setDoc(doc(db, "Profile", "user"), {
+            await setDoc(doc(db, "Profile", userEmail), {
               user:{
                 "email": userEmail,
                 profileStyle
-              }               
-              
+              }                             
             });
+            // const userDocRef = collection(db, "Profile");
+            // await addDoc(userDocRef,{
+            //   "email": userEmail,
+            //   profileStyle
+            // })
           } catch (err) {
             console.error("Error: ", err);
           }
@@ -318,15 +371,10 @@ const MemberPage = () =>{
     return (      
         <div>
             <Base></Base>
-            {showUpload && <UploadBird />}
+            {showUpload && <UploadBird onSelectedDateChange={handleDateChange} />}
             <div className='main'>
             
-            <div className='main-member'> {/* 鳥友會員頁 */} 
-                <div className='bird-section'>
-                  <button className='upload-bird' onClick={callUpload}>上傳鳥照</button>
-                  
-                </div>
-                
+            <div className='main-member'> {/* 鳥友會員頁 */}                
                 <div className='user-box'> 
                     <div className='user-photo-container'>
                         {!previewPhoto ? 
@@ -356,34 +404,42 @@ const MemberPage = () =>{
                             
                             </>
                         )
-                    }
-                        
-                       
+                    }                       
                     </div>
                     <label htmlFor="upload-photo" className='upload-photo'>
                         <span className='choose'>{uploadStatus || '更換照片'}</span>                      
                         <input
                         type="file"
                         id="upload-photo"
+                        accept='image/*'
                         onChange={handleFileSelect}
                         style={{ display: "none" }}
                         />
                         {showUploadButton &&
-                         <button onClick={handleUpload}>上傳 !</button>
-                        }
+                         <button onClick={handleUpload} className='upload-avatar'>上傳 !</button>
+                        } 
                         
                     </label>
+                    <div className='user-name'>{userName}</div>  
+                    <div className='logout-box'>
+                      <button onClick={logout} className='logout'> 點此登出 </button>
+                    </div>                
+                </div>
+
+                <div className='bird-section'>
+                  <h1 className='h1'>會員作品展示區</h1>
+                  <button className='upload-bird' onClick={callUpload}> + </button>    
+                    {getPhoto.map((getPhoto , index) => (  
+                      <React.Fragment key={getPhoto}>
+                      <img key={getPhoto} src={getPhoto} className="get-user-photo" />                   
+                      <p>{birdName[index]} {birdTime[index]} {birdLocal[index]}</p>
+                      </React.Fragment>
+                    ))}
                     
-                </div>
-                <div className='user-name'>{userName}</div>  
-                <div className='logout-box'>
-                  <button onClick={logout} className='logout'> 點此登出 </button>
-                </div>
-                
                           
-                
-            </div>
-        
+                </div>                        
+            </div>{/* main-member-end */}
+           
         </div>
         </div>
     )

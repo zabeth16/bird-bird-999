@@ -224,7 +224,7 @@ const ExplorePage = () =>{
                         ))}
                     </div>
 
-                    {/* 還要記得拿locId */}
+                   
                     
                 </div>
             </div>

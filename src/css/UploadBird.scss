@@ -9,9 +9,9 @@
 }
 .upload-box{
     width: 90%;
-    height: 75%;
+    height: 80%;
     background-color: rgb(234, 179, 120);
-    margin-top: 2%;
+    margin-top: 0%;
     border-radius: 10px;
     display: flex;
     flex-wrap: wrap;
@@ -74,7 +74,7 @@ input[type='file'] {
 .upload{
     width: 40%;
     height: 10%;
-    margin-left: 56%;
+   
     margin-bottom: 2%;
     background-color: rgb(253, 131, 97);
     border: sandybrown;
@@ -92,4 +92,52 @@ input[type='file'] {
     height: 100%;
     object-fit: cover;
     aspect-ratio: 1;
+}
+.scroll-box-upload{
+    position: absolute;
+    z-index: 2;
+    overflow-x: hidden;
+    overflow-y: "${scroll}";
+    max-height: 150px;
+    width: 36%;
+    top:20%;
+    background-color:beige;
+}
+.bird-search-upload{
+    margin-top: 5px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: rgb(255, 255, 255);
+    border-radius: 5px;
+    height: 20px;
+    line-height: 20px;
+    padding: 5px;
+    cursor: pointer;
+}
+.scroll-box-region{
+    position: absolute;
+    z-index: 2;
+    overflow-x: hidden;
+    overflow-y: "${scroll}";
+    max-height: 150px;
+    width: 36%;
+    top:35%;
+    background-color:beige;
+}
+.scroll-box-local{
+    position: absolute;
+    z-index: 2;
+    overflow-x: hidden;
+    overflow-y: "${scroll}";
+    max-height: 150px;
+    width: 36%;
+    top:50%;
+    background-color:beige;
+}
+.warning{
+    color: rgb(120, 38, 38);
+    font-size: 150%;
+    font-weight: 900;
+    margin-left: 2%;
+    width: 50%;
+    text-align: center;
 }

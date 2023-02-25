@@ -1,11 +1,11 @@
 .main-member{
-    flex-wrap: wrap;
+    // flex-wrap: wrap;
     width: 1200px;
     // justify-content: center;
-    // display: flex;
+    display: flex;
 }
 .user-box{
-
+    width: 30%;
     position: relative;
     overflow: hidden;    
 }
@@ -50,8 +50,9 @@
 .upload-photo{
     display: flex;
     flex-wrap: wrap;
-    width: 251px;
+    width: 68%;
     margin-top: 2%;
+    justify-content: center;
 }
 .choose{
     width: 200px;
@@ -80,7 +81,66 @@
     background-color: #80808081;
     color: white;
 }
+.upload-avatar{
+    background-color: #eadb5a;
+    color: black;
+    border-radius: 10px;
+    width: 30%;
+    height: 3em;
+    cursor: pointer;
+}
+.upload-avatar:hover{
+    background-color:#fb892b;
+}
 
 .bird-section{
     background-color: #eadb5a;
+    width: 70%;
+    margin-top: 2%;
+    border-radius: 10px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.get-user-photo{
+    width: 30%;
+    height: 50%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    margin-top: 2%;
+    margin-right: 2%;
+    border-radius: 10px;
+}
+.h1{
+    text-align: center;
+    width: 100%;
+    margin-bottom:-10%;
+    color: #ffffff;
+    text-shadow: 1px 1px 2px #693e1b;
+}
+.upload-bird{
+    width: 30%;
+    height: 50%;
+    margin-top: 2%;
+    margin-left: 2%;
+    margin-right: 2%;
+    border-radius: 10px;
+    background-color: rgba(104, 104, 104, 0.425);
+    cursor: pointer;
+    font-size: 500%;    
+    border-style: dashed;
+    border-width: 2px; /* 虛線的寬度 */
+    position: relative; /* 使 .upload-bird 成为定位元素 */
+}
+.upload-bird:hover::before {
+    content: "點擊此區上傳鳥類照片(僅限台灣能見鳥種)";
+    position: absolute;
+    top: -30px; /* 调整上下位置 */
+    left: 50%; /* 将伪元素水平居中 */
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap; /* 防止换行 */
 }

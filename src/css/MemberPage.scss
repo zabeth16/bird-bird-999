@@ -50,12 +50,12 @@
 .upload-photo{
     display: flex;
     flex-wrap: wrap;
-    width: 68%;
+    width: 200px;
     margin-top: 2%;
     justify-content: center;
 }
 .choose{
-    width: 200px;
+    width: 100%;
     text-align: center;
     cursor: pointer;    
     
@@ -101,14 +101,41 @@
     display: flex;
     flex-wrap: wrap;
 }
-.get-user-photo{
+.image-container{
     width: 30%;
     height: 50%;
-    aspect-ratio: 1;
-    object-fit: cover;
     margin-top: 2%;
     margin-right: 2%;
+}
+.get-user-photo{
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
     border-radius: 10px;
+}
+.bird-data-container{
+    background-color: #33333353;
+    border-radius: 10px;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    bottom: -50px;
+    left: 0;
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+    
+}
+// hover 鳥照時資訊滑入
+.image-container:hover .bird-data-container {
+    opacity: 1;
+    bottom: 0;
+}
+.bird-data{    
+    padding: 5%;
+    font-weight: 800;
+    cursor: pointer;
+    text-overflow: hidden;
 }
 .h1{
     text-align: center;
@@ -134,7 +161,7 @@
 .upload-bird:hover::before {
     content: "點擊此區上傳鳥類照片(僅限台灣能見鳥種)";
     position: absolute;
-    top: -30px; /* 调整上下位置 */
+    top: -20%; /* 调整上下位置 */
     left: 50%; /* 将伪元素水平居中 */
     transform: translateX(-50%);
     background-color: #333;
@@ -143,4 +170,5 @@
     border-radius: 5px;
     font-size: 12px;
     white-space: nowrap; /* 防止换行 */
+    z-index: 9;
 }

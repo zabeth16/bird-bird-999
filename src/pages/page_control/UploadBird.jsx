@@ -11,9 +11,10 @@ import { getStorage, ref , uploadBytes, getDownloadURL } from "firebase/storage"
 import { async } from '@firebase/util';
 import { UploadBirdCSS } from '../../css/UploadBird.scss'
 
-const UploadBird = () =>{
+const UploadBird = ({onClose}) =>{
     const inputRef = React.createRef
     const navigate = useNavigate();//取得 navigate
+    const [showAll , setShowAll] = useState(true)
     const [photoUrl, setPhotoUrl] = useState('https://images.plurk.com/LHcdc5166UeWc8bXYDVm.png');
     const [inputValueName , setInputValueName] = useState('')
     const [birdNameCH, setBirdNameCH] = useState([]);
@@ -30,6 +31,11 @@ const UploadBird = () =>{
     const [hideResultLocal ,setHideResultLocal] = useState(false);
     const [localName , setLocalName] = useState([]);
     const [localCode , setLocalCode] =  useState([]);
+    // 關閉隱藏整個組件
+    const handleClose = () => {
+        setShowAll(!showAll);
+        onClose();
+    };
     // 選鳥照
     const handleUpload = async(event) =>{
         const selectedFile = event.target.files[0];
@@ -192,10 +198,7 @@ const UploadBird = () =>{
                 }).then(()=>{
                     navigate(0);
                 })
-               
-              
-                
-                  
+  
             }
             else if(photoUrl == "https://images.plurk.com/LHcdc5166UeWc8bXYDVm.png"){
                 setWarning("請選擇照片!")
@@ -210,8 +213,9 @@ const UploadBird = () =>{
         }
     }
     return(
-        <div>
-            <div className='white-background'>
+        <div> 
+            {showAll && (
+            <div className='white-background'>                
                 <div className='upload-box'>
                     <div className='bird-photo-box'
                     style={{ position: 'relative', overflow: 'hidden' }}
@@ -311,7 +315,14 @@ const UploadBird = () =>{
                     style={{ marginLeft: `${warning ? '4%' : '56%'}`}}
                     >確定上傳</button>
                 </div>
+                <button className='close'
+                onClick={()=>{
+                    handleClose();
+                    onClose
+                    }}
+                > X </button>
             </div>
+            )}            
         </div>
     )
 }

@@ -6,8 +6,8 @@ import Base from '../pages/Base.jsx'
 import UploadBird from './page_control/UploadBird.jsx';
 import { MemberPageCSS } from '../css/MemberPage.scss'
 import { getAuth, onAuthStateChanged ,signOut , updateProfile} from "firebase/auth";
-import { getFirestore, doc, setDoc , getDoc , getDocs , collection , addDoc , query, where } from "firebase/firestore"
-import { useNavigate } from "react-router-dom";
+import { getFirestore , doc, setDoc , getDoc , getDocs , collection , addDoc , query, where } from "firebase/firestore"
+import { useNavigate , NavLink, useParams ,Link} from "react-router-dom";
 import db from './../../firebase-servise.js';
 import { auth } from './../../firebase-servise.js';
 import { storage } from './../../firebase-servise.js';
@@ -32,13 +32,14 @@ const MemberPage = () =>{
     // 上傳鳥照
     const [showUpload, setShowUpload] = useState(false);
     const callUpload = () =>{
-      setShowUpload(true);
+      setShowUpload(!showUpload);
+      // console.log("有反應?", showUpload)
     }
 
     // 會員基本資料
     const [userName , setUserName] = useState("")
     const [userId , setUserId ] = useState("")
-    const [userPhoto , setUserPhoto] = useState("https://www.doujin.com.tw/uploads/books/74/b8/74b84631e39a6f502ee1ccc1c59c9089_raw.jpg")
+    const [userPhoto , setUserPhoto] = useState("https://images.plurk.com/LHcdc5166UeWc8bXYDVm.png")
     const [userEmail , setUserEmail] = useState("")
     const [getUser , setGetUser] = useState(false)
     useEffect(() => {
@@ -61,8 +62,7 @@ const MemberPage = () =>{
                 // User is signed out
                 // setLoginSuccess(false)
             }
-        });
-       
+        });       
     }, []);
     const [getPhoto , setGetPhoto] = useState([]);
     const [selectedDate , setSelectedDate] = useState("");
@@ -70,6 +70,7 @@ const MemberPage = () =>{
     const [birdCode , setBirdCode] = useState([]);
     const [birdTime , setBirdTime] = useState([]);
     const [birdLocal , setBirdLocal]= useState([]);
+    const [locId , setLocId] = useState([]);
     const handleDateChange = (event) => {
       setSelectedDate(event.target.value);
     };
@@ -87,6 +88,7 @@ const MemberPage = () =>{
           const birdCodeList = []
           const birdTimeList = []
           const birdLocalList = []
+          const locIdList = []
           querySnapshot.forEach((doc) => {
             // 可以再拿其他代碼做利用，用where即可
             // console.log(doc.id, doc.data().img);
@@ -96,6 +98,7 @@ const MemberPage = () =>{
             birdCodeList.push(doc.data().spp_code)
             birdTimeList.push(doc.data().date)
             birdLocalList.push(doc.data().locationName)
+            locIdList.push(doc.data().location)
 
           });
           setGetPhoto(userShotImgList)
@@ -103,6 +106,7 @@ const MemberPage = () =>{
           setBirdCode(birdCodeList)
           setBirdTime(birdTimeList)
           setBirdLocal(birdLocalList)
+          setLocId(locIdList)
         }
         catch(e){
           console.log("拿鳥照", e)
@@ -371,7 +375,7 @@ const MemberPage = () =>{
     return (      
         <div>
             <Base></Base>
-            {showUpload && <UploadBird onSelectedDateChange={handleDateChange} />}
+            {showUpload && <UploadBird onSelectedDateChange={handleDateChange}  onClose={() => setShowUpload(!showUpload)} />}{/*  */}
             <div className='main'>
             
             <div className='main-member'> {/* 鳥友會員頁 */}                
@@ -428,15 +432,40 @@ const MemberPage = () =>{
 
                 <div className='bird-section'>
                   <h1 className='h1'>會員作品展示區</h1>
-                  <button className='upload-bird' onClick={callUpload}> + </button>    
+                  <button className='upload-bird' onClick={callUpload}
+                    onClose={(onClose) => setShowUpload(false)} 
+                  > + </button>                      
                     {getPhoto.map((getPhoto , index) => (  
                       <React.Fragment key={getPhoto}>
-                      <img key={getPhoto} src={getPhoto} className="get-user-photo" />                   
-                      <p>{birdName[index]} {birdTime[index]} {birdLocal[index]}</p>
+                      <div className="image-container" style={{ position: 'relative' }}>
+                        <img key={getPhoto} src={getPhoto} className="get-user-photo" />  
+                        <div className="bird-data-container" style={{ position: 'absolute', top: 0, left: 0 }}>
+                          <div style={{ position: 'relative', display: 'inline-block' , width: '100%'}}>
+                            <p className='bird-data'>{birdName[index]} {birdTime[index]}</p>
+                            <NavLink to={`/bird/${birdCode[index]}`}
+                              style={{ width: '100%', height:'100%',
+                              position: 'absolute', top: 0, left: 0}}
+                            ></NavLink>
+                          </div>
+                          <div style={{ position: 'relative', display: 'inline-block' }}>
+                            <p className='bird-data'
+                              style={{ 
+                                fontSize: '12px', overflow: 'hidden' ,
+                                textDecoration: 'none', color:'white'                                
+                                }}
+                            >
+                              {birdLocal[index]}                              
+                          </p>
+                          <NavLink to={`/hotspot/${locId[index]}`} 
+                              style={{ width: '100%', height:'100%',
+                                       position: 'absolute', top: 0, left: 0}}
+                          ></NavLink>
+                          </div>
+                          {/* </div> */}
+                        </div>
+                      </div>                          
                       </React.Fragment>
-                    ))}
-                    
-                          
+                    ))}                        
                 </div>                        
             </div>{/* main-member-end */}
            

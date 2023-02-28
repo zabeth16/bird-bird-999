@@ -15,6 +15,10 @@ body{
 .season-box{
     display: flex;
     justify-content: center;
+    margin-top: 1%;
+    position: absolute;
+    z-index: 2;
+    width: 100%;
 }
 .selected {
     background-color: rgb(250, 205, 24);
@@ -50,22 +54,59 @@ body{
     width: 50px;
     // background-color: rgb(124, 139, 139);
 }
+// map 可典籍 本身
+#map-TW{
+    height: 400px;
+    margin-top: 10%;
+    margin-left: 30%; // 1200以下用20%
+}
 
 // map 背景
+.map-box{
+    background-color:rgba(255, 255, 255, 0.571);
+    position: relative;
+}
+.triangle {
+    position: absolute;
+    top: 0;
+    width: 0;
+    height: 0;
+    border-top: 100px solid transparent;
+    border-right: 100px solid transparent;
+    border-bottom: 100px solid #000000;
+    border-left: 100px solid #000000;
+    transform: rotate(90deg);
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    border-radius: 0px 0px 0 0; /* 只設定左上角圓角，其他三個角都為直角 */
+    transition: all 0.5s ease-in-out;
+
+    
+}
+.season-bird{
+    transform: rotate(225deg) translate(50px, -50px);
+    position: absolute;
+    
+}
+
 .map-box.season-春 {
     background-color: rgb(200, 225, 159);
+    width: 50%;
 }
 
 .map-box.season-夏 {
 background-color: rgb(253, 190, 175);
+width: 50%;
 }
+
 
 .map-box.season-秋 {
 background-color: rgb(248, 224, 140);
+width: 50%;
 }
 
 .map-box.season-冬 {
 background-color: rgb(144, 187, 209);
+width: 50%;
 }
 
 .bird-photo{
@@ -91,11 +132,12 @@ background-color: rgb(144, 187, 209);
     margin-left: 20px;
     opacity: 0;
     transition-duration: .3s;
-    transition-timing-function: ease-out;
+    transition: all 0.5s ease-in-out;
 }
 .local-info-box.show {
     opacity: 1;
     transform: translateX(0);
+
 }
 .info-hr{
     width: 100%;
@@ -105,10 +147,25 @@ background-color: rgb(144, 187, 209);
     // background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
     background-color: black;
 }
+.p{
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    width: 80%;
+}
 
 .bird-box{
-    width: 100px;
+    // width: 100px; 夏季台中注意
+    margin-right: 8%;
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 .bird-link{
     text-decoration: none;
+}
+.season-bird{
+    display: flex;
+}
+.loading{
+    width: 100%;
+    height: 100%;
 }

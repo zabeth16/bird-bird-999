@@ -1,11 +1,16 @@
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink, useParams , useNavigate} from 'react-router-dom';
 import React from "react";
 import { useState, useEffect, setState, useRef }  from "react";
 import { getFirestore, Firestore ,collection, addDoc, doc, getDoc ,getDocs, onSnapshot
-    , querySnapshot , getApp, getApps,  getDocFromCache} from "firebase/firestore";
+    , querySnapshot , getApp, getApps,  getDocFromCache , query, where} from "firebase/firestore";
 import { HotspotPageCSS } from '../css/HotspotPage.scss'
+import { getAuth, onAuthStateChanged ,signOut , updateProfile} from "firebase/auth";
 import Base from '../pages/Base.jsx'
+import UploadBird from './page_control/UploadBird.jsx';
 import db from './../../firebase-servise.js';
+import { auth } from './../../firebase-servise.js';
+import { storage } from './../../firebase-servise.js';
+import { getStorage, ref , uploadBytes, getDownloadURL } from "firebase/storage";
 import { requestOptions } from './page_control/eBird.jsx';
 import { async } from '@firebase/util';
 import loader from './page_control/googleMap.jsx';
@@ -75,11 +80,96 @@ const HotspotPage = ()=>{
         }
         getSpplist();
     }, []);
+    // 上傳鳥照
+    const [showUpload, setShowUpload] = useState(false);
+    const [warning , setWarning] = useState("")
+    const uploadBirdRef = useRef(null);
+    const callUpload = () =>{
+        if (getUser == true){
+            setShowUpload(!showUpload);
+            setWarning("");
+        }
+        else{
+            setWarning("請先登入會員");           
+        }      
+    }
+    const handleDateChange = (event) => {
+        setSelectedDate(event.target.value);
+    };
+    const [getPhoto , setGetPhoto] = useState([]);
+    const [selectedDate , setSelectedDate] = useState("");
+    const [birdName , setBirdName] = useState([]);
+    const [birdCodeWork , setBirdCodeWork] = useState([]);
+    const [birdTime , setBirdTime] = useState([]);
+    const [birdLocal , setBirdLocal]= useState([]);
+    const [locId , setLocId] = useState([]);
+    // 會員基本資料
+    const [userEmail , setUserEmail] = useState("")
+    const [getUser , setGetUser] = useState(false)
+    useEffect(() => {
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in, see docs for a list of available properties
+                const email = user.email                                      
+                setUserEmail(email)          
+                setGetUser(true)           
+            } else {
+                // User is signed out
+                setGetUser(false) 
+            }
+        });       
+    }, []);
+// 展示鳥照，不同會員都要拿到
+const [birdPhotoUser, setBirdPhotoUser] = useState([])
+useEffect(() => {
+    const getBirdPhoto = async()=>{
+      try{
+        // const docSnap = await getDoc(doc(db, "Upload_bird_photo", userEmail+"#"+selectedDate));
+        // console.log("中文資料", docSnap.id)
+        const ref = collection(db, "Upload_bird_photo");
+        const q = query(ref, where("location", "==", code));
+        const querySnapshot = await getDocs(q);
+        const userShotImgList = []
+        const birdNameList = []
+        const birdCodeList = []
+        const birdTimeList = []
+        const birdLocalList = []
+        const locIdList = []
+        const birdPhotoUserList = []
+        querySnapshot.forEach((doc) => {
+          // 可以再拿其他代碼做利用，用where即可
+          // console.log(doc.id, doc.data().img);
+          const userShotImg = doc.data().img           
+          userShotImgList.push(userShotImg)
+          birdNameList.push(doc.data().ch_name)
+          birdCodeList.push(doc.data().spp_code)
+          birdTimeList.push(doc.data().date)
+          birdLocalList.push(doc.data().locationName)
+          locIdList.push(doc.data().location)
+          birdPhotoUserList.push(doc.data().userName)
 
+        });
+        setGetPhoto(userShotImgList)
+        setBirdName(birdNameList)
+        setBirdCodeWork(birdCodeList)
+        setBirdTime(birdTimeList)
+        setBirdLocal(birdLocalList)
+        setLocId(locIdList)
+        setBirdPhotoUser(birdPhotoUserList)           
+        
 
+      }
+      catch(e){
+        console.log("拿鳥照", e)
+      }
+    }
+    getBirdPhoto();
+  }, [getUser]);
     return (
     <div>
         <Base></Base>
+        {showUpload && <UploadBird onSelectedDateChange={handleDateChange}  onClose={() => setShowUpload(!showUpload)} />}
         <div className='main-hotspot'>
             <div className='hotspotName-box'>
                 <h1 className='hotspotName'>{hotspotName}</h1>
@@ -106,11 +196,60 @@ const HotspotPage = ()=>{
                 <button onClick={() => setShowCount(5)}> Show Less </button>
             ) : null}
 
-            <div id='map'></div>    
-                    
+            <div id='map'></div>  
+            <div className='bird-section-member-work'>
+                    <h1 className='h1-bird-work'>會員作品展示區</h1>
+                    <button className='upload-bird' onClick={callUpload}
+                    onClose={(onClose) => setShowUpload(false)} 
+                    style = {{ position : 'relative'}}
+                    ref={uploadBirdRef}
+                  > + </button> 
+                  {warning && 
+                    <div className="warning-login"
+                        style={{position: 'absolute'}}
+                    >
+                        {warning}
+                    </div>}
 
-        </div>    
-       <div>鳥友照片展示區</div>
+                    {getPhoto.map((getPhoto , index) => (  
+                      <React.Fragment key={getPhoto}>
+                      <div className="image-container" style={{ position: 'relative' }}>
+                        <img key={getPhoto} src={getPhoto} className="get-user-photo" />  
+                        <div className="bird-data-container" style={{ position: 'absolute', top: 0, left: 0 }}>
+                          <div style={{ position: 'relative', display: 'inline-block' , width: '100%'}}>
+                            <p className='bird-data'>
+                                {birdName[index]} {birdTime[index]}
+                                <br/>
+                                提供: {birdPhotoUser[index]}
+                            </p>
+                            <NavLink to={`/bird/${birdCodeWork[index]}`}
+                              style={{ width: '100%', height:'100%',
+                              position: 'absolute', top: 0, left: 0}}
+                            ></NavLink>
+                          </div>
+                          <div style={{ position: 'relative', display: 'inline-block' }}>
+                            <p className='bird-data'
+                              style={{ 
+                                fontSize: '12px', overflow: 'hidden' ,
+                                textDecoration: 'none', color:'white'                                
+                                }}
+                            >
+                              {birdLocal[index]}      
+                                                    
+                          </p>
+                          <NavLink to={`/hotspot/${locId[index]}`} 
+                              style={{ width: '100%', height:'100%',
+                                       position: 'absolute', top: 0, left: 0}}
+                          ></NavLink>
+                          </div>
+                          {/* </div> */}
+                        </div>
+                      </div>                          
+                      </React.Fragment>
+                    ))}                
+                </div>        
+
+        </div>
         
                 
         

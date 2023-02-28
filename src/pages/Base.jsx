@@ -33,8 +33,9 @@ const Base = () =>{
             <NavLink className='logo' to='/'>鳥鳥啾啾啾</NavLink>
             <div className='nav-right-box'>
                 <NavLink className='explore' to="/explore">資料探索</NavLink>
-                <NavLink className='sos' to='/sos'>鳥類救傷</NavLink>
-                <NavLink className='meme' to='/meme'>鳥知識</NavLink>                
+                {/* {/* <NavLink className='sos' to='/sos'>鳥類救傷</NavLink> */}
+                {/* <NavLink className='meme' to='/meme'>鳥知識</NavLink>*/}
+                <NavLink className='to-map' to="/map">四季熱門</NavLink>
                 <NavLink className='member' to={!loginSuccess ? '/login' : '/member' }>
                     {!loginSuccess ? '鳥友會員' :`鳥友: ${userName}`}
                 </NavLink>

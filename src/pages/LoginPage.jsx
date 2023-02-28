@@ -6,6 +6,7 @@ import { getAuth, createUserWithEmailAndPassword , signInWithEmailAndPassword,
         updateProfile , GoogleAuthProvider , signInWithPopup } from "firebase/auth";
 import { LoginPageCSS } from "../css/LoginPage.scss"
 import db from './../../firebase-servise.js';
+import Base from '../pages/Base.jsx'
 import { auth } from './../../firebase-servise.js';
 import { async } from "@firebase/util";
 import  { GOOGLE_CLIENT_ID } from './page_control/googleAPI.js'
@@ -30,6 +31,7 @@ const LoginPage = () =>{
                 (err) => console.log(err)
                 );
             setRegisterSuccess(true);
+            setErrorMessage("");
    
         } catch (e) {
             if(e.message === "Firebase: Error (auth/invalid-email)."){
@@ -100,6 +102,7 @@ const LoginPage = () =>{
             const googleUid = loginUser.uid
             setLoginSuccess(true);
             navigate(-1); // 回使用者的上一頁
+            setErrorMessage("")
            
         } catch (error) {
             if (error.message == "Firebase: Error (auth/popup-closed-by-user)."){
@@ -117,7 +120,7 @@ const LoginPage = () =>{
 
     return (
         <div>
-         
+         <Base></Base>
             <div className={`main ${isLoginFormVisible ? "" : "main-reversed"}`}> {/* {`main ${isLoginFormVisible ? "" : "main-reversed"}`} */}
             <div className={`switch ${isLoginFormVisible ? "" : "slide-right"}`} onClick={handleSwitchClick} >{/* style={{width : isLoginFormVisible ? `${switchWidth}` : `${switchWidth}`}} */}
                 <div className="switch-word" >
@@ -135,7 +138,7 @@ const LoginPage = () =>{
                     setInputEmail(e.target.value) 
                     }}
                 placeholder={"請輸入信箱帳號"}></input>
-                <input className="password" type={'text'} placeholder={"請輸入你的密碼，至少6個字"}
+                <input className="password" type={'password'} placeholder={"請輸入你的密碼，至少6個字"}
                 onChange={e => {
                     setInputPassword(e.target.value) 
                     }}

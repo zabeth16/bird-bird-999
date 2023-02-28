@@ -14,8 +14,8 @@ const HomePage = () =>{
         <div className='banner-menu'>            
             <NavLink className='map' to='/map'>全台賞鳥熱門一覽</NavLink>{/* map */}
             <NavLink className='explore-banner' to="/explore">鳥種/景點查詢</NavLink>{/* ecplore 考慮不同className CSS*/}
-            <NavLink className='sos-banner' to='/sos'>鳥類救傷</NavLink>
-            <NavLink className='meme-banner' to='/meme'>鳥知識</NavLink>
+            {/* <NavLink className='sos-banner' to='/sos'>鳥類救傷</NavLink>
+            <NavLink className='meme-banner' to='/meme'>鳥知識</NavLink> */}
         </div>
     </div>
     

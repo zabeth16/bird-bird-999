@@ -46,12 +46,14 @@ const UploadBird = ({onClose}) =>{
     // 拿user基本資料
     const [userEmail , setUserEmail] = useState("")
     const [warning , setWarning] = useState("")
+    const [displayName , setDisplayName] =useState("")
     useEffect(() => {
         const auth = getAuth();
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 const email = user.email        
-                setUserEmail(email)              
+                setUserEmail(email) 
+                setDisplayName(user.displayName)             
             } else {
                 // User is signed out
                 // 這邊製作警告
@@ -191,7 +193,8 @@ const UploadBird = ({onClose}) =>{
                       spp_code: birdCode[0],
                       location: locId[0],
                       locationName: inputValueLocal,
-                      date: selectedDate
+                      date: selectedDate,
+                      userName: displayName
                     },
                     { merge: true }
                   )           

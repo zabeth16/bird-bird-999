@@ -4,6 +4,11 @@ body{
     font-family:  'Noto Sans TC';
     
 }
+.main-bird{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
 
 .content{
     width: 1200px;
@@ -23,19 +28,25 @@ body{
 }
 .big-sci-box{
     width: 1000px;
+    transform: skew(-10deg);
+    position: absolute;
+    // top: 20px;
+    // left: -100px;
+    z-index: 2;
+    
 }
 .big-sci-name {
     position: absolute;
     top: 20px;
     left: 150px;
     font-size: 100px;
-    color: rgb(255, 255, 255);
+    color: rgb(255 255 255);
     font-weight: 1000;
     z-index: 5;
-    opacity: 0.8;
+    opacity: 0.8;  
+    width: 50%;  
     // transition: height 1s ease-in-out;
-    // height: 0;
-    
+   
 }
 // 有要做動畫再說
 // .big-sci-name.expanded {
@@ -43,8 +54,8 @@ body{
 // }
 
 .bird-img-backgound{
-    width: 1200px;
-    height: 550px;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     filter: brightness(0.7) grayscale(0.3);
     z-index: -1;
@@ -63,6 +74,7 @@ body{
     position: absolute;
     top: 100px;
     left: 20%;
+    
 }
 
 .bird-name-card{
@@ -88,8 +100,8 @@ body{
 }
 .call-audio{
     position: absolute;
-    top: 380px;
-    right: 200px;
+    top: 60%;
+    right: 20%;
     width: 100px;
     height: 100px;
     border-radius: 999em;
@@ -99,4 +111,71 @@ body{
     position: absolute;
     top: 350px;
     right: 200px;
+}
+
+.bird-section-member-work{
+    background-color: #eadb5a;
+    width: 1200px;
+    margin-top: 2%;
+    border-radius: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    height: 400px;
+}
+
+.upload-bird{
+    width: 30%;
+    height: 50%;
+    margin-top: 2%;
+    margin-left: 2%;
+    margin-right: 2%;
+    border-radius: 10px;
+    background-color: rgba(104, 104, 104, 0.425);
+    cursor: pointer;
+    font-size: 500%;    
+    border-style: dashed;
+    border-width: 2px; /* 虛線的寬度 */
+    position: relative; /* 使 .upload-bird 成为定位元素 */
+}
+.upload-bird:hover::before {
+    content: "點擊此區上傳鳥類照片(僅限台灣能見鳥種)";
+    position: absolute;
+    top: -20%; /* 调整上下位置 */
+    left: 50%; /* 将伪元素水平居中 */
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap; /* 防止换行 */
+    z-index: 9;
+}
+.h1-bird-work{
+    text-align: center;
+    width: 100%;
+}
+.warning-login{
+    margin-left: 3%;
+    margin-top: 4%;
+    font-weight: 900;
+    font-size: 50px;
+    color: #931414;
+    text-shadow: 0 5px 5px white;
+    white-space: nowrap;
+    overflow: hidden;
+    animation: typewriter 4s steps(20) 1s 1 normal both,
+                blink .75s step-end infinite;
+}
+@keyframes typewriter {
+    from {
+      width: 0;
+    }
+  }
+  
+@keyframes blink {
+
+    50% {
+        opacity: 0;
+    }
 }

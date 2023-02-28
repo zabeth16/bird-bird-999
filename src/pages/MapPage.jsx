@@ -41,10 +41,42 @@ const MapPage = () =>{
     // 各季節渲染
     const [season, setSeason] = useState('春');
     const [seasonBackground , setSeasonBackground] = useState('春')
+    const [triangleLeft, setTriangleLeft] = useState('-100%');
+    const [seasonImage, setSeasonImage] = useState("img/春鳥.png");
+    const [seasonImageOpacity , setSeasonImageOpacity] = useState('1');
     const handleSeasonClick = (event) => {
       setSeason(event.target.textContent);
       setSeasonBackground(event.target.textContent)
-    
+      setTriangleLeft('0');
+        setTimeout(() => {
+        setTriangleLeft('-100%');
+        }, 1200);
+        if (event.target.textContent === "春") {
+            setSeasonImage("img/春鳥.png");
+            setSeasonImageOpacity(1);
+            setTimeout(() => {
+                setSeasonImageOpacity(0)
+            }, 1200);
+          } else if (event.target.textContent === "夏") {
+            setSeasonImage("img/夏鳥.png");
+            setSeasonImageOpacity(1);
+            setTimeout(() => {
+                setSeasonImageOpacity(0)
+            }, 1200);
+          } else if (event.target.textContent === "秋") {
+            setSeasonImage("img/秋鳥.png");
+            setSeasonImageOpacity(1);
+            setTimeout(() => {
+                setSeasonImageOpacity(0)
+            }, 1200);
+          } else if (event.target.textContent === "冬") {
+            setSeasonImage("img/冬鳥.png");
+            setSeasonImageOpacity(1);
+            setTimeout(() => {
+                setSeasonImageOpacity(0)
+            }, 1200);
+          }
+
     };
 
     // Local 資訊BOX
@@ -125,7 +157,7 @@ const MapPage = () =>{
                                 regionCode + "/historic/2022/4/16" , requestOptions)
                                 .then(response => response.text())
                                 .then(async result => {
-                                    console.log("春")
+                                    // console.log("春")
                                     // console.log(result)
                                     const parsedData = JSON.parse(result);
                                     // 下方 item 是可以隨意命名的
@@ -188,7 +220,7 @@ const MapPage = () =>{
                                 regionCode + "/historic/2022/8/6" , requestOptions)
                                 .then(response => response.text())
                                 .then(async result => {
-                                    console.log("夏")
+                                    // console.log("夏")
                                     // console.log(result)
                                     const parsedData = JSON.parse(result);
                                     // 下方 item 是可以隨意命名的
@@ -255,7 +287,7 @@ const MapPage = () =>{
                                 regionCode + "/historic/2022/10/16" , requestOptions)
                                 .then(response => response.text())
                                 .then(async result => {
-                                    console.log("秋")
+                                    // console.log("秋")
                                     // console.log(result)
                                     const parsedData = JSON.parse(result);
                                     // 下方 item 是可以隨意命名的
@@ -322,8 +354,7 @@ const MapPage = () =>{
                                 regionCode + "/historic/2023/1/31" , requestOptions)
                                 .then(response => response.text())
                                 .then(async result => {
-                                    console.log("冬")
-
+                                    // console.log("冬")
                                     const parsedData = JSON.parse(result);
                                     // 下方 item 是可以隨意命名的
                                     const speciesCodes = parsedData.map(item => item.speciesCode);
@@ -401,13 +432,21 @@ const MapPage = () =>{
         <div className='guide-title'>點擊區域查看熱門景點&鳥種吧 !</div>
         <div className='main'>            
     <div className={`map-box season-${seasonBackground}`}>
+
+        <div className='triangle'  style={{ left: triangleLeft }}> 
+            <img src={seasonImage} className='season-bird'
+            style={{ opacity: seasonImageOpacity }}
+            />
+        </div>   
+ 
         <div className='season-box'>
             <button className={`season-1 ${season === "春" ? "selected" : ""}`} onClick={handleSeasonClick} >春</button>
             <button className={`season-2 ${season === "夏" ? "selected" : ""}`} onClick={handleSeasonClick} >夏</button>
             <button className={`season-3 ${season === "秋" ? "selected" : ""}`} onClick={handleSeasonClick} >秋</button>
             <button className={`season-4 ${season === "冬" ? "selected" : ""}`} onClick={handleSeasonClick} >冬</button>
         </div>
-    <svg version="1.1" id="map" xmlns="http://www.w3.org/2000/svg" 
+      
+    <svg version="1.1" id="map-TW" xmlns="http://www.w3.org/2000/svg" 
     x="0px" y="0px" viewBox="0 0 800 800" >
     {/*  style="enable-background:new 0 0 800 800;"  */}
     {/* <NavLink to='/map' id="基隆市">Keelung City 基隆市 */}
@@ -881,38 +920,45 @@ const MapPage = () =>{
     {/* </NavLink> */}
     </svg>
     </div>
-    <div style={{ display: isLoading ? 'block' : 'none' }}>Loading...</div>
-        <div className='local-info-box' >
+    <div style={{ display: isLoading ? 'block' : 'none' }}>
+            <img src='Loading.gif'  className='loading'/>      
+    </div>
+        <div className='local-info-box'
+        style={{ display: isLoading ? 'none' : 'block' }}
+        >
             {/* 放我的熱門景點R */}
             <h3 className='h3-hotspot' style={{ display: showHotTitle ? 'block' : 'none' }}>前三熱門景點</h3>
-            <p>
+            <p className='p'>
                 <NavLink to={`/hotspot/${hotspotId[0]}`} className='hotspot-link'>{hotspot[0]}</NavLink>
             </p>
-            <p>
+            <p className='p'>
                 <NavLink to={`/hotspot/${hotspotId[1]}`} className='hotspot-link'>{hotspot[1]}</NavLink>
             </p>
-            <p>
+            <p className='p'>
                 <NavLink to={`/hotspot/${hotspotId[2]}`} className='hotspot-link'>{hotspot[2]}</NavLink>
             </p>
-            <hr className='info-hr' style={{ display: showHotTitle ? 'block' : 'none' }}/>
-            <h3 style={{ display: showHotTitle ? 'block' : 'none' }}>該區當季可見鳥種</h3>
-            {birdTWname.map((birdName, index) => (
-                <div key={index} className='bird-box'>
-                    <NavLink to={`/bird/${birdCode[index]}`} className='bird-link' >
-                    <div className='bird'>{birdName}</div>
-                    <div>
-                        <img className='bird-photo' src={birdTWphoto[index]} />
-                    </div>
-                    {/* 記得在這下方要製作更多景點連結Navlink */}
-                    </NavLink>
-                </div>
-                                
-            ))}
             <NavLink to={`/regionList/${regionCode}`} className='more-hotspot'                
                 style={{ display: showHotTitle ? 'block' : 'none' }}>
                 更多景點
-            </NavLink>            
+            </NavLink> 
+            <hr className='info-hr' style={{ display: showHotTitle ? 'block' : 'none' }}/>
+            <h3 style={{ display: showHotTitle ? 'block' : 'none' }}>該區當季可見鳥種</h3>
+            <div className='season-bird'>
+                {birdTWname.map((birdName, index) => (
+                    <div key={index} className='bird-box'>
+                        <NavLink to={`/bird/${birdCode[index]}`} className='bird-link' >
+                        <div className='bird'>{birdName}</div>
+                        <div>
+                            <img className='bird-photo' src={birdTWphoto[index]} />
+                        </div>                   
+                        </NavLink>
+                    </div>
+                                    
+                ))}
+            </div>
+           
         </div>
+
     </div>{/* map-box */}
     </div>
     

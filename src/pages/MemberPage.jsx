@@ -6,8 +6,8 @@ import Base from '../pages/Base.jsx'
 import UploadBird from './page_control/UploadBird.jsx';
 import { MemberPageCSS } from '../css/MemberPage.scss'
 import { getAuth, onAuthStateChanged ,signOut , updateProfile} from "firebase/auth";
-import { getFirestore , doc, setDoc , getDoc , getDocs , collection , addDoc , query, where } from "firebase/firestore"
-import { useNavigate , NavLink, useParams ,Link} from "react-router-dom";
+import { getFirestore , doc, setDoc , getDoc , getDocs , collection , query, where } from "firebase/firestore"
+import { useNavigate , NavLink, useParams } from "react-router-dom";
 import db from './../../firebase-servise.js';
 import { auth } from './../../firebase-servise.js';
 import { storage } from './../../firebase-servise.js';

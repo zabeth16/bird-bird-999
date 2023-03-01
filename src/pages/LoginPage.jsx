@@ -171,7 +171,7 @@ const LoginPage = () =>{
                     setInputName(e.target.value) 
                     }}
                 value={inputName}  ></input>
-                <input className="password" type={'text'} placeholder={"請設定你的密碼，至少6個字"}
+                <input className="password" type={'password'} placeholder={"請設定你的密碼，至少6個字"}
                 onChange={e => {
                     setInputPassword(e.target.value) 
                     }}

@@ -42,7 +42,7 @@ const MapPage = () =>{
     const [season, setSeason] = useState('春');
     const [seasonBackground , setSeasonBackground] = useState('春')
     const [triangleLeft, setTriangleLeft] = useState('-100%');
-    const [seasonImage, setSeasonImage] = useState("img/春鳥.png");
+    const [seasonImage, setSeasonImage] = useState("/img/春鳥.png");
     const [seasonImageOpacity , setSeasonImageOpacity] = useState('1');
     const handleSeasonClick = (event) => {
       setSeason(event.target.textContent);
@@ -52,25 +52,25 @@ const MapPage = () =>{
         setTriangleLeft('-100%');
         }, 1200);
         if (event.target.textContent === "春") {
-            setSeasonImage("img/春鳥.png");
+            setSeasonImage("/img/春鳥.png");
             setSeasonImageOpacity(1);
             setTimeout(() => {
                 setSeasonImageOpacity(0)
             }, 1200);
           } else if (event.target.textContent === "夏") {
-            setSeasonImage("img/夏鳥.png");
+            setSeasonImage("/img/夏鳥.png");
             setSeasonImageOpacity(1);
             setTimeout(() => {
                 setSeasonImageOpacity(0)
             }, 1200);
           } else if (event.target.textContent === "秋") {
-            setSeasonImage("img/秋鳥.png");
+            setSeasonImage("/img/秋鳥.png");
             setSeasonImageOpacity(1);
             setTimeout(() => {
                 setSeasonImageOpacity(0)
             }, 1200);
           } else if (event.target.textContent === "冬") {
-            setSeasonImage("img/冬鳥.png");
+            setSeasonImage("/img/冬鳥.png");
             setSeasonImageOpacity(1);
             setTimeout(() => {
                 setSeasonImageOpacity(0)
@@ -434,7 +434,7 @@ const MapPage = () =>{
     <div className={`map-box season-${seasonBackground}`}>
 
         <div className='triangle'  style={{ left: triangleLeft }}> 
-            <img src={seasonImage} className='season-bird'
+            <img src={seasonImage} className='corner-season-bird'
             style={{ opacity: seasonImageOpacity }}
             />
         </div>   
@@ -921,7 +921,7 @@ const MapPage = () =>{
     </svg>
     </div>
     <div style={{ display: isLoading ? 'block' : 'none' }}>
-            <img src='Loading.gif'  className='loading'/>      
+            <img src='/img/loading.gif'  className='loading'/>      
     </div>
         <div className='local-info-box'
         style={{ display: isLoading ? 'none' : 'block' }}

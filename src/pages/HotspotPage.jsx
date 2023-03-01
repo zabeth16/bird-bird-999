@@ -25,6 +25,9 @@ const HotspotPage = ()=>{
     const [birdCode, setBirdCode] = useState([]);
     // 只顯示前五個鳥種
     const [showCount, setShowCount] = useState(5);
+    // 長鳥
+    const[longBird , setLongBird] = useState(["/img/head.png" , "/img/neck.png" , "/img/foot.png"])
+    const [scroll, setScroll] = useState("hidden");
     useEffect(() => {
         const getHotspotInfo = async() =>{           
             // 該區詳細
@@ -74,12 +77,25 @@ const HotspotPage = ()=>{
                 const birdCode = birdData.map(item => item.spp_code)
                 // console.log(birdName)
                 setBirds(birdName)
-                setBirdCode(birdCode)                    
+                setBirdCode(birdCode)
+                           
+                
+                                   
             })
             .catch(error => console.log('error', error));
         }
         getSpplist();
     }, []);
+    // // scroll
+    // useEffect(() => {
+    //     const container = document.querySelector(".show-bird-list-container");
+    //     if (container.offsetHeight > 150) {
+    //       setScroll("scroll");
+    //     } else {
+    //       setScroll("hidden");
+    //     }
+    //   }, [showCount, birds]);
+
     // 上傳鳥照
     const [showUpload, setShowUpload] = useState(false);
     const [warning , setWarning] = useState("")
@@ -165,7 +181,8 @@ useEffect(() => {
       }
     }
     getBirdPhoto();
-  }, [getUser]);
+  }, [getUser]);  
+
     return (
     <div>
         <Base></Base>
@@ -174,28 +191,32 @@ useEffect(() => {
             <div className='hotspotName-box'>
                 <h1 className='hotspotName'>{hotspotName}</h1>
             </div>            
-            
-            <div className='bird-title'>
-                該地區的可見鳥鳥
-            </div>
-            {/* {birds.map((bird) => (
-                    <div key={bird} className='bird'>{bird}</div>
-            ))} */}
-            {/* 前五個鳥鳥 */}
-            {birds.slice(0, showCount).map((bird , index) => (
-                <div key={bird} >
-                <NavLink to={`/bird/${birdCode[index]}`} className='bird'>{bird}</NavLink>    
-                </div>
-            ))}
-            {/* 點擊則顯示後續的鳥鳥 */}
-            {showCount < birds.length && (
-                <button onClick={() => setShowCount(birds.length)}>Show More </button>
-            )}
-            {/* 收合回到一開始的五個鳥鳥 */}
-            {showCount === birds.length ? (
-                <button onClick={() => setShowCount(5)}> Show Less </button>
-            ) : null}
+            <div className='bird-in-hotspot'>
+                <div className='bird-title'>
+                    該地區的可見鳥鳥
+                </div>     
+                {/* <div className={`show-bird-list-container ${scroll}`}> */}
+                {/* 前五個鳥鳥 */}
+                {birds.slice(0, showCount).map((bird , index) => (                 
 
+                    <div key={bird} className='show-bird-list'>  
+                    <div className='bird-box-hopspot'>                 
+                        <NavLink to={`/bird/${birdCode[index]}`} className='bird'>{bird}</NavLink>   
+                    </div>
+                    <img src={index === 0 ? longBird[0] : index === birds.length - 1 ? longBird[2] : longBird[1]}
+                    className="bird-image" /> 
+                    </div>
+                ))}
+                {/* 點擊則顯示後續的鳥鳥 */}
+                {showCount < birds.length && (
+                    <button onClick={() => setShowCount(birds.length)} className='show-more'>Show More </button>
+                )}
+                {/* 收合回到一開始的五個鳥鳥 */}
+                {showCount === birds.length ? (
+                    <button onClick={() => setShowCount(5)} className='show-less'> Show Less </button>
+                ) : null}
+                {/* </div> */}
+            </div>
             <div id='map'></div>  
             <div className='bird-section-member-work'>
                     <h1 className='h1-bird-work'>會員作品展示區</h1>

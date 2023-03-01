@@ -4,11 +4,17 @@ body{
     font-family:  'Noto Sans TC';;
 }
 .main-hotspot{
-    // display: flex;
+    display: flex;
     width: 1200px;
     margin: 0 auto;
-    // flex-wrap: wrap;
+    flex-wrap: wrap;
     // justify-content: center;    
+}
+.bird-in-hotspot{
+    width: 30%;
+}
+#map{
+    width: 60%;
 }
 .hotspotName-box{
     width: 100%;
@@ -36,7 +42,62 @@ body{
     text-decoration: none;
     color: rgb(145, 194, 211);
     cursor: pointer;
+    position: relative;
+   
 }
-#map{
-    width: 100%;
+.bird-box-hopspot{
+    width: 45%;
+}
+// .show-bird-list-container{
+//     overflow-x: hidden;
+//     overflow-y:  '${scroll}';
+//     max-height: 375px;
+//     width: 90%;
+// }
+.bird::before {
+    content: "";
+    position: absolute;
+    bottom: -2px; /* 距離文字底部2個像素 */
+    left: 0;
+    width: 0; /* 初始為0 */
+    height: 2px;
+    background-color: rgb(201, 234, 245);
+    transition: width 0.2s ease-out; /* 寬度變化的過渡效果 */
+}
+
+
+.bird:hover::before {
+    width: 100%; /* 與 hot-spot 鏈接的寬度相等 */
+}
+
+.show-more{
+    margin-top: 1%;
+    margin-bottom: 1%;
+    background-color: #EDB458;
+    cursor: pointer;
+    border: solid 2px white;
+    border-radius: 5px;
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+.show-more:hover {
+    transform: translateY(-2px);
+    box-shadow: 2px 2px 8px #E8871E;
+}
+.show-less{
+    margin-top: 1%;
+    margin-bottom: 1%;
+    background-color: #9b9b7c;
+    cursor: pointer;
+    border: solid 2px white;
+    border-radius: 5px;
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+.show-less:hover {
+    transform: translateY(-2px);
+    box-shadow: 2px 2px 8px #cabfb4;
+}
+.show-bird-list{
+    // width: 100%;
+    display: flex;
 }

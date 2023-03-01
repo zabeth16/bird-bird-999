@@ -27,9 +27,17 @@ body{
     // background-color: rgb(253, 219, 178);
     cursor: pointer;
     border-radius: 999em;
+    border: solid 2px white;
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
     height: 50px;
     width: 50px;
     margin-right: 10px;
+    font-weight: 900;
+    
+}
+.season-1:hover{
+    transform: translateY(-2px);
+    box-shadow: 2px 2px 8px #656360;
 }
 .season-2{
     cursor: pointer;
@@ -37,24 +45,43 @@ body{
     height: 50px;
     width: 50px;
     // background-color: rgb(124, 139, 139);
+    border: solid 2px white;
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    font-weight: 900;
     margin-right: 10px;
+}
+.season-2:hover{
+    transform: translateY(-2px);
+    box-shadow: 2px 2px 8px #656360;
 }
 .season-3{
     cursor: pointer;
     border-radius: 999em;
     height: 50px;
     width: 50px;
-    // background-color: rgb(124, 139, 139);
+    border: solid 2px white;
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    font-weight: 900;
     margin-right: 10px;
+}
+.season-3:hover{
+    transform: translateY(-2px);
+    box-shadow: 2px 2px 8px #656360;
 }
 .season-4{
     cursor: pointer;
     border-radius: 999em;
     height: 50px;
     width: 50px;
-    // background-color: rgb(124, 139, 139);
+    border: solid 2px white;
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    font-weight: 900;
 }
-// map 可典籍 本身
+.season-4:hover{
+    transform: translateY(-2px);
+    box-shadow: 2px 2px 8px #656360;
+}
+// map 可點擊 本身
 #map-TW{
     height: 400px;
     margin-top: 10%;
@@ -79,33 +106,32 @@ body{
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     border-radius: 0px 0px 0 0; /* 只設定左上角圓角，其他三個角都為直角 */
     transition: all 0.5s ease-in-out;
-
     
 }
-.season-bird{
+.corner-season-bird{
     transform: rotate(225deg) translate(50px, -50px);
     position: absolute;
     
 }
 
 .map-box.season-春 {
-    background-color: rgb(200, 225, 159);
+    background-color: #86A873;
     width: 50%;
 }
 
 .map-box.season-夏 {
-background-color: rgb(253, 190, 175);
+background-color: #EFA48B;
 width: 50%;
 }
 
 
 .map-box.season-秋 {
-background-color: rgb(248, 224, 140);
+background-color: #D5BF86;
 width: 50%;
 }
 
 .map-box.season-冬 {
-background-color: rgb(144, 187, 209);
+background-color: #92AD94;
 width: 50%;
 }
 
@@ -118,10 +144,16 @@ width: 50%;
 .more-hotspot{
     text-decoration: none;
     width: 100px;
-    background-color: rgb(16, 27, 78);
-    color:aliceblue;
+    background-color: #6c6540;
+    color:rgb(255, 255, 255);
     border-radius: 10px;
     text-align: center;
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    font-weight: 900;
+}
+.more-hotspot:hover{
+    transform: translateY(-2px);
+    box-shadow: 2px 2px 1px #feee96;
 }
 .guide-title{
     text-align: center;

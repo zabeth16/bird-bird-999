@@ -223,8 +223,7 @@ const MemberPage = () =>{
             canvas.add(img);
             canvas.setActiveObject(img);
             img.on('scaling', handleScaling);
-            setNewImg(img)
-     
+            setNewImg(img)     
           }
     
           canvas.on('object:moving', (e) => {

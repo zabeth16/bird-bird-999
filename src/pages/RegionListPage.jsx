@@ -53,19 +53,21 @@ const RegionListPage = () =>{
     return (
         <div>
             <Base></Base>
-            <div className='guide-title' >該區域景點列表一覽!</div>
-            <div className='main'>
+            <div className='guide-title' ></div>
+            <div className='main-region-list'>
                 <table>
                     <tbody>                    
                     <tr>
                         <th className='top20'>編號</th>
-                        <th className='top20'>前20大熱門景點</th>
+                        <th className='top20'>該區前20大熱門景點</th>
                         <th className='top20'>該區鳥種數</th>
                     </tr>                  
                         
                     {hotspot.map((location,index) =>(
                         <tr key={index}>
-                            <td>{index + 1}</td>
+                            <td className='index-number'>
+                                {index + 1}
+                            </td>
                             <td>
                                 <NavLink to={`/hotspot/${locationId[index]}`} 
                                 className = 'hotspot-link'>

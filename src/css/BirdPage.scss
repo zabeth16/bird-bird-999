@@ -8,6 +8,7 @@ body{
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    
 }
 
 .content{
@@ -23,7 +24,14 @@ body{
     z-index: 10;
     // display: flex;
     // justify-content: center;
-    
+    @media (max-width: 1200px){
+        width: 100%;
+    }
+    @media (max-width: 1000px){
+        height: 850px;
+        overflow: hidden;
+    }
+
     
 }
 .big-sci-box{
@@ -33,6 +41,9 @@ body{
     // top: 20px;
     // left: -100px;
     z-index: 2;
+    @media (max-width: 1200px){
+        width: 90%;
+    }
     
 }
 .big-sci-name {
@@ -46,7 +57,21 @@ body{
     opacity: 0.8;  
     width: 50%;  
     // transition: height 1s ease-in-out;
-   
+    @media (max-width: 764px){
+        font-size:60px;
+        left: 100px;
+
+    }
+    @media (max-width: 450px){
+        font-size:50px;
+        left:80px;
+    }
+    @media (max-width: 400px){
+        left:50px;
+    }
+    @media (max-width: 360px){
+        font-size:30px;
+    }
 }
 // 有要做動畫再說
 // .big-sci-name.expanded {
@@ -74,7 +99,20 @@ body{
     position: absolute;
     top: 100px;
     left: 20%;
-    
+    @media (max-width: 764px){
+        left: 10%;
+    }
+    @media (max-width: 600px){
+        width: 80%;
+        height: 40%;
+        object-fit: contain;
+    }
+    @media (max-width: 500px){
+        width: 80%;
+        height: 50%;
+        object-fit: contain;
+        top: -3%;
+    }
 }
 
 .bird-name-card{
@@ -87,6 +125,23 @@ body{
     left: 150px;
     opacity: 0.8;
     padding: 10px;
+    @media (max-width: 764px){
+        left: 100px;
+    }
+    @media (max-width: 600px){
+        left: 80px;
+    }
+    @media (max-width: 500px){
+        left: 10%;
+        width: 76%;
+        top:38%;
+    }
+    @media (max-width: 360px){
+        top:33%;
+        width: 74%;
+    }
+    
+
 }
 .bird-name{
     font-weight: 1000;
@@ -96,7 +151,26 @@ body{
     position: absolute;
     top: 145px;
     right: 50px;
-
+    @media (max-width: 1200px){
+        width: 300px;
+    }
+    @media (max-width: 1000px){
+        width: 500px;
+        height: 47%;
+        right: 0%;
+        left: 20%;
+        top: 55%;
+    }
+    @media (max-width: 764px){
+        left: 10%;
+    }
+    @media (max-width: 600px){
+        width: 80%;
+    }
+    @media (max-width: 360px){
+        top: 45%;
+        width: 79%;
+    }
 }
 .call-audio{
     position: absolute;
@@ -106,6 +180,25 @@ body{
     height: 100px;
     border-radius: 999em;
     cursor: pointer;
+    border: solid 3px rgb(123, 123, 123);
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    font-weight: 900;
+    @media (max-width: 1000px){
+        right: 20%;
+        top:50%;
+       
+    }
+    @media (max-width: 600px){
+        top: 52%;
+        right: 10%;
+    }
+    @media (max-width: 360px){
+        top: 45%;
+    }
+}
+.call-audio:hover{
+    transform: translateY(-2px);
+    box-shadow: 2px 2px 1px #292929;
 }
 .message{
     position: absolute;

@@ -14,7 +14,7 @@ import { storage } from './../../firebase-servise.js';
 import { getStorage, ref , uploadBytes, getDownloadURL } from "firebase/storage";
 import { fabric } from 'fabric';
 import { async } from '@firebase/util';
-
+import html2canvas from 'html2canvas';
 
 const MemberPage = () =>{
     const navigate = useNavigate();//取得 navigate
@@ -55,7 +55,7 @@ const MemberPage = () =>{
                 setUserId(uid)
                 setUserEmail(email)
                 setUserPhoto(photoURL)
-                console.log("userName: " , userName , "email: " , email)
+                // console.log("userName: " , userName , "email: " , email)
                 // setLoginSuccess(true)   
                 setGetUser(true)           
             } else {
@@ -231,7 +231,7 @@ const MemberPage = () =>{
             obj.setCoords();
             // setImgPosition({ left: obj.left, top: obj.top });
             const boundingRect = obj.getBoundingRect();
-             console.log(obj)          
+            //  console.log(obj)          
           });
     
           canvas.on('object:scaling', (e) => {
@@ -280,7 +280,7 @@ const MemberPage = () =>{
               obj.setCoords();     
               // const tx = ((obj.width / canvasWidth)) * obj.scaleX + obj.left  + (canvasWidth / 2) ; //boundingRect.left +
               // const ty = ( (obj.height / canvasHeight)) * obj.scaleY + obj.top;         
-              console.log("中心left",left,"top: ", top)
+              // console.log("中心left",left,"top: ", top)
               const adjustLeft =canvasWidth/2
               const adjustTop =canvasHeight/2
               setTransformOrigin(tx , ty);
@@ -293,14 +293,6 @@ const MemberPage = () =>{
               })
             }
             
-            // console.log(TransformOrigin)
-            // setScaleX(obj.scaleX)
-            // setScaleY(obj.scaleY)
-           
-
-            // console.log(obj)
-            // console.log( "左" ,boundingRect.left)
-            // console.log("top" ,boundingRect.top)
           });
 
 
@@ -317,39 +309,36 @@ const MemberPage = () =>{
         setUploadStatus("上傳中");
         // 獲取當前圖像的位置和scale
         const canvas = canvasRef.current;
-        // 移除事件监听器
+        // 移除事件监听器，蠻失敗
         if (canvas) {
           // canvas.add(newImg)
-
           // canvas.off('object:moving');
-          // canvas.off('object:scaling');
-        
+          // canvas.off('object:scaling');        
           // 在Firebase Storage上傳前，將位置和scale信息寫入圖像元數據
           // 用database吧
           try {
-            // 把最終大頭照設定上傳到database
-
+            // 把最終大頭照設定上傳到database          
             await setDoc(doc(db, "Profile", userEmail), {
               user:{
                 "email": userEmail,
                 profileStyle
               }                             
             });
-            // const userDocRef = collection(db, "Profile");
-            // await addDoc(userDocRef,{
-            //   "email": userEmail,
-            //   profileStyle
-            // })
           } catch (err) {
             console.error("Error: ", err);
           }
-
-          const uploadPath = `users/${userEmail}/profilePhoto.png`;        
-          uploadBytes(ref(storage, uploadPath), selectedFile ).then(() => {
-            setUploadStatus("上傳成功，自動刷新頁面");
-            // console.log('照片上傳成功');
-              // 照片上傳成功後，獲取照片下載 URL 並顯示照片
-              getDownloadURL(ref(storage, uploadPath)).then((url) => {
+ 
+          const uploadPath = `users/${userEmail}/profilePhoto.png`;  
+          // 試試 canvas 螢幕截圖  
+          html2canvas(canvas).then(function(canvas) {
+            // 截圖生成成功
+            canvas.toBlob((blob) => {
+              // Blob生成成功
+              uploadBytes(ref(storage, uploadPath), blob).then(() => {
+                setUploadStatus("上傳成功，自動刷新頁面");
+                // console.log('照片上傳成功');
+                // 照片上傳成功後，獲取照片下載 URL 並顯示照片
+                getDownloadURL(ref(storage, uploadPath)).then((url) => {
                   // Update the user profile in Firebase Auth
                   updateProfile(auth.currentUser, {
                     photoURL: url
@@ -362,12 +351,14 @@ const MemberPage = () =>{
                   }).catch((error) => {
                     // An error occurred
                     console.error(error);
-                  });            
+                  });
 
-              })
-          }).catch((error) => {
-            console.error('照片上傳失敗', error);
-          });      
+                })
+              }).catch((error) => {
+                console.error('照片上傳失敗', error);
+              });
+            }, 'image/png');
+          });
         } // if (canvas)
   }
     
@@ -379,6 +370,7 @@ const MemberPage = () =>{
             
             <div className='main-member'> {/* 鳥友會員頁 */}                
                 <div className='user-box'> 
+                  <div className='user-photo-container-box'>
                     <div className='user-photo-container'>
                         {!previewPhoto ? 
                         (
@@ -393,14 +385,8 @@ const MemberPage = () =>{
                              <img src={userPhoto}  className='user-photo'    
                              style={{
                               width: '200px',
-                              height:'200px',
-                              left: imgPosition.left,
-                              top: imgPosition.top,
-                              position: 'relative', 
-                              // transformOrigin: TransformOrigin,
-                              // transformStyle: 'initial',    
-                              transform: `scaleX(${scaleX}) scaleY(${scaleY})`,
-                              
+                              height:'200px',                 
+                              position: 'relative',                 
                             }}
                                             
                              /> {/*className='user-photo'*/}
@@ -409,7 +395,9 @@ const MemberPage = () =>{
                         )
                     }                       
                     </div>
-                    <label htmlFor="upload-photo" className='upload-photo'>
+                    
+                  </div>
+                  <label htmlFor="upload-photo" className='upload-photo'>
                         <span className='choose'>{uploadStatus || '更換照片'}</span>                      
                         <input
                         type="file"
@@ -423,6 +411,7 @@ const MemberPage = () =>{
                         } 
                         
                     </label>
+                    
                     <div className='user-name'>{userName}</div>  
                     <div className='logout-box'>
                       <button onClick={logout} className='logout'> 點此登出 </button>

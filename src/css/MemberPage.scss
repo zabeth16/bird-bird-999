@@ -1,30 +1,45 @@
 .main-member{
-    // flex-wrap: wrap;
+    flex-wrap: wrap;
     width: 1200px;
-    // justify-content: center;
+    justify-content: center;
     display: flex;
+}
+.user-photo-container-box{
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 .user-box{
     width: 30%;
     position: relative;
     overflow: hidden;    
+    @media (max-width: 680px){
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 }
 .upload-user-photo{
     position: absolute;
     top:90%;
     right: -50%;
+
 }
 
 .user-name{
-    width: 200px;
+    // width: 200px;
     text-align: center;
     font-weight: 700;
     font-size: 120%;
     margin-top: 2%;
+    @media (max-width: 680px){
+        width: 100%;
+    }
 }
 .user-photo-container{
     border-radius: 999em;
-    background-color: aqua;
+    background-color: rgb(60, 103, 103);
     overflow: hidden;
     width: 200px;
     height: 200px;
@@ -44,24 +59,36 @@
     aspect-ratio: 1;
     // max-width: 100%;
     // max-height: 100%;
-    
 }
 
 .upload-photo{
     display: flex;
     flex-wrap: wrap;
-    width: 200px;
+    // width: 200px;
     margin-top: 2%;
     justify-content: center;
+    @media (max-width: 680px){
+        width: 100%;
+    }
 }
 .choose{
-    width: 100%;
+    width: 200px;
     text-align: center;
-    cursor: pointer;    
-    
+    cursor: pointer;   
+    position: relative;
 }
-.choose:hover{
-    text-shadow: 1px 1px 10px #eadb5a;
+.choose::before{
+    content: "";
+    position: absolute;
+    bottom: -2px; /* 距離文字底部2個像素 */
+    left: 0;
+    width: 0; /* 初始為0 */
+    height: 2px;
+    background-color: #f3eebd;
+    transition: width 0.2s ease-out; /* 寬度變化的過渡效果 */
+}
+.choose:hover::before {
+    width: 100%; /* 與 hot-spot 鏈接的寬度相等 */
 }
 .canvas-container{
     display: block;
@@ -70,7 +97,10 @@
 .logout-box{
     display: flex;
     justify-content: center;
-    width: 200px;
+    // width: 200px;
+    @media (max-width: 680px){
+        width: 200px;
+    }
 }
 .logout{
     margin-top: 5%;
@@ -100,6 +130,9 @@
     border-radius: 10px;
     display: flex;
     flex-wrap: wrap;
+    @media (max-width: 680px){
+        width: 90%;
+    }
 }
 .image-container{
     width: 30%;
@@ -143,6 +176,12 @@
     margin-bottom:-10%;
     color: #ffffff;
     text-shadow: 1px 1px 2px #693e1b;
+    @media (max-width: 680px){
+        margin-bottom:0;
+    }
+    @media (max-width: 450px){
+        font-size: 25px;
+    }
 }
 .upload-bird{
     width: 30%;
@@ -157,6 +196,9 @@
     border-style: dashed;
     border-width: 2px; /* 虛線的寬度 */
     position: relative; /* 使 .upload-bird 成为定位元素 */
+    @media (max-width: 450px){
+        line-height: 50%;
+    }
 }
 .upload-bird:hover::before {
     content: "點擊此區上傳鳥類照片(僅限台灣能見鳥種)";
@@ -171,4 +213,17 @@
     font-size: 12px;
     white-space: nowrap; /* 防止换行 */
     z-index: 9;
+    @media (max-width: 600px){
+        left:80%;
+    }
+    @media (max-width: 450px){
+        padding: 2px 5px;
+        top:-40%;
+        left: 90%;
+        white-space:wrap;
+        font-size: 6px;
+    }
+    @media (max-width: 390px){
+        left: 100%;
+    }
 }

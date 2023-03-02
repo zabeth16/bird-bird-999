@@ -4,6 +4,14 @@
     justify-content: center;
     margin: 0 auto;
     margin-top: 50px;
+    @media (max-width: 1200px) {
+        width: 80%;
+    }
+    @media (max-width: 600px) {
+        display:block;
+        width:70%;
+    }
+
 }
 
 .explore-bird{
@@ -14,6 +22,13 @@
     background-image: url("https://images.plurk.com/5q9gSYVTB0FqWmW4NUpztp.jpg");
     background-position: right bottom;
     background-repeat: no-repeat;
+    @media (max-width: 600px) {
+        width: 80%;
+        margin-left: -5%;
+    }
+    @media (max-width: 400px){
+        margin-left: -12%;
+    }
 }
 
 .explore-bird .surprise {
@@ -36,6 +51,13 @@
     object-fit: cover;
     height: 300px;
     padding: 50px;
+    @media (max-width: 600px) {
+        width: 80%;
+        margin-left: -5%;
+    }
+    @media (max-width: 400px){
+        margin-left: -12%;
+    }
 }
 
 .explore-title{
@@ -44,7 +66,9 @@
     font-size: 50px;
     color: rgb(255, 255, 255);
     text-shadow: 2px 2px 2px #333; /* 灰色陰影 */
-
+    @media (max-width: 755px){
+        font-size:30px
+    }
 }
 input{
     padding: 10px;
@@ -55,7 +79,24 @@ input{
     border: none;
     // background-color: black;
     // color: white;
+    @media (max-width: 1200px) {
+        width:95%;
+        // height: 30%;
+    }
+    @media (max-width: 755px){
+        margin-top:120px
+    }
 }
+
+.input-hotspot::placeholder {
+    white-space: normal;
+}
+@media (max-width: 1000px) {
+    .input-hotspot{
+        padding-top: 0;
+    }
+}
+
 .input-location{
     margin-top: 10px
 }
@@ -85,6 +126,10 @@ input{
     overflow-x: hidden;
     overflow-y:  '${scroll}';
     max-height: 150px;
+    @media (max-width: 600px){
+        max-height:145px
+    }
+    
 }
 .local-search{
     color: white;
@@ -103,4 +148,18 @@ input{
     font-weight: 700;
     color: rgb(132, 53, 53);
     text-shadow: 1px 1px 1px #b69292; /* 灰色陰影 */
+    white-space: normal;
+    @media (max-width: 755px){
+        font-size: 85%;
+        width: 20%;        
+    }
+    @media (max-width: 600px) {
+        width: 50%;
+        font-size:100%;
+        top: 700px;
+    }
+    @media (max-width: 400px) {
+        // width: 40%;
+        font-size:85%;
+    }
 }

@@ -151,7 +151,23 @@ const BirdPage = () =>{
         }
         getBirdPhoto();
       }, [getUser]);
-
+    const [width, setWidth] = useState("300");
+    const [height, setHeight] = useState("400");
+    const [top, setTop]= useState('0');
+    const [left, setLeft]= useState('0');
+    useEffect(() => {
+        function handleResize() {
+          if (window.innerWidth <= 1000) {
+            setWidth("30%");
+            setHeight("400");
+          } else {
+            setWidth("300");
+            setHeight("400");
+          }
+        }
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+      }, []);
     return(
         <div>
             <Base></Base>
@@ -162,9 +178,8 @@ const BirdPage = () =>{
                         <div className='big-sci-name'>{birdNameSCI}</div>
                     </div>                    
                     <img className='bird-img-backgound' src={birdImg}></img>
-                    {/* <div className='img-box'> */}
-                        <img className='bird-img' src={birdImg}></img>    
-                    {/* </div>                            */}
+                    <img className='bird-img' src={birdImg}></img>   
+                  
                     <div className='bird-name-card'>
                         <div className='bird-name'>{birdNameCH}</div>
                         <div className='bird-sci-name' 
@@ -184,8 +199,11 @@ const BirdPage = () =>{
                         {showAudio && (
                         <iframe src={`https://macaulaylibrary.org/asset/${audioCode}/embed`}
                                 className='audio'
-                                height="400"
-                                width="300"
+                               
+                                // top={top}
+                                // left={left}
+                                height='300px'
+                                width='400px'
                                 allowFullScreen
                         ></iframe>
                         )}             

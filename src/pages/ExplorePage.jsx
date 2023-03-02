@@ -68,6 +68,13 @@ const ExplorePage = () =>{
     const [inputValueRegion, setInputValueRegion] = useState("");
     const [regionCode, setRegionCode] = useState([]);
     const [regionName, setRegionName] = useState([]);
+    // 設定初始 padding-top 值
+    const [inputPaddingTop, setInputPaddingTop] = useState("0px"); 
+    const handleInputClick = () => {
+        if (window.innerWidth <= 1000) {
+          setInputPaddingTop("10px");
+        }
+    };
     // 第二景點搜尋欄
     // 點擊後展示點擊value
     const [showInput, setShowInput] = useState(false);
@@ -81,7 +88,7 @@ const ExplorePage = () =>{
     const [showtop20 , setShowTop20 ] = useState(false);
     const [selectedRegion, setSelectedRegion] = useState("");
     const [selectedRegionCode , setSelectedRegionCode] = useState("")
-    
+
 
     const searchRegion = async(inputValueRegion) =>{
         const docSnap = await getDoc(doc(db, "TW", "location"));
@@ -178,8 +185,10 @@ const ExplorePage = () =>{
                 <div className='explore-hotspot'>
                     <div className='explore-title'>探索景點</div>
                     { showtop20 &&
+                       
                         <NavLink to={`/regionList/${selectedRegionCode}`}
                         className='top20-recommend'>{selectedRegion + "前20大熱門推薦"}</NavLink>
+                       
                     }                    
                     <input className='input-hotspot' type={'search'} placeholder='先輸入區域名稱，有需要請用｢台」字搜尋'
                     value={inputValueRegion}
@@ -187,6 +196,8 @@ const ExplorePage = () =>{
                         setInputValueRegion(e.target.value)  
                         searchRegion(e.target.value)       
                     } }
+                    style={{ paddingTop: inputPaddingTop }} // 根據狀態改變 padding-top 的值
+                    onClick={handleInputClick} // 當使用者在輸入框內點擊時，呼叫 handleInputClick 函式
                     
                     ></input> 
                     <div className='scroll-box'>

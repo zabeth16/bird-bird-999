@@ -12,9 +12,11 @@ body{
     width: 100%;
     display: flex;
     justify-content: center;
-    // background-image: url('https://images.plurk.com/35TARdY3ia68kZXcAB5JHa.jpg');
-    // background-size: cover;
-    // background-repeat: no-repeat;
+
+    @media (max-width: 950px){
+        width: 90%;
+
+    }
 }
 .index-number{
     background-color: #fdbc68;
@@ -32,6 +34,9 @@ body{
 // }
 .bar-box{
     background-color: rgb(147, 147, 146);
+    // @media (max-width: 950px){
+    //     width: 80%;
+    // }
 }
 .bar{
     background-color: #feee96;
@@ -42,6 +47,9 @@ body{
     cursor: pointer;
     color: #f7f1ac;
     position: relative;
+    @media (max-width: 430px){
+        font-size: 12px;
+    }
 }
 .hotspot-link::before {
     content: "";
@@ -56,4 +64,34 @@ body{
 
 .hotspot-link:hover::before {
 width: 100%; /* 與 hot-spot 鏈接的寬度相等 */
+}
+.top20-number{
+    @media (max-width: 950px){
+        width: 50px;
+    }
+    @media (max-width: 400px){
+        font-size: 12px;
+    }
+    @media (max-width: 400px){
+        width:30px;
+    }
+}
+.top20{
+    @media (max-width: 400px){
+        font-size: 12px;
+    }
+}
+.top20-bird-number{
+    @media (max-width: 950px){
+        width: 100px;
+    }
+    @media (max-width: 450px){
+        width: 120px;
+    }
+    @media (max-width: 400px){
+        font-size: 12px;
+    }
+    @media (max-width: 360px){
+        width:80px;
+    }
 }

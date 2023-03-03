@@ -428,14 +428,14 @@ const MemberPage = () =>{
                       <div className="image-container" style={{ position: 'relative' }}>
                         <img key={getPhoto} src={getPhoto} className="get-user-photo" />  
                         <div className="bird-data-container" style={{ position: 'absolute', top: 0, left: 0 }}>
-                          <div style={{ position: 'relative', display: 'inline-block' , width: '100%'}}>
+                          <div className='bird-data-name-container' style={{ position: 'relative', display: 'inline-block' , width: '100%'}}>
                             <p className='bird-data'>{birdName[index]} {birdTime[index]}</p>
                             <NavLink to={`/bird/${birdCode[index]}`}
                               style={{ width: '100%', height:'100%',
                               position: 'absolute', top: 0, left: 0}}
                             ></NavLink>
                           </div>
-                          <div style={{ position: 'relative', display: 'inline-block' }}>
+                          <div className='bird-data-local-container' style={{ position: 'relative', display: 'inline-block' }}>
                             <p className='bird-data'
                               style={{ 
                                 fontSize: '12px', overflow: 'hidden' ,

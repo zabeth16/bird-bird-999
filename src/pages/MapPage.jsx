@@ -90,6 +90,28 @@ const MapPage = () =>{
         const infoBox = document.querySelector('.local-info-box');
         infoBox.classList.add('show');       
     };    
+    // 季節地圖 RWD
+    const [marginLeft, setMarginLeft] = useState('30%');
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    const [isLocalInfoBoxVisible, setIsLocalInfoBoxVisible] = useState(false);
+    // useEffect(() => {
+    //     const handleResize = () => {
+       
+    //       const screenWidth = window.innerWidth;
+    //       let newMarginLeft = '30%';
+    //       if (!isLoading) {
+    //         newMarginLeft = '0%';
+
+    //       } 
+    //       setMarginLeft(newMarginLeft);
+    //     }
+        
+    
+    //     window.addEventListener('resize', handleResize);
+    //     handleResize();
+
+    //     return () => window.removeEventListener('resize', handleResize);
+    //   }, [isLoading]);
 
     // 前三景點title上方大標
     const [showHotTitle, setShowHotTitle] = useState(false);
@@ -431,7 +453,26 @@ const MapPage = () =>{
         <Base></Base>
         <div className='guide-title'>點擊區域查看熱門景點&鳥種吧 !</div>
         <div className='main'>            
-    <div className={`map-box season-${seasonBackground}`}>
+    <div className={`map-box season-${seasonBackground}`}
+         style={{  
+            marginLeft: isLoading || isVisible
+            ? 0 : ''
+            // 巢狀的三元運算子，但無法像CSS及時更新。
+            // : window.innerWidth < 600
+            // ? '10%'
+            // : window.innerWidth < 700
+            // ? '20%'
+            // : window.innerWidth < 900
+            // ? '25%'
+            // : window.innerWidth < 1000
+            // ? '28%'
+            // : window.innerWidth < 1100
+            // ? '30%'
+            // : window.innerWidth < 1200
+            // ? 'unset'
+            // : '0%'
+         }}
+    >
 
         <div className='triangle'  style={{ left: triangleLeft }}> 
             <img src={seasonImage} className='corner-season-bird'

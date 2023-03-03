@@ -20,15 +20,34 @@
     flex-wrap: wrap;
     box-shadow: 0 2px 4px rgba(255, 255, 255, 0.2);
     position: relative;
+    padding-bottom: 50px;
+
 }
 .bird-photo-box{
     width: 50%;
     height: 80%;
-    background-color: rgb(184, 180, 111);
+    background-color: #a1503c;
     margin: 2%;
     text-align: center;
     cursor: pointer;
     font-weight: 500;
+    border-radius: 10px;
+    @media (max-width: 600px){
+        width: 30%;
+        height: 30%;
+        margin-left: 35%;
+        font-size:12px;
+    }
+    @media (max-width: 450px){
+        font-size: 6px;
+        padding-top: 2px;        
+    }
+    @media (max-width: 420px){
+        padding-top: 5px;
+        font-size: 90%;
+        width: 50%;
+        margin-left: 25%;
+    }
 }
 input[type='file'] {
     position: absolute;
@@ -43,14 +62,23 @@ input[type='file'] {
 .photo-detail{
     width: 40%;
     height: 80%;
-    background-color: rgb(123, 102, 102);
+    background-color: #a1503c;
     margin: 2%;
     display: flex;
     flex-wrap: wrap;
     font-weight: 900;
     font-size: 140%;
     box-sizing: border-box;
-    
+    padding: 15px 15px;
+    border-radius: 10px;
+    @media (max-width: 720px){
+        font-size:100%;        
+    }
+    @media (max-width: 600px) {
+        width: 100%;
+        height: 60%;
+    }
+  
 }
 .name-detail{
     width: 100%;
@@ -102,9 +130,19 @@ input[type='file'] {
     overflow-x: hidden;
     overflow-y: "${scroll}";
     max-height: 150px;
-    width: 36%;
-    top:20%;
+    width: 38.5%;
+    top: 20%;
     background-color:beige;
+    @media (max-width: 1500px){
+        top: 18%;
+    }
+    @media (max-width: 1300px){
+        top:22%;
+    }
+    @media (max-width: 600px){
+        top: 47%;
+        width: 90%;
+    }
 }
 .bird-search-upload{
     margin-top: 5px;
@@ -122,9 +160,19 @@ input[type='file'] {
     overflow-x: hidden;
     overflow-y: "${scroll}";
     max-height: 150px;
-    width: 36%;
-    top:35%;
+    width: 38.5%;
+    top:36%;
     background-color:beige;
+    @media (max-width: 1300px){
+        top:40%;
+    }
+    @media (max-width: 1200px){
+        top:38%;
+    }
+    @media (max-width: 600px){
+        top: 59%;
+        width: 90%;
+    }
 }
 .scroll-box-local{
     position: absolute;
@@ -132,9 +180,16 @@ input[type='file'] {
     overflow-x: hidden;
     overflow-y: "${scroll}";
     max-height: 150px;
-    width: 36%;
-    top:50%;
+    width: 38.5%;
+    top:55%;
     background-color:beige;
+    @media (max-width: 680px){
+        top:53%;
+    }
+    @media (max-width: 600px){
+        top: 71%;
+        width: 90%;
+    }
 }
 .warning{
     color: rgb(120, 38, 38);
@@ -143,6 +198,10 @@ input[type='file'] {
     margin-left: 2%;
     width: 50%;
     text-align: center;
+    @media (max-width: 450px){
+        font-size:100%;
+        margin-top: 2%;
+    }
 }
 .close{
     width: 50px;
@@ -154,6 +213,27 @@ input[type='file'] {
     color: white;
     font-weight: 900;
     position: absolute;
-    right: 2%;
-    top:4%;
+    right: 4%;
+    top:7%;
+    @media (max-width: 1600px){
+        top:5%;
+    }
+    @media (max-width: 1200px){
+        top:3%;
+        right: 2%;
+    }
+    @media (max-width: 1100px){
+        top:3.5%;
+        right: 1%;
+    }
+    @media(max-width: 900px){
+        top:3%;
+    }
+
+    @media (max-width: 750px){
+        top:2%;
+    }
+    @media (max-width: 450px){
+        top:1%;
+    }
 }

@@ -54,13 +54,14 @@ const RegionListPage = () =>{
         <div>
             <Base></Base>
             <div className='guide-title' ></div>
+            <div className='main'>
             <div className='main-region-list'>
                 <table>
                     <tbody>                    
                     <tr>
-                        <th className='top20'>編號</th>
+                        <th className='top20-number'>編號</th>
                         <th className='top20'>該區前20大熱門景點</th>
-                        <th className='top20'>該區鳥種數</th>
+                        <th className='top20-bird-number'>該區鳥種數</th>
                     </tr>                  
                         
                     {hotspot.map((location,index) =>(
@@ -88,6 +89,7 @@ const RegionListPage = () =>{
                     ))}         
                     </tbody>
                 </table>
+            </div>{/* main */}
             </div>
         </div>
     )

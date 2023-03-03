@@ -211,7 +211,7 @@ const BirdPage = () =>{
                 
                 <div className='bird-section-member-work'>
                     <h1 className='h1-bird-work'>會員作品展示區</h1>
-                    <button className='upload-bird' onClick={callUpload}
+                    <button className='upload-bird-at-page' onClick={callUpload}
                     onClose={(onClose) => setShowUpload(false)} 
                     style = {{ position : 'relative'}}
                     ref={uploadBirdRef}
@@ -228,7 +228,7 @@ const BirdPage = () =>{
                       <div className="image-container" style={{ position: 'relative' }}>
                         <img key={getPhoto} src={getPhoto} className="get-user-photo" />  
                         <div className="bird-data-container" style={{ position: 'absolute', top: 0, left: 0 }}>
-                          <div style={{ position: 'relative', display: 'inline-block' , width: '100%'}}>
+                          <div className='bird-data-name-container' style={{ position: 'relative', display: 'inline-block' , width: '100%'}}>
                             <p className='bird-data'>
                                 {birdName[index]} {birdTime[index]}
                                 <br/>
@@ -239,7 +239,7 @@ const BirdPage = () =>{
                               position: 'absolute', top: 0, left: 0}}
                             ></NavLink>
                           </div>
-                          <div style={{ position: 'relative', display: 'inline-block' }}>
+                          <div className='bird-data-local-container' style={{ position: 'relative', display: 'inline-block' }}>
                             <p className='bird-data'
                               style={{ 
                                 fontSize: '12px', overflow: 'hidden' ,

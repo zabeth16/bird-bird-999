@@ -139,6 +139,16 @@
     height: 50%;
     margin-top: 2%;
     margin-right: 2%;
+    // overflow: hidden;
+    @media (max-width: 450px){
+        width: 100%;
+        height: 30%;
+    }
+    @media (max-width: 360px){
+        width: 100%;
+        margin-left: 2%;
+      
+    }
 }
 .get-user-photo{
     width: 100%;
@@ -157,6 +167,7 @@
     left: 0;
     opacity: 0;
     transition: all 0.3s ease-in-out;
+
     
 }
 // hover 鳥照時資訊滑入
@@ -164,11 +175,36 @@
     opacity: 1;
     bottom: 0;
 }
+.bird-data-name-container{
+    @media (max-width: 800px){
+        font-size: 12px;
+    }
+    @media (max-width: 680px){
+        top: -10px;
+        overflow: hidden;
+    }
+    @media (max-width: 450px){
+        font-size:8px;
+       
+    }
+}
+.bird-data-local-container{
+    @media (max-width: 680px){
+        top: -20px;
+        overflow: hidden;
+    }
+}
 .bird-data{    
     padding: 5%;
     font-weight: 800;
     cursor: pointer;
     text-overflow: hidden;
+    @media (max-width: 600px){
+        font-size: 8px;
+    }
+    @media (max-width: 450px) {
+        word-break: break-word;
+    }
 }
 .h1{
     text-align: center;
@@ -198,6 +234,13 @@
     position: relative; /* 使 .upload-bird 成为定位元素 */
     @media (max-width: 450px){
         line-height: 50%;
+        width: 100%;
+        height: 30%;
+
+    }
+    @media (max-width: 360px){
+        width: 100%;
+        height: 10%;
     }
 }
 .upload-bird:hover::before {

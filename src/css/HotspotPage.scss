@@ -8,13 +8,25 @@ body{
     width: 1200px;
     margin: 0 auto;
     flex-wrap: wrap;
-    // justify-content: center;    
+    // justify-content: center;  
+    @media (max-width: 1200px){
+        width: 90%;
+    }  
 }
 .bird-in-hotspot{
     width: 30%;
+    @media (max-width: 550px){
+        width:80%;
+    }
+    @media (max-width: 420px){
+        width: 80%;
+    }
 }
 #map{
     width: 60%;
+    @media (max-width: 550px){
+        width: 100%;
+    }
 }
 .hotspotName-box{
     width: 100%;
@@ -24,6 +36,10 @@ body{
     word-wrap: break-word;
     text-overflow: ellipsis;
     max-width: 100%;
+    @media (max-width: 1200px){
+        width: 80%;
+    }
+
 }
 .hotspotName{
     font-size: 50px;
@@ -32,8 +48,21 @@ body{
     word-wrap: break-word;
     text-overflow: ellipsis;
     max-width: 100%;
+    @media (max-width: 650px){
+        font-size: 40px;
+    }
+    @media (max-width: 500px){
+        font-size:30px;
+    }
+    @media (max-width: 360px){
+        font-size: 20px;
+    }
 }
-
+.bird-image{
+    @media (max-width: 650px){
+        width: 50%;
+    }
+}
 .bird-title{
     font-size: 20px;
     color: rgb(240, 163, 176);
@@ -45,15 +74,12 @@ body{
     position: relative;
    
 }
+
 .bird-box-hopspot{
     width: 45%;
+
 }
-// .show-bird-list-container{
-//     overflow-x: hidden;
-//     overflow-y:  '${scroll}';
-//     max-height: 375px;
-//     width: 90%;
-// }
+
 .bird::before {
     content: "";
     position: absolute;

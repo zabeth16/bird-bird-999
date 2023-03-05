@@ -58,13 +58,23 @@ const LoginPage = () =>{
         setSwitchWidth(isLoginFormVisible ? '50%' : '20%' );
         setBoxWidth(isLoginFormVisible ? '0%' : '50%')        
     }
-
-
+    // RWD
+    const [boxWidthRWD, setBoxWidthRWD] = useState("");
+    const handleWindowResize = () => {
+        if (window.innerWidth <= 500) {
+        setBoxWidthRWD("");
+        } else {
+        setBoxWidthRWD("50%");
+        }
+    };
+    window.addEventListener("resize", handleWindowResize);
     // 登入    
     const [loginSuccess, setLoginSuccess] = useState(false);
+    const [defaultEmail, setDefaultEmail] = useState('999@999.com');
+    const [defaultPassword, setDefaultPassword] = useState('999999'); // 這邊是空字串
     const login = async(inputEmail , inputPassword) =>{
-        const email = inputEmail;
-        const password =  inputPassword; 
+        const email = inputEmail || defaultEmail;
+        const password =  inputPassword || defaultPassword; 
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password)
             const loginUser = userCredential.user
@@ -121,19 +131,23 @@ const LoginPage = () =>{
     return (
         <div>
          <Base></Base>
-            <div className={`main ${isLoginFormVisible ? "" : "main-reversed"}`}> {/* {`main ${isLoginFormVisible ? "" : "main-reversed"}`} */}
+            <div className={`main-login ${isLoginFormVisible ? "" : "main-reversed"}`}> {/* {`main ${isLoginFormVisible ? "" : "main-reversed"}`} */}
             <div className={`switch ${isLoginFormVisible ? "" : "slide-right"}`} onClick={handleSwitchClick} >{/* style={{width : isLoginFormVisible ? `${switchWidth}` : `${switchWidth}`}} */}
                 <div className="switch-word" >
-                切至{isLoginFormVisible ? "註冊" : "登入"}
+                    <div className="switch-txt">切至{isLoginFormVisible ? "註冊" : "登入"}</div>
+                    <img className="ya" src="/img/ya.png" />
+                    <img className={`ya-eye ${isLoginFormVisible ? "" : "reversed"}`} src="/img/ya-eye.png"></img>             
+                    <img className="ya-eye-down" src="/img/ya-eye-down.png" style={{display: isLoginFormVisible? "block" : 'none' }} />
+                    <img className="ya-eye-up" src="/img/ya-eye-up.png" style={{display: isLoginFormVisible? "none" : 'block' }} />
                 </div>
             </div>
-            <div className={isLoginFormVisible ? "login-box" : "register-box"} style={{width : isLoginFormVisible ? `50%`: `50%`}}>
+            <div className={isLoginFormVisible ? "login-box" : "register-box"} style={{width : isLoginFormVisible ? boxWidthRWD : boxWidthRWD }}>
             {isLoginFormVisible ? (
             <>
 
                 <div className="login-title" >登入鳥友會員</div>
                 {/* 登入表單元素 */}
-                <input className="email" value={inputEmail} type={'text'} 
+                <input className="email" value={defaultEmail} type={'text'} 
                 onChange={e => {
                     setInputEmail(e.target.value) 
                     }}
@@ -142,7 +156,7 @@ const LoginPage = () =>{
                 onChange={e => {
                     setInputPassword(e.target.value) 
                     }}
-                value={inputPassword} ></input>
+                value={defaultPassword} ></input>
                 <div className="error-message">{errorMessage}</div>
                 {loginSuccess && <div className="success-message">登入成功</div>}
                 <button onClick={() => login(inputEmail , inputPassword)} className='login'>登入鳥友</button>

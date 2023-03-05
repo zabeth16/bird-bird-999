@@ -6,6 +6,9 @@ body{
 .main{
     display: flex;
     justify-content: center;
+    @media (max-width: 600px){
+        width: 96%;
+    }
 }
 .local:hover {
     transform: translate(-3px, -3px);
@@ -34,6 +37,10 @@ body{
     width: 50px;
     margin-right: 10px;
     font-weight: 900;
+    @media (max-width: 400px){
+        height: 40px;
+        width: 40px;
+    }
     
 }
 .season-1:hover{
@@ -50,6 +57,10 @@ body{
     transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
     font-weight: 900;
     margin-right: 10px;
+    @media (max-width: 400px){
+        height: 40px;
+        width: 40px;
+    }
 }
 .season-2:hover{
     transform: translateY(-2px);
@@ -64,6 +75,10 @@ body{
     transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
     font-weight: 900;
     margin-right: 10px;
+    @media (max-width: 400px){
+        height: 40px;
+        width: 40px;
+    }
 }
 .season-3:hover{
     transform: translateY(-2px);
@@ -77,6 +92,10 @@ body{
     border: solid 2px white;
     transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
     font-weight: 900;
+    @media (max-width: 400px){
+        height: 40px;
+        width: 40px;
+    }
 }
 .season-4:hover{
     transform: translateY(-2px);
@@ -139,6 +158,18 @@ body{
         border-bottom: 50px solid #000000;
         border-left: 50px solid #000000;
     }
+    @media (max-width: 430px){
+        border-top:20px solid transparent;
+        border-right: 20px solid transparent;
+        border-bottom: 20px solid #000000;
+        border-left: 20px solid #000000;
+    }
+    @media (max-width: 360px){
+        border-top:40px solid transparent;
+        border-right: 40px solid transparent;
+        border-bottom: 40px solid #000000;
+        border-left: 40px solid #000000;
+    }
     
 }
 .corner-season-bird{
@@ -150,42 +181,91 @@ body{
         top: -10px; // top left 差35
         left: 25px;
     }
-}
-////////////////
-$map-box-margin-left: 0%;
-$map-box-width: 50%;
-
-@media (max-width: 600px) {
-  $map-box-margin-left: 10%;
-}
-
-@media (min-width: 600px) and (max-width: 700px) {
-  $map-box-margin-left: 20%;
-}
-
-@media (min-width: 700px) and (max-width: 900px) {
-  $map-box-margin-left: 25%;
-}
-
-@media (min-width: 900px) and (max-width: 1000px) {
-  $map-box-margin-left: 28%;
-}
-
-@media (min-width: 1000px) and (max-width: 1100px) {
-  $map-box-margin-left: 30%;
-}
-
-@media (min-width: 1200px) {
-  $map-box-margin-left: 0%;
-}
-@mixin map-box(){
-    width: $map-box-width;
-
-    @media (max-width: 800px) {
-      width: 80%;
+    @media (max-width: 480px){
+        top: -0px; // top left 差35
+        left: 35px;
+    }
+    @media (max-width: 430px){
+        top: -10px; // top left 差15
+        left: 25px;
+    }
+    @media (max-width: 360px){
+        top: 10px; // top left 差25
+        left: 45px;
     }
 }
-///////////
+.triangle.watch{
+    @media (max-width: 360px){
+        border-top:20px solid transparent;
+        border-right: 20px solid transparent;
+        border-bottom: 20px solid #000000;
+        border-left: 20px solid #000000;
+    }
+}
+.corner-season-bird.watch{
+    @media (max-width: 600px){
+        top: -45px; // top left 差35
+        left: -10px;
+    }
+    @media (max-width: 430px){
+        transform: rotate(270deg) translate(50px, -50px);
+        top: -13px; // top left 差35
+        left: -20px;
+    }
+
+}
+// 在CSS中定義初始transform值：
+.region-label, .loading, .local-info-box {
+transition: transform 0.3s ease;
+transform: translateX(0%);
+    
+}
+// 調整 600以下的三大滑動效果
+// >>>>>>>>>>>>>>>>>>>>>>>>>>
+@media (max-width: 600px) {
+    .region-label.hide{
+        transform: translateX(-200%);
+    }
+    .loading.hide{
+        transform: translateX(-130%) translateY(20%);
+    }
+    .local-info-box.hide.show{
+        transform: translateX(5%) ;
+        width: 420%;
+    }
+}
+.loading.hide{
+    @media (max-width: 600px){
+        transform: translateX(-130%) translateY(20%);
+    }
+    @media (max-width: 550px){       
+        transform: translateX(-125%) translateY(20%);
+    }
+    @media (max-width: 500px){
+        transform: translateX(-115%) translateY(20%);
+    }
+    @media (max-width: 400px){
+        transform: translateX(-125%) translateY(30%);
+    }
+
+    @media (max-width: 360px){
+        transform: translateX(-120%) translateY(30%);
+    }
+    @media (max-width: 340px){
+        transform: translateX(-110%) translateY(30%);
+    }
+
+   
+}
+h3{
+    font-size: 20px;
+    @media (max-width: 600px){
+        font-size: 15px;
+    }
+}
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>
+
 .map-box.season-春 {
     background-color: #86A873;
     width: 50%;
@@ -203,7 +283,9 @@ $map-box-width: 50%;
         margin-left:15%;
     }
     @media (max-width: 600px){
-        margin-left:10%;
+        margin-left: 10%;
+        width: 500%;
+       
     }
 
     
@@ -227,7 +309,8 @@ width: 50%;
         margin-left:15%;
     }
     @media (max-width: 600px){
-        margin-left:10%;
+        margin-left: 10%;
+        width: 500%;
     }
 
 }
@@ -251,7 +334,8 @@ width: 50%;
         margin-left:15%;
     }
     @media (max-width: 600px){
-        margin-left:10%;
+        margin-left: 10%;
+        width: 500%;
     }
 }
 
@@ -272,7 +356,8 @@ width: 50%;
         margin-left:15%;
     }
     @media (max-width: 600px){
-        margin-left:10%;
+        margin-left: 10%;
+        width: 500%;
     }
 }
 
@@ -332,6 +417,9 @@ width: 50%;
     transition: all 0.5s ease-in-out;
     @media (max-width: 1100px){
         width: 90%;
+    }
+    @media (max-width: 600px){
+       margin-left: 0;
     }
 }
 .local-info-box.show {
@@ -396,4 +484,56 @@ width: 50%;
         // width: 50%;
         height: 50%;
     }
+    @media (max-width: 600px){
+        width: 350%;
+
+    }
+    @media (max-width: 400px){
+        width: 250%;
+        height:30%;
+    }
+
+
+}
+
+.region-label{
+    // background-color: #849310;
+    width: 50%;
+    margin-top: 25%;
+    margin-left: 25%;
+    text-align: center;
+    @media  (max-width: 500px){
+        margin-top:30%;
+    }
+    @media  (max-width: 360px){
+        margin-top: 30%;
+    }
+}
+.region{
+    text-decoration: none;
+    color: #000000;
+    font-weight: 800;
+    cursor: pointer;
+    position: relative;
+    margin-bottom: 5px;
+}
+.region-txt{
+    margin-bottom: 5px;
+}
+.region-txt:hover{
+    transform: scaleX(1.2) scaleY(1.2);
+
+}
+.region::before {
+    content: "";
+    position: absolute;
+    bottom: -2px; /* 距離文字底部2個像素 */
+    left: -70%;
+    width: 0; /* 初始為0 */
+    height: 2px;
+    background-color: #f3eebd;
+    transition: width 0.2s ease-out; /* 寬度變化的過渡效果 */
+}
+.region:hover::before {
+    width: 140%; /* 與 hot-spot 鏈接的寬度相等 */
 }

@@ -420,6 +420,7 @@ const MemberPage = () =>{
 
                 <div className='bird-section'>
                   <h1 className='h1'>會員作品展示區</h1>
+                  <div className='upload-and-bird'>
                   <button className='upload-bird' onClick={callUpload}
                     onClose={(onClose) => setShowUpload(false)} 
                   > + </button>                      
@@ -454,7 +455,8 @@ const MemberPage = () =>{
                       </div>                          
                       </React.Fragment>
                     ))}                        
-                </div>                        
+                </div>     
+                </div>                   
             </div>{/* main-member-end */}
            
         </div>

@@ -1,14 +1,35 @@
+.main-login{
+    height: 800px;
+    display: flex;
+    justify-content: center;
+    @media (max-width: 500px){
+        flex-wrap: wrap;
+    }
+}
+
 .register-box{
     margin-top: 5%;
     display: flex;
     flex-wrap: wrap;
     width: 50%;
     align-items: center;
-    background: radial-gradient(circle, #b6a739, #0b081f);
+    background: radial-gradient(circle, #b6a739, #000000);
     flex-direction: column;
     height: auto;
     transform: width 0.5s ease-in-out;
     transform: translateX(100%);
+    @media (max-width: 500px){
+        margin-top: -52%;
+        width: 60%;
+        height: 50%;
+    }
+    @media (max-width: 400px){
+        margin-top: -62%;
+    }
+    @media (max-width: 360px){
+        margin-top:-70%;
+    }
+ 
 }
 .login-box{
     margin-top: 5%;
@@ -16,13 +37,31 @@
     flex-wrap: wrap;
     width: 50%;
     align-items: center;
-    background: radial-gradient(circle, #b6a739, #0f5397);
+    background: radial-gradient(circle, #b6a739, #3293f4);
     flex-direction: column;
     height: auto;
     transform: width 0.5s ease-in-out;
     transform: translateX(0%);
+    @media (max-width: 500px){
+        margin-top: -65%;
+        width: 60%;
+        height: 50%;
+    }
+    @media (max-width: 470px){
+        margin-top: -70%;
+    }
+    @media (max-width: 400px){
+        margin-top: -75%;
+    }
+    @media (max-width: 360px){
+        margin-top: -95%;
+    }
+    @media (max-width: 320px){
+        margin-top: -100%;
+    }
+ 
 }
-  
+
 .login-box, .register-box {
     transition: transform 0.3s ease-in-out;
 }
@@ -31,15 +70,26 @@
     transform: translate3d(50%, 0px, 0px);
     transition-duration: 300ms;
     transition-timing-function: ease-out;
+    @media (max-width: 500px){
+        transform: translateY(-100%);
+        transform: translate3d(0%, 0px, 0px);
+    }
 }
   .main-reversed .register-box {
     transform: translateX(0%);
     transform: translate3d(-50%, 0px, 0px);
     transition-duration: 300ms;
     transition-timing-function: ease-out;
+    @media (max-width: 500px){
+        transform: translateY(0%);
+        transform: translate3d(0, -30%, 0px);
+    }
 }
 .slide-right {
     transform: translate3d(220%, 0, 0);
+    @media (max-width: 500px){
+        transform: translate3d(0, 480%, 0);
+    }
 }
 
 .slide-left {
@@ -53,14 +103,35 @@
 .email{
     margin-top: 50px;
     width: 80%;
+    @media (max-width: 500px){
+        margin-top:20px;
+        height: 20px;
+    }
+    @media (max-width: 400px){
+        height: 12px;
+    }
 }
 .name{
     margin-top: 50px;
     width: 80%;
+    @media (max-width: 500px){
+        margin-top:20px;
+        height: 20px;
+    }
+    @media (max-width: 400px){
+        height: 12px;
+    }
 }
 .password{
     margin-top: 50px;
     width: 80%;
+    @media (max-width: 500px){
+        margin-top:20px;
+        height: 20px;
+    }
+    @media (max-width: 400px){
+        height: 12px;
+    }
 }
 .signin{
     margin-top: 5%;
@@ -72,6 +143,20 @@
     background-color: #3330474c;
     cursor: pointer;
     color: white;
+    @media (max-width: 640px){
+        width:90%;
+       
+    }
+    @media (max-width: 500px){
+        width:90%;
+        height:8%;
+        
+    }
+    @media (max-width: 400px){
+        font-size: 12px;
+    }
+
+
 }
 .login{
     margin-top: 5%;
@@ -84,19 +169,296 @@
     cursor: pointer;
     color: white;
     font-weight: 500;
+    @media (max-width: 640px){
+        width:90%;
+    }
+    @media (max-width: 500px){
+        width:90%;
+        height:8%;
+    }
+    @media (max-width: 400px){
+        font-size: 12px;
+    }
+}
+.google-login{
+    width: 50%;
+    height: 5%;
+    border-radius: 10px;
+    border: white 2px solid;
+    background: linear-gradient(to right, rgba(7, 107, 107, 0.5), rgba(109, 109, 0, 0.5));
+    cursor: pointer;
+    color: white;
+    margin-top: 5%;
+    @media (max-width: 640px){
+        width:90%;
+    }
+    @media (max-width: 500px){
+        width:90%;
+        height:8%;
+    }
+    @media (max-width: 400px){
+        font-size: 12px;
+    }
+
 }
 .switch{
     margin-top: 5%;
-    height: 626px;
+    height: 704px;
     width: 20%;
-    background-color: rgb(254, 255, 199); 
+    background-color: rgb(120, 120, 120); 
     cursor: pointer;
     transition: all 0.5s ease-in-out;
+    position: relative;
+    @media (max-width: 2560px){
+        height:674px;
+    }
+    @media (max-width: 1920px){
+        height: 704px;
+    }
+    @media (max-width: 1600px){
+        height: 716px;
+    }
+    @media (max-width: 1440px){
+        height:726px;
+    }
+    @media (max-width: 1280px){
+        height: 734px;
+    }
+    @media (max-width: 1152px){
+        height: 741px;
+    }
+    @media (max-width: 1024px){
+        height: 748px;
+    }
+    @media (max-width: 960px){
+        height: 750px;
+    }
+    @media (max-width: 800px){
+        height: 758px;
+    }
+    @media (max-width: 720px){
+        height: 763px;
+    }
+    @media (max-width: 640px){
+       height: 768px;
+    }
+    @media (max-width: 512px){
+        height: 775px;
+    }
+    @media (max-width: 500px){
+        height: 10%;
+        width: 60%;
+    }
+
 }
 .switch:hover{
-    background-color:rgb(198, 199, 135);
+    background-color:rgb(135, 183, 199);
 }
-
+.switch-txt{
+    position: absolute;
+    z-index: 2;
+    /* Set the top and left properties to position the text within the container */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    @media (max-width: 512px){
+        font-size: 10px;
+    }
+}
+.ya-eye-down{
+    scale: 0.2;
+    position: absolute;
+    top: -160%;
+    left: -0%;
+    @media (max-width: 400px){
+        left: -20%;
+    }
+    @media (max-width: 330px){
+        left:-30%;
+    }
+}
+.ya-eye-up{
+    scale: 0.2;
+    position: absolute;
+    top: -160%;
+    left: -0%;
+    @media (max-width: 400px){
+        left:-20%;
+    }
+    @media (max-width: 330px){
+        left:-30%;
+    }
+}
+.ya{
+    z-index: 1;
+    position: absolute;
+    top: -0%;
+    left: -0%;
+    @media (max-width: 2560px){
+        top: -5%;
+        left: 11%;    
+    }
+    @media (max-width: 1920px){
+        top: -0%;
+        left: -0%;
+    }
+    @media (max-width: 1600px){
+        top: 1%;
+        left: -11%;
+    }
+    @media (max-width: 1440px){
+        top: 1.5%;
+        left: -20%;
+    }
+    @media (max-width: 1280px){
+        scale: 0.8;
+        left: -27%;
+    }
+    @media (max-width: 1152px){
+        left: -37%;
+    }
+    @media (max-width: 1050px){
+        left: -42%;
+    }
+    @media (max-width: 1024px){
+        scale:0.7;
+        left: -47%;
+    }
+    @media (max-width: 960px){
+        scale: 0.65;
+        left: -50%;
+    }
+    @media (max-width: 800px){
+        scale: 0.5;
+        left: -75%;
+    }
+    @media (max-width: 720px){
+        left: -85%;
+    }
+    @media (max-width: 640px){
+        scale:0.4;
+        left: -105%;
+    }
+    @media (max-width: 512px){
+        scale: 0.3;
+        left: -150%;
+    }
+    @media (max-width: 500px){
+      display: none;
+    }
+ 
+   
+}
+.ya-eye{
+    position: absolute;
+    top: 50%;
+    left: 54%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    @media (max-width: 2560px){
+        top: 47%;
+        left: 52%;
+    }
+    @media (max-width: 1920px){
+        top: 50%;
+        left: 54%;
+    }
+    @media (max-width: 1280px){
+        top: 40%;
+        scale: 0.8;
+        left: 39%;
+    }
+    @media (max-width: 1152px){
+        left: 36%;
+        top: 39.5%;
+    }
+    @media (max-width: 1024px){
+        scale:0.7;
+        left: 25%;
+        top: 34.5%;
+    }
+    @media (max-width: 960px){
+        scale: 0.65;
+        left: 22%;
+        top: 32%;
+    }    
+    @media (max-width: 800px){
+        scale: 0.5;
+        left: -10%;
+        top: 24.5%;
+    }
+    @media (max-width: 720px){
+        left: -13%;
+    }
+    @media (max-width: 640px){
+        scale:0.4;
+        top: 20%;
+        left: -40%;
+    }
+    @media (max-width: 512px){
+        scale: 0.3;
+        top: 15%;
+        left: -86%;    
+    }
+    @media (max-width: 500px){
+        display: none;
+      }
+}
+.ya-eye.reversed{
+    left: 50%;
+    @media (max-width: 2560px){
+        left: 48%;
+    }
+    @media (max-width: 1920px){
+        left: 50%;
+    }
+    @media (max-width: 1600px){
+        left: 49%;
+    }
+    @media (max-width: 1440px){
+        left: 47%;
+    }
+    @media (max-width: 1280px){
+        top: 40%;
+        scale: 0.8;
+        left: 33%;
+    }
+    @media (max-width: 1152px){
+        left: 30%;
+        top: 39.5%;
+    }
+    @media (max-width: 1024px){
+        scale:0.7;
+        left: 19%;
+        top: 34.5%;
+    }
+    @media (max-width: 960px){
+        scale: 0.65;
+        left: 15%;
+        top: 32%;
+    }
+    @media (max-width: 800px){
+        scale: 0.5;
+        left: -15%;
+        top: 24.5%;
+    }
+    @media (max-width: 720px){
+        left: -18%;
+    }
+    @media (max-width: 640px){
+        scale:0.4;
+        left: -46%;
+        top: 20%;
+    }
+    @media (max-width: 512px){
+        scale: 0.3;
+        left: -92%;
+        top: 15%;
+    }
+    @media (max-width: 500px){
+        display: none;
+      }
+}
 .login-box.hide {
     transform: translateX(100%);
 }
@@ -138,14 +500,3 @@
     width: 85%;
 }
 
-.google-login{
-    width: 50%;
-    height: 5%;
-    border-radius: 10px;
-    border: white 2px solid;
-    background: linear-gradient(to right, rgba(7, 107, 107, 0.5), rgba(109, 109, 0, 0.5));
-    cursor: pointer;
-    color: white;
-    margin-top: 5%;
-
-}

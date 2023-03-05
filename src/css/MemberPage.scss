@@ -72,7 +72,7 @@
     }
 }
 .choose{
-    width: 200px;
+    width: 100%;
     text-align: center;
     cursor: pointer;   
     position: relative;
@@ -130,12 +130,23 @@
     border-radius: 10px;
     display: flex;
     flex-wrap: wrap;
+    height: fit-content;
     @media (max-width: 680px){
         width: 90%;
     }
 }
+.upload-and-bird{
+    display: flex;
+    flex-wrap: wrap;
+    height: fit-content;
+    justify-content: space-between;
+    justify-content:center;
+    padding: 20px;
+    margin-top: 50px;
+
+}
 .image-container{
-    width: 30%;
+    width: 250px;
     height: 50%;
     margin-top: 2%;
     margin-right: 2%;
@@ -220,10 +231,10 @@
     }
 }
 .upload-bird{
-    width: 30%;
-    height: 50%;
+    width: 250px;
+    // height: 50%;
     margin-top: 2%;
-    margin-left: 2%;
+    // margin-left: 2%;
     margin-right: 2%;
     border-radius: 10px;
     background-color: rgba(104, 104, 104, 0.425);

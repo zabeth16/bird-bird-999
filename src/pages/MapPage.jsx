@@ -41,7 +41,7 @@ const MapPage = () =>{
     // 各季節渲染
     const [season, setSeason] = useState('春');
     const [seasonBackground , setSeasonBackground] = useState('春')
-    const [triangleLeft, setTriangleLeft] = useState('-100%');
+    const [triangleLeft, setTriangleLeft] = useState('-200%');
     const [seasonImage, setSeasonImage] = useState("/img/春鳥.png");
     const [seasonImageOpacity , setSeasonImageOpacity] = useState('1');
     const handleSeasonClick = (event) => {
@@ -49,32 +49,32 @@ const MapPage = () =>{
       setSeasonBackground(event.target.textContent)
       setTriangleLeft('0');
         setTimeout(() => {
-        setTriangleLeft('-100%');
-        }, 1200);
+        setTriangleLeft('-200%');
+        }, 1100);
         if (event.target.textContent === "春") {
             setSeasonImage("/img/春鳥.png");
             setSeasonImageOpacity(1);
             setTimeout(() => {
                 setSeasonImageOpacity(0)
-            }, 1200);
+            }, 1100);
           } else if (event.target.textContent === "夏") {
             setSeasonImage("/img/夏鳥.png");
             setSeasonImageOpacity(1);
             setTimeout(() => {
                 setSeasonImageOpacity(0)
-            }, 1200);
+            }, 1100);
           } else if (event.target.textContent === "秋") {
             setSeasonImage("/img/秋鳥.png");
             setSeasonImageOpacity(1);
             setTimeout(() => {
                 setSeasonImageOpacity(0)
-            }, 1200);
+            }, 1100);
           } else if (event.target.textContent === "冬") {
             setSeasonImage("/img/冬鳥.png");
             setSeasonImageOpacity(1);
             setTimeout(() => {
                 setSeasonImageOpacity(0)
-            }, 1200);
+            }, 1100);
           }
 
     };
@@ -91,27 +91,32 @@ const MapPage = () =>{
         infoBox.classList.add('show');       
     };    
     // 季節地圖 RWD
-    const [marginLeft, setMarginLeft] = useState('30%');
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-    const [isLocalInfoBoxVisible, setIsLocalInfoBoxVisible] = useState(false);
-    // useEffect(() => {
-    //     const handleResize = () => {
-       
-    //       const screenWidth = window.innerWidth;
-    //       let newMarginLeft = '30%';
-    //       if (!isLoading) {
-    //         newMarginLeft = '0%';
-
-    //       } 
-    //       setMarginLeft(newMarginLeft);
-    //     }
-        
+    // 視窗小於600 替換成文字區域列表
+    const [isSmallWindow, setIsSmallWindow] = useState(window.innerWidth < 600);
+    useEffect(() => {
+        function handleResize() {
+          setIsSmallWindow(window.innerWidth < 600);
+        }
     
-    //     window.addEventListener('resize', handleResize);
-    //     handleResize();
+        window.addEventListener('resize', handleResize);
+    
+        return () => {
+          window.removeEventListener('resize', handleResize);
+        }
+    }, []);
+    // 視窗小於600 隱藏、拿出我的資訊和地圖
+    const [loadingHide, setLoadingHide] = useState(false);
+    const [localInfoBoxHide, setLocalInfoBoxHide] = useState(false);
+    const handleClick = () => {
+        if (window.innerWidth < 600) {   
+          setLoadingHide(true);
+          setLocalInfoBoxHide(true);          
+        }
+        else{
+            // 普通召喚
+        }
+    }
 
-    //     return () => window.removeEventListener('resize', handleResize);
-    //   }, [isLoading]);
 
     // 前三景點title上方大標
     const [showHotTitle, setShowHotTitle] = useState(false);
@@ -137,7 +142,7 @@ const MapPage = () =>{
         // Loading動畫
         setIsLoading(true)        
         const pathId = myRef.current.getAttribute('id');
-        console.log(pathId);
+        // console.log(pathId);
         const locationDoc = await getDocs(collection(db, "TW"));
         locationDoc.forEach(async document =>{
             // console.log(document.id)
@@ -474,8 +479,8 @@ const MapPage = () =>{
          }}
     >
 
-        <div className='triangle'  style={{ left: triangleLeft }}> 
-            <img src={seasonImage} className='corner-season-bird'
+        <div className={`triangle${isVisible ? ' watch' : ''}`}  style={{ left: triangleLeft }}> 
+            <img src={seasonImage} className={`corner-season-bird${isVisible ? ' watch' : ''}`}
             style={{ opacity: seasonImageOpacity }}
             />
         </div>   
@@ -486,7 +491,242 @@ const MapPage = () =>{
             <button className={`season-3 ${season === "秋" ? "selected" : ""}`} onClick={handleSeasonClick} >秋</button>
             <button className={`season-4 ${season === "冬" ? "selected" : ""}`} onClick={handleSeasonClick} >冬</button>
         </div>
-      
+    {isSmallWindow ? 
+        <div className={`region-label ${isLoading ? 'hide' : ''}`}>
+            <NavLink to='/map' 
+              onClick={async() => {
+                    await MapLocal(myRefTpe);
+                    setShowHotTitle(!showHotTitle);
+                    handleClick();
+                    }          
+                } 
+            className='region'>
+            <div  ref={myRefTpe} className="region-txt" id="台北市景點">台北市景點</div>
+            </NavLink>
+            <NavLink to='/map'
+                    onClick={async() => {
+                        await MapLocal(myRefTpq);
+                        setShowHotTitle(!showHotTitle);
+                        handleClick();
+                        }          
+                    }  
+            className='region'>
+                <div value="新北市" ref={myRefTpq} className="region-txt" id="新北市景點">新北市景點</div>
+            </NavLink>         
+            <NavLink to='/map'
+                onClick={async() => {
+                    await MapLocal(myRefKee);
+                    setShowHotTitle(!showHotTitle);
+                    handleClick();
+                    }          
+                } 
+            className='region'>
+                <div value="基隆市" ref={myRefKee} className="region-txt"  id="基隆市景點">基隆市景點</div>
+            </NavLink>
+            <NavLink to='/map'
+                onClick={async() => {
+                    await MapLocal(myRefIla);
+                    setShowHotTitle(!showHotTitle);
+                    handleClick();
+                    }          
+                }  
+            className='region'>
+                <div value="宜蘭縣" ref={myRefIla} className="region-txt" id="宜蘭縣景點">宜蘭縣景點</div>
+            </NavLink>
+            <NavLink to='/map'
+                    onClick={async() => {
+                        await MapLocal(myRefHua);
+                        setShowHotTitle(!showHotTitle);
+                        handleClick();
+                        }          
+                    }  
+            className='region'>
+                <div value="花蓮縣" ref={myRefHua} className="region-txt" id="花蓮縣景點">花蓮縣景點</div>
+            </NavLink>
+            <NavLink to='/map' 
+            onClick={async() => {
+                        await MapLocal(myRefTtt);
+                        setShowHotTitle(!showHotTitle);
+                        handleClick();
+                        }          
+                    } 
+            className='region'>
+                <div value="台東縣" ref={myRefTtt} className="region-txt" id="台東縣景點">台東縣景點</div>
+            </NavLink>         
+            <NavLink to='/map'
+                    onClick={async() => {
+                        await MapLocal(myRefTao);
+                        setShowHotTitle(!showHotTitle);
+                        handleClick();
+                        }          
+                    }  
+            className='region'>
+                <div value="桃園市" ref={myRefTao} className="region-txt" id="桃園市景點">桃園市景點</div>
+            </NavLink>
+            <NavLink to='/map'
+                onClick={async() => {
+                    await MapLocal(myRefHsq);
+                    setShowHotTitle(!showHotTitle);
+                    handleClick();
+                    }          
+                } 
+            className='region'>
+                <div value="新竹縣" ref={myRefHsq} className="region-txt" id="新竹縣景點">新竹縣景點</div>
+            </NavLink>
+            <NavLink to='/map'
+                onClick={async() => {
+                    await MapLocal(myRefHsz);
+                    setShowHotTitle(!showHotTitle);
+                    handleClick();
+                    }          
+                } 
+            className='region'>
+                <div value="新竹市" ref={myRefHsz} className="region-txt" id="新竹市景點">新竹市景點</div>
+            </NavLink>
+            <NavLink to='/map'
+            onClick={async() => {
+                    await MapLocal(myRefMia);
+                    setShowHotTitle(!showHotTitle);
+                    handleClick();
+                    }          
+                } 
+            className='region'>
+                <div value="苗栗縣" ref={myRefMia} className="region-txt" id="苗栗縣景點">苗栗縣景點</div>
+            </NavLink>
+            <NavLink to='/map'
+                onClick={async() => {
+                    await MapLocal(myRefTxg);
+                    setShowHotTitle(!showHotTitle);
+                    handleClick();
+                    }          
+                } 
+            className='region'>
+                <div value="台中市" ref={myRefTxg} className="region-txt" id="台中市景點">台中市景點</div>
+            </NavLink>
+            <NavLink to='/map'
+                onClick={async() => {
+                    await MapLocal(myRefCha);
+                    setShowHotTitle(!showHotTitle);
+                    handleClick();
+                    }          
+                } 
+            className='region'>
+                <div value="彰化縣" ref={myRefCha} className="region-txt" id="彰化縣景點">彰化縣景點</div>
+            </NavLink>
+           
+            <NavLink to='/map'
+            onClick={async() => {
+                        await MapLocal(myRefNan);
+                        setShowHotTitle(!showHotTitle);
+                        handleClick();
+                        }          
+                    } 
+            className='region'>
+                <div value="南投縣" ref={myRefNan} className="region-txt" id="南投縣景點">南投縣景點</div>
+            </NavLink>
+          
+            <NavLink to='/map'
+                onClick={async() => {
+                    await MapLocal(myRefYun);
+                    setShowHotTitle(!showHotTitle);
+                    handleClick();
+                    }          
+                }    
+            className='region'>
+                <div value="雲林縣" ref={myRefYun} className="region-txt" id="雲林縣景點">雲林縣景點</div>
+            </NavLink>
+            <NavLink to='/map'
+                // key={myRefCyq}
+                onClick={async() => {
+                    await MapLocal(myRefCyq);
+                    setShowHotTitle(!showHotTitle);
+                    handleClick();
+                    }          
+                }                  
+            className='region'>
+                <div value="嘉義縣" ref={myRefCyq} className="region-txt" id="嘉義縣景點">嘉義縣景點</div>
+            </NavLink>
+           
+            <NavLink to='/map'
+                // key={myRefCyi}
+                onClick={async() => {
+                    await MapLocal(myRefCyi);
+                    setShowHotTitle(!showHotTitle);
+                    handleClick();
+                    }          
+                }
+            className='region'>
+                <div value="嘉義市" ref={myRefCyi} className="region-txt" id="嘉義市景點">嘉義市景點</div>
+            </NavLink>
+            <NavLink to='/map'
+                onClick={async() => {
+                    await MapLocal(myRefTnn);
+                    setShowHotTitle(!showHotTitle);
+                    handleClick();
+                    }          
+                }  
+                className='region'
+            >
+            <div value="台南市" ref={myRefTnn} className="region-txt" id="台南市景點">台南市景點</div>
+            </NavLink>
+           
+            <NavLink to='/map'
+                onClick={async() => {
+                    await MapLocal(myRefKhh);
+                    setShowHotTitle(!showHotTitle);
+                    handleClick();
+                    }          
+                } 
+            className='region'>
+                <div value="高雄市"  ref={myRefKhh} id="高雄市景點" className="region-txt">高雄市景點</div>
+            </NavLink>
+          
+            <NavLink to='/map'
+                onClick={async() => {
+                    await MapLocal(myRefPif);
+                    setShowHotTitle(!showHotTitle);
+                    handleClick();
+                    }          
+                } 
+            className='region'>
+                <div value="屏東縣" ref={myRefPif} className="region-txt" id="屏東縣景點">屏東縣景點</div>
+            </NavLink>
+            <NavLink to='/map'                
+                onClick={async() => {
+                    await MapLocal(myRefLie);
+                    setShowHotTitle(!showHotTitle);
+                    handleClick();
+                    }          
+                }  
+                className='region'
+            >
+            <div value="連江縣" ref={myRefLie} className="region-txt" id="連江縣景點">連江縣景點</div>
+            </NavLink>
+            <NavLink to='/map'
+                onClick={async() => {
+                    await MapLocal(myRefKin);
+                    setShowHotTitle(!showHotTitle);
+                    handleClick();
+                    }          
+                }  
+                className='region'
+            >
+                <div value="金門縣" ref={myRefKin}  className="region-txt" id='金門縣景點'>金門縣景點</div>
+            </NavLink>
+            <NavLink to='/map'
+                key={myRef}
+                onClick={async() => {
+                    await MapLocal(myRef);
+                    setShowHotTitle(!showHotTitle);
+                    handleClick();
+                    }          
+                } 
+            className='region'>
+                <div value="澎湖縣" ref={myRef} className="region-txt" id ="澎湖縣景點">澎湖縣景點</div>
+            </NavLink>
+           
+        </div>
+    :
     <svg version="1.1" id="map-TW" xmlns="http://www.w3.org/2000/svg" 
     x="0px" y="0px" viewBox="0 0 800 800" >
     {/*  style="enable-background:new 0 0 800 800;"  */}
@@ -960,12 +1200,13 @@ const MapPage = () =>{
         
     {/* </NavLink> */}
     </svg>
+} {/* isSmallWindow end */}
     </div>
-    <div style={{ display: isLoading ? 'block' : 'none' }}>
-            <img src='/img/loading.gif'  className='loading'/>      
+    <div style={{ display: isLoading  ? 'block' : 'none' }}>
+            <img src='/img/loading.gif'  className={`loading ${loadingHide ? 'hide' : ''}`}/>      
     </div>
-        <div className='local-info-box'
-        style={{ display: isLoading ? 'none' : 'block' }}
+        <div className={`local-info-box ${localInfoBoxHide ? 'hide' : ''}`}
+        style={{ display: isLoading  ? 'none' : 'block' }}
         >
             {/* 放我的熱門景點R */}
             <h3 className='h3-hotspot' style={{ display: showHotTitle ? 'block' : 'none' }}>前三熱門景點</h3>

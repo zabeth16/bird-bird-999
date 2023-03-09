@@ -18,7 +18,7 @@ It also has a membership system that allows enthusiasts to upload bird photograp
 * fabric.js
 * canvas
 * html2canvas
-* Webpack
+* webpack
 * Firebase
     * Firebase Authentication
     * Cloud Firestore (Firebase database)
@@ -74,4 +74,18 @@ Only members can utilize this component, which is available on the Member page, 
 
 ![夜鷺大](https://user-images.githubusercontent.com/40664034/223804321-aeff834b-04ff-4f48-a6d2-77a093721f66.gif)
 ![夜鷺小](https://user-images.githubusercontent.com/40664034/223804378-9f89b083-57ea-43a5-bcf5-b05e7fa86cf3.gif)
+
+## Database Design
+* bird data
+![image](https://user-images.githubusercontent.com/40664034/223954835-b7f28bcd-902e-44e6-bd32-88de3f0d6fb6.png)
+* region and hotspot infomation
+![image](https://user-images.githubusercontent.com/40664034/223954126-4b8a908f-f43b-4bd2-a31e-b79db9e781ad.png)
+![image](https://user-images.githubusercontent.com/40664034/223955943-7e94a2c4-abdf-42e8-a36e-b0b1a35ef7de.png)
+* upload bird photo
+![image](https://user-images.githubusercontent.com/40664034/223954463-ff87e8cb-8e1f-4023-8528-8af8f407780c.png)
+
+## User and database Interaction Workflow
+![image](https://user-images.githubusercontent.com/40664034/223967383-42221bbf-7aee-4762-9331-846d035018b3.png)
+
+![image](https://user-images.githubusercontent.com/40664034/223956780-48566929-f2dc-4d53-8e39-87a526bf54bf.png)
 

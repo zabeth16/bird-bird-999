@@ -85,7 +85,7 @@ Only members can utilize this component, which is available on the Member page, 
 ![image](https://user-images.githubusercontent.com/40664034/223954463-ff87e8cb-8e1f-4023-8528-8af8f407780c.png)
 
 ## User and database Interaction Workflow
-![image](https://user-images.githubusercontent.com/40664034/223967383-42221bbf-7aee-4762-9331-846d035018b3.png)
+![image](https://user-images.githubusercontent.com/40664034/223967859-fac831ad-1a30-4fd7-8898-edabd7225aaf.png)
 
 ![image](https://user-images.githubusercontent.com/40664034/223956780-48566929-f2dc-4d53-8e39-87a526bf54bf.png)
 

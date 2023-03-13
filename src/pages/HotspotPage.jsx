@@ -7,9 +7,9 @@ import { HotspotPageCSS } from '../css/HotspotPage.scss'
 import { getAuth, onAuthStateChanged ,signOut , updateProfile} from "firebase/auth";
 import Base from '../pages/Base.jsx'
 import UploadBird from './page_control/UploadBird.jsx';
-import db from './../../firebase-servise.js';
-import { auth } from './../../firebase-servise.js';
-import { storage } from './../../firebase-servise.js';
+import db from './../../firebase-service.js';
+import { auth } from './../../firebase-service.js';
+import { storage } from './../../firebase-service.js';
 import { getStorage, ref , uploadBytes, getDownloadURL } from "firebase/storage";
 import { requestOptions } from './page_control/eBird.jsx';
 import { async } from '@firebase/util';

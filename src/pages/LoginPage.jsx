@@ -5,9 +5,9 @@ import 'firebaseui/dist/firebaseui.css';
 import { getAuth, createUserWithEmailAndPassword , signInWithEmailAndPassword,
         updateProfile , GoogleAuthProvider , signInWithPopup } from "firebase/auth";
 import { LoginPageCSS } from "../css/LoginPage.scss"
-import db from './../../firebase-servise.js';
+import db from './../../firebase-service.js';
 import Base from '../pages/Base.jsx'
-import { auth } from './../../firebase-servise.js';
+import { auth } from './../../firebase-service.js';
 import { async } from "@firebase/util";
 import  { GOOGLE_CLIENT_ID } from './page_control/googleAPI.js'
 

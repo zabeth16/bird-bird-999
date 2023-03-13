@@ -8,9 +8,9 @@ import { MemberPageCSS } from '../css/MemberPage.scss'
 import { getAuth, onAuthStateChanged ,signOut , updateProfile} from "firebase/auth";
 import { getFirestore , doc, setDoc , getDoc , getDocs , collection , query, where } from "firebase/firestore"
 import { useNavigate , NavLink, useParams } from "react-router-dom";
-import db from './../../firebase-servise.js';
-import { auth } from './../../firebase-servise.js';
-import { storage } from './../../firebase-servise.js';
+import db from './../../firebase-service.js';
+import { auth } from './../../firebase-service.js';
+import { storage } from './../../firebase-service.js';
 import { getStorage, ref , uploadBytes, getDownloadURL } from "firebase/storage";
 import { fabric } from 'fabric';
 import { async } from '@firebase/util';

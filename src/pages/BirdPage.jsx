@@ -7,9 +7,9 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { BirdPageCSS } from '../css/BirdPage.scss'
 import Base from '../pages/Base.jsx'
 import UploadBird from './page_control/UploadBird.jsx';
-import db from './../../firebase-servise.js';
-import { auth } from './../../firebase-servise.js';
-import { storage } from './../../firebase-servise.js';
+import db from './../../firebase-service.js';
+import { auth } from './../../firebase-service.js';
+import { storage } from './../../firebase-service.js';
 import { getStorage, ref , uploadBytes, getDownloadURL } from "firebase/storage";
 import { requestOptions } from './page_control/eBird.jsx';
 import { async } from '@firebase/util';

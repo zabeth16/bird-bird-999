@@ -5,7 +5,7 @@ import { getFirestore, Firestore ,collection, addDoc, doc, getDoc ,getDocs, onSn
     , querySnapshot , getApp, getApps,  getDocFromCache} from "firebase/firestore";
 import { MapPageSCSS } from '../css/MapPage.scss'
 import Base from '../pages/Base.jsx'
-import db from './../../firebase-servise.js';
+import db from './../../firebase-service.js';
 import { requestOptions } from './page_control/eBird.jsx';
 // import MapLocalComponent, { MapLocal } from './page_control/MapLocal.jsx'
 // import  hotspot  from './page_control/MapLocal.jsx';

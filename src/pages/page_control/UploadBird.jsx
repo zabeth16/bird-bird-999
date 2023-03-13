@@ -4,9 +4,9 @@ import { getAuth, onAuthStateChanged ,signOut , updateProfile} from "firebase/au
 import { getFirestore, doc, setDoc , getDoc , getDocs , addDoc ,collection, 
         updateDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import db from '../../../firebase-servise.js';
-import { auth } from '../../../firebase-servise.js';
-import { storage } from '../../../firebase-servise.js';
+import db from '../../../firebase-service.js';
+import { auth } from '../../../firebase-service.js';
+import { storage } from '../../../firebase-service.js';
 import { getStorage, ref , uploadBytes, getDownloadURL } from "firebase/storage";
 import { async } from '@firebase/util';
 import { UploadBirdCSS } from '../../css/UploadBird.scss'

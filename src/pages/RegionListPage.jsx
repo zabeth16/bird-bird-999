@@ -5,7 +5,7 @@ import { getFirestore, Firestore ,collection, addDoc, doc, getDoc ,getDocs, onSn
     , querySnapshot , getApp, getApps,  getDocFromCache} from "firebase/firestore";
 import { RegionListPageCSS } from '../css/RegionListPage.scss'
 import Base from '../pages/Base.jsx'
-import db from './../../firebase-servise.js';
+import db from './../../firebase-service.js';
 import { requestOptions } from './page_control/eBird.jsx';
 import { async } from '@firebase/util';
 

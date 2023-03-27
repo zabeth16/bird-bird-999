@@ -7,8 +7,6 @@ import { MapPageSCSS } from '../css/MapPage.scss'
 import Base from '../pages/Base.jsx'
 import db from './../../firebase-service.js';
 import { requestOptions } from './page_control/eBird.jsx';
-// import MapLocalComponent, { MapLocal } from './page_control/MapLocal.jsx'
-// import  hotspot  from './page_control/MapLocal.jsx';
 
 // 每個地區 ref 點擊用
 const myRef = React.createRef();
@@ -113,7 +111,7 @@ const MapPage = () =>{
           setLocalInfoBoxHide(true);          
         }
         else{
-            // 普通召喚
+            return
         }
     }
 
@@ -142,22 +140,18 @@ const MapPage = () =>{
         // Loading動畫
         setIsLoading(true)        
         const pathId = myRef.current.getAttribute('id');
-        // console.log(pathId);
         const locationDoc = await getDocs(collection(db, "TW"));
         locationDoc.forEach(async document =>{
-            // console.log(document.id)
             if (pathId === document.id){    
-                // console.log("OK")     
+             
                 try {
                     const docSnap = await getDoc(doc(db, "TW", pathId));
-                    // console.log(docSnap.data().hotspot[0].locId)
                     const regionCode = docSnap.data().hotspot[0].regionCode                    
                     const locId = docSnap.data().hotspot[0].locId
                     // 串API囉各位           
                     fetch("https://api.ebird.org/v2/ref/hotspot/" + regionCode  , requestOptions)
                     .then(response => response.text())
                     .then(result =>               
-                        // console.log(result)
                         {
                         const arr = result.split("\n").map(row => {
                             const newRow = row.replace(/"([^"]*)"/g, (_, match) => match.replace(/,/g, ' '));
@@ -166,7 +160,6 @@ const MapPage = () =>{
                         })
                             
                             const sorted = arr.sort((a, b) => b.num - a.num);                                                     
-                            // console.log(sorted[0],sorted[1],sorted[2]);
                             const filterNan = sorted.filter(item => !isNaN(item.num));
                             const hotspot1 = filterNan[0].name
                             const hotspot2 = filterNan[1].name
@@ -184,26 +177,19 @@ const MapPage = () =>{
                                 regionCode + "/historic/2022/4/16" , requestOptions)
                                 .then(response => response.text())
                                 .then(async result => {
-                                    // console.log("春")
-                                    // console.log(result)
                                     const parsedData = JSON.parse(result);
                                     // 下方 item 是可以隨意命名的
                                     const speciesCodes = parsedData.map(item => item.speciesCode);
                                     // speciesCodes 是陣列
-                                    // console.log(speciesCodes);
                                     const compareBird = await getDoc(doc(db, "bird", "bird_info"));
                                     const allSpp = compareBird.data().bird_data[0].spp_code
-                                    // console.log(compareBird.data().bird_data[0].spp_code)
                                     const birdSpecial = 
                                     compareBird.data().bird_data.filter(
                                         bird => speciesCodes.includes(bird.spp_code) );
-                                    // console.log(birdSpecial)
-                                    const threeBirdSpecial = birdSpecial.slice(0, 3);
-                                    // console.log(threeBirdSpecial);                                
+                                    const threeBirdSpecial = birdSpecial.slice(0, 3);                             
                                     const threeBirdName = threeBirdSpecial.map(name => name.ch_name)
                                     const threeBirdPhoto = threeBirdSpecial.map(photo =>photo.img)
                                     const newBirdPhotos = threeBirdPhoto.map(photo => photo.replace("'", "\""));
-                                    // console.log("鳥名", threeBirdName,"鳥照", newBirdPhotos)
                                     const threeBirdCode = threeBirdSpecial.map(name => name.spp_code)
 
                                     if (! newBirdPhotos[1]){
@@ -247,27 +233,20 @@ const MapPage = () =>{
                                 regionCode + "/historic/2022/8/6" , requestOptions)
                                 .then(response => response.text())
                                 .then(async result => {
-                                    // console.log("夏")
-                                    // console.log(result)
                                     const parsedData = JSON.parse(result);
                                     // 下方 item 是可以隨意命名的
                                     const speciesCodes = parsedData.map(item => item.speciesCode);
                                     // speciesCodes 是陣列
-                                    // console.log(speciesCodes);
                                     const compareBird = await getDoc(doc(db, "bird", "bird_info"));
                                     const allSpp = compareBird.data().bird_data[0].spp_code
-                                    // console.log(compareBird.data().bird_data[0].spp_code)
                                     const birdSpecial = 
                                     compareBird.data().bird_data.filter(
                                         bird => speciesCodes.includes(bird.spp_code) );
-                                    // console.log(birdSpecial)
                                     const threeBirdSpecial = birdSpecial.slice(0, 3);
-                                    // console.log(threeBirdSpecial);
                                     const threeBirdName = threeBirdSpecial.map(name => name.ch_name)
                                     const threeBirdPhoto = threeBirdSpecial.map(photo =>photo.img)
                                     const newBirdPhotos = threeBirdPhoto.map(photo => photo.replace("'", "\""));
                                     const threeBirdCode = threeBirdSpecial.map(name => name.spp_code)
-                                    // console.log("鳥名", threeBirdName,"鳥照", newBirdPhotos)
                                     if (! newBirdPhotos[0]){
                                         newBirdPhotos[0] = "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/254741801/1200"
                                         threeBirdName[0] = "蒼鷺"
@@ -1158,7 +1137,6 @@ const MapPage = () =>{
 
         
         <NavLink to='/map'
-            // key={myRefLie}
             onClick={async() => {
                 await MapLocal(myRefLie);
                 setShowHotTitle(!showHotTitle);

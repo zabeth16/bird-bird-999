@@ -1,5 +1,4 @@
 import firebase from 'firebase/compat/app';
-// import * as firebaseui from 'firebaseui';
 import 'firebaseui/dist/firebaseui.css';
 import React , { useEffect, useState, useRef , useCallback , useMemo }from "react";
 import Base from '../pages/Base.jsx'
@@ -21,11 +20,9 @@ const MemberPage = () =>{
     const auth = getAuth();    
     const logout = () =>{
         signOut(auth).then(() => {
-            // Sign-out successful.
             console.log("Sign-out successful.")
             navigate(-1);
           }).catch((error) => {
-            // An error happened.
             console.log(error)
           });
     }
@@ -33,7 +30,6 @@ const MemberPage = () =>{
     const [showUpload, setShowUpload] = useState(false);
     const callUpload = () =>{
       setShowUpload(!showUpload);
-      // console.log("有反應?", showUpload)
     }
 
     // 會員基本資料
@@ -54,13 +50,11 @@ const MemberPage = () =>{
                 setUserName(userName)
                 setUserId(uid)
                 setUserEmail(email)
-                setUserPhoto(photoURL)
-                // console.log("userName: " , userName , "email: " , email)
-                // setLoginSuccess(true)   
+                setUserPhoto(photoURL) 
                 setGetUser(true)           
             } else {
                 // User is signed out
-                // setLoginSuccess(false)
+                return
             }
         });       
     }, []);
@@ -78,8 +72,6 @@ const MemberPage = () =>{
     useEffect(() => {
       const getBirdPhoto = async()=>{
         try{
-          // const docSnap = await getDoc(doc(db, "Upload_bird_photo", userEmail+"#"+selectedDate));
-          // console.log("中文資料", docSnap.id)
           const ref = collection(db, "Upload_bird_photo");
           const q = query(ref, where("email", "==", userEmail));
           const querySnapshot = await getDocs(q);
@@ -90,8 +82,6 @@ const MemberPage = () =>{
           const birdLocalList = []
           const locIdList = []
           querySnapshot.forEach((doc) => {
-            // 可以再拿其他代碼做利用，用where即可
-            // console.log(doc.id, doc.data().img);
             const userShotImg = doc.data().img           
             userShotImgList.push(userShotImg)
             birdNameList.push(doc.data().ch_name)
@@ -129,7 +119,6 @@ const MemberPage = () =>{
             setScaleX(scaleX)
             setScaleY(scaleY)
             setTransformOrigin(TransformOrigin)
-            // console.log(TransformOrigin)
           }
           else{
             return
@@ -191,7 +180,6 @@ const MemberPage = () =>{
         const newScaleY = obj.scaleY * obj.canvas.getZoom();
         obj.scaleX = newScaleX;
         obj.scaleY = newScaleY;
-        // setScale((newScaleX + newScaleY) / 2);
         setScaleX(newScaleX)
         setScaleY(newScaleY)
         obj.setCoords();
@@ -217,9 +205,7 @@ const MemberPage = () =>{
               top: 0,
               scaleX:  canvas.width / image.width,
               scaleY:  canvas.height / image.height,
-            });
-
-    
+            });    
             canvas.add(img);
             canvas.setActiveObject(img);
             img.on('scaling', handleScaling);
@@ -229,9 +215,7 @@ const MemberPage = () =>{
           canvas.on('object:moving', (e) => {
             const obj = e.target;
             obj.setCoords();
-            // setImgPosition({ left: obj.left, top: obj.top });
-            const boundingRect = obj.getBoundingRect();
-            //  console.log(obj)          
+            const boundingRect = obj.getBoundingRect();          
           });
     
           canvas.on('object:scaling', (e) => {
@@ -261,12 +245,8 @@ const MemberPage = () =>{
            
             // 計算 transformOrigin 的值 長高圖
             if (obj.height > obj.width){
-              
               const adjustLeft =canvasWidth/2
-              const adjustTop =canvasHeight/2
-              // const tx =  ( (obj.width / canvasWidth) / 2) * scaleX + obj.left ; //boundingRect.left +
-              // const ty =  ((obj.height / canvasHeight) / 2) * scaleY + obj.top; // boundingRect.top
-           
+              const adjustTop =canvasHeight/2           
               setTransformOrigin(tx , ty);
               setProfileStyle({
                 "left": containerLeft,
@@ -309,13 +289,9 @@ const MemberPage = () =>{
         setUploadStatus("上傳中");
         // 獲取當前圖像的位置和scale
         const canvas = canvasRef.current;
-        // 移除事件监听器，蠻失敗
+        
         if (canvas) {
-          // canvas.add(newImg)
-          // canvas.off('object:moving');
-          // canvas.off('object:scaling');        
-          // 在Firebase Storage上傳前，將位置和scale信息寫入圖像元數據
-          // 用database吧
+
           try {
             // 把最終大頭照設定上傳到database          
             await setDoc(doc(db, "Profile", userEmail), {
@@ -336,7 +312,6 @@ const MemberPage = () =>{
               // Blob生成成功
               uploadBytes(ref(storage, uploadPath), blob).then(() => {
                 setUploadStatus("上傳成功，自動刷新頁面");
-                // console.log('照片上傳成功');
                 // 照片上傳成功後，獲取照片下載 URL 並顯示照片
                 getDownloadURL(ref(storage, uploadPath)).then((url) => {
                   // Update the user profile in Firebase Auth
@@ -420,42 +395,44 @@ const MemberPage = () =>{
 
                 <div className='bird-section'>
                   <h1 className='h1'>會員作品展示區</h1>
-                  <div className='upload-and-bird'>
-                  <button className='upload-bird' onClick={callUpload}
-                    onClose={(onClose) => setShowUpload(false)} 
-                  > + </button>                      
-                    {getPhoto.map((getPhoto , index) => (  
-                      <React.Fragment key={getPhoto}>
-                      <div className="image-container" style={{ position: 'relative' }}>
-                        <img key={getPhoto} src={getPhoto} className="get-user-photo" />  
-                        <div className="bird-data-container" style={{ position: 'absolute', top: 0, left: 0 }}>
-                          <div className='bird-data-name-container' style={{ position: 'relative', display: 'inline-block' , width: '100%'}}>
-                            <p className='bird-data'>{birdName[index]} {birdTime[index]}</p>
-                            <NavLink to={`/bird/${birdCode[index]}`}
-                              style={{ width: '100%', height:'100%',
-                              position: 'absolute', top: 0, left: 0}}
+                  
+                    <div className='upload-and-bird'>
+                    <button className='upload-bird' onClick={callUpload}
+                      onClose={(onClose) => setShowUpload(false)} 
+                    > + </button>                      
+                      {getPhoto.map((getPhoto , index) => (  
+                        <React.Fragment key={getPhoto}>
+                        <div className="image-container" style={{ position: 'relative' }}>
+                          <img key={getPhoto} src={getPhoto} className="get-user-photo" />  
+                          <div className="bird-data-container" style={{ position: 'absolute', top: 0, left: 0 }}>
+                            <div className='bird-data-name-container' style={{ position: 'relative', display: 'inline-block' , width: '100%'}}>
+                              <p className='bird-data'>{birdName[index]} {birdTime[index]}</p>
+                              <NavLink to={`/bird/${birdCode[index]}`}
+                                style={{ width: '100%', height:'100%',
+                                position: 'absolute', top: 0, left: 0}}
+                              ></NavLink>
+                            </div>
+                            <div className='bird-data-local-container' style={{ position: 'relative', display: 'inline-block' }}>
+                              <p className='bird-data'
+                                style={{ 
+                                  fontSize: '12px', overflow: 'hidden' ,
+                                  textDecoration: 'none', color:'white'                                
+                                  }}
+                              >
+                                {birdLocal[index]}                              
+                            </p>
+                            <NavLink to={`/hotspot/${locId[index]}`} 
+                                style={{ width: '100%', height:'100%',
+                                        position: 'absolute', top: 0, left: 0}}
                             ></NavLink>
+                            </div>
+                            {/* </div> */}
                           </div>
-                          <div className='bird-data-local-container' style={{ position: 'relative', display: 'inline-block' }}>
-                            <p className='bird-data'
-                              style={{ 
-                                fontSize: '12px', overflow: 'hidden' ,
-                                textDecoration: 'none', color:'white'                                
-                                }}
-                            >
-                              {birdLocal[index]}                              
-                          </p>
-                          <NavLink to={`/hotspot/${locId[index]}`} 
-                              style={{ width: '100%', height:'100%',
-                                       position: 'absolute', top: 0, left: 0}}
-                          ></NavLink>
-                          </div>
-                          {/* </div> */}
-                        </div>
-                      </div>                          
-                      </React.Fragment>
-                    ))}                        
-                </div>     
+                        </div>                          
+                        </React.Fragment>
+                      ))}                        
+                  </div>
+                 
                 </div>                   
             </div>{/* main-member-end */}
            

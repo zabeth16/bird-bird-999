@@ -17,13 +17,11 @@ const ExplorePage = () =>{
     const [randomBird , setRandomBird] = useState("")
     const searchData = async() =>{
         const docSnap = await getDoc(doc(db, "bird", "bird_info")); 
-        // console.log(docSnap.data().bird_data)
         const birdData = docSnap.data().bird_data         
         const birdTarget = 
             birdData.filter( bird => bird.ch_name.includes(inputValue));
         // 輸入找鳥
         if (inputValue !== ""){
-            // console.log(birdTarget)
             let i = 0;
             let birdNameList = []
             let birdCodeList = []
@@ -53,7 +51,6 @@ const ExplorePage = () =>{
             const birdData = docSnap.data().bird_data
             let getBird = birdData[Math.floor(Math.random() * birdData.length)]
             let getBirdCode = getBird.spp_code
-            // console.log(getBird , "鳥代碼: ", getBirdCode)
             setRandomBird(getBirdCode)
         }
         catch (e){
@@ -133,7 +130,6 @@ const ExplorePage = () =>{
         if(inputValueLocal !== "") {
             const localTarget = 
             localData.filter( item => item.name.includes(inputValueLocal));
-            // console.log(localTarget)
             let i = 0;
             let localCodeList = []
             let localNameList = []

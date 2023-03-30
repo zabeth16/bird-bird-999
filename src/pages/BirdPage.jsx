@@ -211,6 +211,8 @@ const BirdPage = () =>{
                 
                 <div className='bird-section-member-work'>
                     <h1 className='h1-bird-work'>會員作品展示區</h1>
+
+                    <div className='upload-and-bird-at-page'>  
                     <button className='upload-bird-at-page' onClick={callUpload}
                     onClose={(onClose) => setShowUpload(false)} 
                     style = {{ position : 'relative'}}
@@ -261,7 +263,7 @@ const BirdPage = () =>{
                     ))}                
                 </div>
                    
-              
+                </div>
             </div>{/* main */}
             
             
